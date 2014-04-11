@@ -83,29 +83,29 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1: return $$[$0-1]; 
+case 1: document.write($$[$0-1]); return $$[$0-1]; 
 break;
-case 2:this.$ = $$[$0-2] + " = " + $$[$0]; console.log(this.$);
+case 2:this.$ = $$[$0-2] + " = " + $$[$0]; document.write(this.$);
 break;
 case 3:this.$ = $$[$0];
 break;
-case 4:this.$ = $$[$0-2] + " -> " + $$[$0]; console.log(this.$);
+case 4:this.$ = $$[$0-2] + " -> " + $$[$0]; document.write(this.$);
 break;
-case 5:this.$ = $$[$0-2] + " <- " + $$[$0]; console.log(this.$);
+case 5:this.$ = $$[$0-2] + " <- " + $$[$0]; document.write(this.$);
 break;
 case 6:this.$ = $$[$0];
 break;
-case 7:this.$ = $$[$0-2] + (" | ") + $$[$0]; console.log(this.$);
+case 7:this.$ = $$[$0-2] + (" | ") + $$[$0]; document.write(this.$);
 break;
-case 8:this.$ = $$[$0-2] + (" X ") + $$[$0]; console.log(this.$);
+case 8:this.$ = $$[$0-2] + (" X ") + $$[$0]; document.write(this.$);
 break;
 case 9:this.$ = $$[$0];
 break;
-case 10:this.$ = $$[$0-2] + (" & ") + $$[$0]; console.log(this.$);
+case 10:this.$ = $$[$0-2] + (" & ") + $$[$0]; document.write(this.$);
 break;
 case 11:this.$ = $$[$0];
 break;
-case 12:this.$ = "!" + $$[$0]; console.log(this.$);
+case 12:this.$ = "!" + $$[$0]; document.write(this.$);
 break;
 case 13:this.$ = $$[$0];
 break;

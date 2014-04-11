@@ -9,3 +9,7 @@ run:
 
 clean:
 	rm boolean_evaluate.js boolean_print.js
+
+open:
+	make
+	xdg-open test.html
