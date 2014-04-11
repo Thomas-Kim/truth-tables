@@ -28,8 +28,7 @@
 %left NOT
 %left AND
 %left OR XOR
-%left LIMP
-%left RIMP
+%left LIMP RIMP
 %left EQ
 %left BOOL
 %left VAR
@@ -44,22 +43,17 @@ expressions
     ;
 
 eq
-    : rimp EQ eq
+    : imp EQ eq
         {$$ = $1 + " = " + $3; console.log($$);}
-    | rimp
+    | imp
         {$$ = $1;}
     ;
 
-rimp
-    : limp RIMP rimp
+imp
+    : imp RIMP imp
         {$$ = $1 + " -> " + $3; console.log($$);}
-    | limp
-        {$$ = $1;}
-    ;
-
-limp
-    : or LIMP limp
-        {$$ = $1 + (" <- ") + $3; console.log($$);}
+    | imp LIMP imp
+        {$$ = $1 + " <- " + $3; console.log($$);}
     | or
         {$$ = $1;}
     ;
