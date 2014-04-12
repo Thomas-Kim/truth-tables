@@ -2,7 +2,7 @@
 /* description: Parses end executes mathematical expressions. */
 
 %{
-var exp_list = new Array();
+var exp_list;
 %}
 
 /* lexical grammar */
@@ -42,10 +42,14 @@ var exp_list = new Array();
 %% /* language grammar */
 
 expressions
-    : eq EOF
+    : s EOF
         { return exp_list; }
     ;
 
+s
+    : eq
+        {$$ = $1; exp_list = new Array(); }
+    ;
 eq
     : imp EQ eq
         {$$ = $1 + " = " + $3; exp_list.push($$);}
