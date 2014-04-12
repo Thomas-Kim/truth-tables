@@ -2,7 +2,8 @@
 /* description: Parses end executes mathematical expressions. */
 
 %{
-var exp_list;
+var exp_list = null;
+var exp_final;
 %}
 
 /* lexical grammar */
@@ -42,49 +43,45 @@ var exp_list;
 %% /* language grammar */
 
 expressions
-    : s EOF
-        { return exp_list; }
+    : eq EOF
+        { exp_final = exp_list; exp_list = null; return exp_final; }
     ;
 
-s
-    : eq
-        {$$ = $1; exp_list = new Array(); }
-    ;
 eq
     : imp EQ eq
-        {$$ = $1 + " = " + $3; exp_list.push($$);}
+        {$$ = $1 + " = " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | imp
         {$$ = $1;}
     ;
 
 imp
     : imp RIMP imp
-        {$$ = $1 + " -> " + $3; exp_list.push($$);}
+        {$$ = $1 + " -> " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | imp LIMP imp
-        {$$ = $1 + " <- " + $3; exp_list.push($$);}
+        {$$ = $1 + " <- " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | or
         {$$ = $1;}
     ;
 
 or
     : or OR or
-        {$$ = $1 + (" | ") + $3; exp_list.push($$);}
+        {$$ = $1 + (" | ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | or XOR or
-        {$$ = $1 + (" X ") + $3; exp_list.push($$);}
+        {$$ = $1 + (" X ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | and
         {$$ = $1;}
     ;
 
 and
     : not AND and
-        {$$ = $1 + (" & ") + $3; exp_list.push($$);}
+        {$$ = $1 + (" & ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | not
         {$$ = $1;}
     ;
 
 not
     : NOT primary
-        {$$ = "!" + $2; exp_list.push($$);}
+        {$$ = "!" + $2; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | primary
         {$$ = $1;}
     ;
