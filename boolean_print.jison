@@ -39,44 +39,44 @@
 
 expressions
     : eq EOF
-        { document.write($1); return $1; }
+        { console.log($1); return $1; }
     ;
 
 eq
     : imp EQ eq
-        {$$ = $1 + " = " + $3; document.write($$);}
+        {$$ = $1 + " = " + $3; console.log($$);}
     | imp
         {$$ = $1;}
     ;
 
 imp
     : imp RIMP imp
-        {$$ = $1 + " -> " + $3; document.write($$);}
+        {$$ = $1 + " -> " + $3; console.log($$);}
     | imp LIMP imp
-        {$$ = $1 + " <- " + $3; document.write($$);}
+        {$$ = $1 + " <- " + $3; console.log($$);}
     | or
         {$$ = $1;}
     ;
 
 or
     : or OR or
-        {$$ = $1 + (" | ") + $3; document.write($$);}
+        {$$ = $1 + (" | ") + $3; console.log($$);}
     | or XOR or
-        {$$ = $1 + (" X ") + $3; document.write($$);}
+        {$$ = $1 + (" X ") + $3; console.log($$);}
     | and
         {$$ = $1;}
     ;
 
 and
     : not AND and
-        {$$ = $1 + (" & ") + $3; document.write($$);}
+        {$$ = $1 + (" & ") + $3; console.log($$);}
     | not
         {$$ = $1;}
     ;
 
 not
     : NOT primary
-        {$$ = "!" + $2; document.write($$);}
+        {$$ = "!" + $2; console.log($$);}
     | primary
         {$$ = $1;}
     ;
