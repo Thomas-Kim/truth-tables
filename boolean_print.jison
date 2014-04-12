@@ -43,7 +43,7 @@ var exp_list = new Array();
 
 expressions
     : eq EOF
-        { console.log(exp_list); return $1; }
+        { return exp_list; }
     ;
 
 eq

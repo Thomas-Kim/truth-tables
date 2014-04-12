@@ -83,7 +83,7 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1: console.log(exp_list); return $$[$0-1]; 
+case 1: return exp_list; 
 break;
 case 2:this.$ = $$[$0-2] + " = " + $$[$0]; exp_list.push(this.$);
 break;
