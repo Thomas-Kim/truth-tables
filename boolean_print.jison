@@ -1,6 +1,10 @@
 
 /* description: Parses end executes mathematical expressions. */
 
+%{
+var exp_list = new Array();
+%}
+
 /* lexical grammar */
 %lex
 %%
@@ -39,44 +43,44 @@
 
 expressions
     : eq EOF
-        { console.log($1); return $1; }
+        { console.log(exp_list); return $1; }
     ;
 
 eq
     : imp EQ eq
-        {$$ = $1 + " = " + $3; console.log($$);}
+        {$$ = $1 + " = " + $3; exp_list.push($$);}
     | imp
         {$$ = $1;}
     ;
 
 imp
     : imp RIMP imp
-        {$$ = $1 + " -> " + $3; console.log($$);}
+        {$$ = $1 + " -> " + $3; exp_list.push($$);}
     | imp LIMP imp
-        {$$ = $1 + " <- " + $3; console.log($$);}
+        {$$ = $1 + " <- " + $3; exp_list.push($$);}
     | or
         {$$ = $1;}
     ;
 
 or
     : or OR or
-        {$$ = $1 + (" | ") + $3; console.log($$);}
+        {$$ = $1 + (" | ") + $3; exp_list.push($$);}
     | or XOR or
-        {$$ = $1 + (" X ") + $3; console.log($$);}
+        {$$ = $1 + (" X ") + $3; exp_list.push($$);}
     | and
         {$$ = $1;}
     ;
 
 and
     : not AND and
-        {$$ = $1 + (" & ") + $3; console.log($$);}
+        {$$ = $1 + (" & ") + $3; exp_list.push($$);}
     | not
         {$$ = $1;}
     ;
 
 not
     : NOT primary
-        {$$ = "!" + $2; console.log($$);}
+        {$$ = "!" + $2; exp_list.push($$);}
     | primary
         {$$ = $1;}
     ;
