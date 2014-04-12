@@ -10,9 +10,14 @@
 <body>
     <script type="text/x-handlebars" data-template-name="truth">
 
-        <div class="header">
+        <div class="input">
             {{input type="text" value=input}}
-            <p> Welcome to the truth table! {{ast}}</p>
+        </div>
+        <div class="table">
+            {{#each node in ast}}
+                {{node}}
+                <br>
+            {{/each}}
         </div>
         <section id="truth_table">
         </section>
