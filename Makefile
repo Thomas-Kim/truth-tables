@@ -1,15 +1,7 @@
 all:
-	jison boolean_evaluate.jison
-	jison boolean_print.jison
+	jison boolean_evaluate.jison -o js/libs/boolean_evaluate.js
+	jison boolean_print.jison -o js/libs/boolean_print.js
 
 run:
 	make
-	node boolean_evaluate.js test_evaluate.dat
-	node boolean_print.js test_print.dat
-
-clean:
-	rm boolean_evaluate.js boolean_print.js
-
-open:
-	make
-	xdg-open test.html
+	xdg-open index.html
