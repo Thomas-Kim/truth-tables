@@ -13,18 +13,20 @@ App.TruthRoute = Ember.Route.extend ({
 App.Table = Ember.Object.extend ({
     input: '',
     parser: boolean_print,
+    ast_value: '',
     ast: function() {
         //console.log(this.get("parser.ast"))
         try {
             var output = new Array()
-            console.log(output)
             output = this.get("parser").parse(this.get("input")) //MyCustomJISONParser.parse(this.get(‘input’))
-            return output
+            this.set("ast_value", output)
+            console.log(this.get("ast_value"))
+            return this.get("ast_value")
         }
         catch(err) {
             console.log("error")
-            return new Array("Error")
+            return this.get("ast_value")
         }
         return output;
-    }.property('input', 'parser')
+    }.property('input', 'parser', 'ast_value')
 })
