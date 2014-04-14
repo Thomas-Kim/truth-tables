@@ -117,15 +117,21 @@ function verify_input() {
     }
 }
 
+function toggle_table() {
+    // var my_button = document.getElementById(id);
+    console.log("Hi");
+}
+
 function build_form_fields(expr) {
     var var_list = input_vars(expr);
     var exp_list = get_ast(expr);
     var container = document.getElementById('form_fields');
-    var item, field, i, num_rows;
+    var item, field, i, num_rows, sub_item;
     var num_expr, num_cols;
     var row_1, row_2;
     var row_1_col, row_2_col;
-    var input_box;
+    var item_row, item_row_cell;
+    var input_box, expand_button;
     var bindings = get_initial_bindings(expr);
     container.innerHTML = '';
     i = 0;
@@ -133,15 +139,17 @@ function build_form_fields(expr) {
     /* outer loop = enumerate bindings */
         item = document.createElement('table');
         item.style.width='60%';
-        num_rows = 0;
+        num_tbls = 0;
     while(bindings.length > 0) {
-
+        num_rows = 0;
+        sub_item = document.createElement('table');
+        sub_item.style.width='60%';
         /* inner loop 1 = enumerate subexpressions */
         num_expr = 0;
         while(num_expr < exp_list.length) {
-            row_1 = item.insertRow(num_rows);
+            row_1 = sub_item.insertRow(num_rows);
             ++num_rows;
-            row_2 = item.insertRow(num_rows);
+            row_2 = sub_item.insertRow(num_rows);
             ++num_rows;
 
             num_cols = 0;
@@ -170,6 +178,19 @@ function build_form_fields(expr) {
             ++num_expr;
             ++i;
         }
+        item_row = item.insertRow(num_tbls);
+        item_row_cell = item_row.insertCell(0);
+        expand_button = document.createElement("input");
+        expand_button.type = "button";
+        expand_button.id = 'expand_button[' + i + ']';
+        expand_button.onClick = "toggle_table()";
+        expand_button.innerHTML = "Expand";
+        item_row_cell.appendChild(expand_button);
+
+        item_row_cell = item_row.insertCell(1);
+        item_row_cell.appendChild(sub_item);
+        ++num_tbls;
+
         bindings = get_next_bindings(bindings);
     }
     container.appendChild(item);
