@@ -29,14 +29,14 @@ var exp_final;
 
 /* operator associations and precedence */
 
-%left LPAREN RPAREN
-%left NOT
-%left AND
-%left OR XOR
-%left LIMP RIMP
-%left EQ
 %left BOOL
 %left VAR
+%left EQ
+%left LIMP RIMP
+%left OR XOR
+%left AND
+%left NOT
+%left LPAREN RPAREN
 
 %start expressions
 
