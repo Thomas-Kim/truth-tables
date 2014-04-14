@@ -1,10 +1,10 @@
-var input = "";
 var ast_arr = [];
+var bindings_array = [];
+var var_array = [];
 function get_ast(str) {
     try {
         var output = [];
-        input = str;
-        output = boolean_print.parse(input);
+        output = boolean_print.parse(str);
         ast_arr = output;
         return output;
     }
@@ -28,6 +28,7 @@ function input_vars(expr) {
                   output_arr.push(str.charAt(i));
             }
         }
+        var_array = output_arr;
         return output_arr;
     }
     catch(err) {
@@ -68,10 +69,52 @@ function get_next_bindings(bindings) {
             return bindings;
         }
         else {
-            bindings[i] = "T";
+            bindings[i] = "F";
         }
     }
     return [];
+}
+
+function lookup_var(var_name) {
+    var i;
+    for(i = 0; i < var_array.length; i++) {
+        if(var_array[i] == var_name) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/* TODO: debug */
+function substitute_vars(index) {
+    var result = "";
+    var exprs = document.getElementsByClassName("subexps");
+    var subexpr = exprs[index];
+    var i;
+    for(i = 0; i < subexpr.length; i++) {
+        if(subexpr.charAt(i) >= 'a' && subexpr.charAt(i) <= 'z' &&
+           subexpr.charAt(i) != 't' && subexpr.charAt(i) != 'f') {
+              result = result + bindings[index][lookup_var(subexpr.charAt(i))];
+        }
+        else {
+            result = result + subexpr.charAt(i);
+        }
+    }
+    return result;
+}
+
+function verify_input() {
+    var inputs = document.getElementsByClassName("result_input");
+    var exprs = document.getElementsByClassName("subexps");
+    var correct;
+    var formula;
+    for(i = 0; i < inputs.length; i++) {
+        formula = substitute_vars[i];
+        correct = boolean_evaluate.parse(formula);
+        console.log(exprs[i].innerHTML);
+        console.log(inputs[i].value);
+        console.log(correct);
+    }
 }
 
 function build_form_fields(expr) {
@@ -110,11 +153,13 @@ function build_form_fields(expr) {
                 ++num_cols;
             }
 
+            bindings_array[i] = bindings;
+
             input_box = document.createElement("input");
             input_box.type = "text";
             input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + i + ']';
-            ++i;
+            input_box.onkeyup = verify_input;
 
             row_1_col = row_1.insertCell(num_cols);
             row_1_col.innerHTML = exp_list[num_expr];
@@ -123,6 +168,7 @@ function build_form_fields(expr) {
             row_2_col = row_2.insertCell(num_cols);
             row_2_col.appendChild(input_box);
             ++num_expr;
+            ++i;
         }
         bindings = get_next_bindings(bindings);
     }
