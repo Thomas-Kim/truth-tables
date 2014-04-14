@@ -90,12 +90,12 @@ function lookup_var(var_name) {
 function substitute_vars(index) {
     var result = "";
     var exprs = document.getElementsByClassName("subexps");
-    var subexpr = exprs[index];
+    var subexpr = exprs[index].innerHTML;
     var i;
     for(i = 0; i < subexpr.length; i++) {
         if(subexpr.charAt(i) >= 'a' && subexpr.charAt(i) <= 'z' &&
            subexpr.charAt(i) != 't' && subexpr.charAt(i) != 'f') {
-              result = result + bindings[index][lookup_var(subexpr.charAt(i))];
+              result = result + bindings_array[index][lookup_var(subexpr.charAt(i))];
         }
         else {
             result = result + subexpr.charAt(i);
@@ -110,14 +110,16 @@ function verify_input() {
     var correct;
     var formula;
     for(i = 0; i < inputs.length; i++) {
-        // formula = substitute_vars[i];
+        formula = substitute_vars(i);
         // correct = boolean_evaluate.parse(formula);
         /* expression with variables (string) */
-        console.log(exprs[i].innerHTML);
+        // console.log(exprs[i].innerHTML);
+        /* expression without variables (string) */
+        console.log(formula);
         /* bindings for variables in this */
-        console.log(bindings_array[i]);
+        // console.log(bindings_array[i]);
         /* user input T or F or blank (string) */
-        console.log(inputs[i].value);
+        // console.log(inputs[i].value);
         // console.log(correct);
     }
 }
