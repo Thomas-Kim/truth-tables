@@ -1,13 +1,10 @@
-var parser = boolean_print;
 var input = "";
 var ast_arr = [];
 function get_ast(str) {
-    //console.log(this.get("parser.ast"))
     try {
-        console.log(str);
         var output = [];
         input = str;
-        output = boolean_print.parse(input); //MyCustomJISONParser.parse(this.get(‘input’));
+        output = boolean_print.parse(input);
         ast_arr = output;
         return output;
     }
@@ -26,7 +23,8 @@ function input_vars(expr) {
             if(str.charAt(i) >= 'a' &&
               str.charAt(i) <= 'z' &&
               str.charAt(i) != 't' &&
-              str.charAt(i) != 'f') {
+              str.charAt(i) != 'f' &&
+              output_arr.indexOf(str.charAt(i)) == -1) {
                   output_arr.push(str.charAt(i));
             }
         }
@@ -50,7 +48,10 @@ function get_results(){
 }
 
 function build_form_fields(expr) {
+    /* var list holds the list of unique variables */
     var var_list = input_vars(expr);
+    var exp_list = get_ast(expr);
+    console.log(exp_list);
     var amount = var_list.length;
     var container = document.getElementById('form_fields');
     var item, field, i;
