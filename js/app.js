@@ -117,11 +117,6 @@ function verify_input() {
     }
 }
 
-function toggle_table() {
-    // var my_button = document.getElementById(id);
-    console.log("Hi");
-}
-
 function build_form_fields(expr) {
     var var_list = input_vars(expr);
     var exp_list = get_ast(expr);
@@ -142,7 +137,7 @@ function build_form_fields(expr) {
     num_tbls = 0;
     while(bindings.length > 0) {
         sub_item = document.createElement('table');
-        sub_item.style.width='60%';
+        sub_item.style.width='100%';
         /* inner loop 1 = enumerate subexpressions */
 
         row_1 = sub_item.insertRow(0);
@@ -189,10 +184,11 @@ function build_form_fields(expr) {
             ++num_expr;
             ++num_cols;
         }
-        console.log("Hi");
+        /* insert the subtable as a row in the parent table */
         item_row = item.insertRow(num_tbls);
         item_row_cell = item_row.insertCell(0);
         item_row_cell.appendChild(sub_item);
+        /* increment the number of tables */
         ++num_tbls;
 
         bindings = get_next_bindings(bindings);
