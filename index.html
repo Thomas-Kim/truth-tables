@@ -1,60 +1,11 @@
 <head>
-    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="js/libs/handlebars-1.0.0.js"></script>
-    <script type="text/javascript" src="js/libs/ember.js"></script>
-    <script type="text/javascript" src="js/libs/ember-model.js"></script>
     <script type="text/javascript" src="js/libs/boolean_evaluate.js"></script>
     <script type="text/javascript" src="js/libs/boolean_print.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
-
 </head>
 <body>
-    <script type="text/x-handlebars" data-template-name="truth">
-
-          <form method="post" action="order.php">
-              Expression {{input type="text" value=input onkeyup="BuildFormFields();"}}
-              <!-- Expression {{input type="text" value=input }} -->
-                        <div class="FormFields"></div>
-                        <input type="submit" />
-          </form>
-
-
-        <!-- <div class="input"> -->
-        <!--     {{input type="text" value=input}} -->
-        <!-- </div> -->
-
-<!--        <div class="table">
-          <table class="reference" style="width:60%">
-            {{#each node in ast}}
-
-              <tr>
-                {{#each variable in input_vars}}
-                  <td>{{variable}}</td>
-                {{/each}}
-                <td>{{node}}</td>
-              </tr>
-
-              <tr>
-                {{#each variable in input_vars}}
-                  <td>T</td>
-                {{/each}}
-                <td>{{input type="text" id="AAA" value=exp_result}}</td>
-              </tr>
-
-            {{/each}}
-
-            <tr>
-              <td>Begin results</td>
-              {{#each result in echo_results}}
-                <td>{{result}}</td>
-              {{/each}}
-              <td>End results</td>
-            </tr>
-
-          </table> -->
-
-        </div>
-        <section id="truth_table">
-        </section>
-    </script>
+    <form>
+        Expression <input type="text" onkeyup="build_form_fields(this.value);" />
+            <div id="form_fields"></div>
+    </form>
 </body>
