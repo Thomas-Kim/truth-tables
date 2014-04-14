@@ -46,71 +46,92 @@ function get_results(){
     }
 }
 
-function build_form_fields(expr) {
-    /* var_list holds the list of unique variables */
-    var var_list = input_vars(expr);
-    /* exp_list holds the list of subexpressions */
-    var exp_list = get_ast(expr);
-    /* container holds the div from index.html */
-    var container = document.getElementById('form_fields');
-    /* misc local vars */
-    var item, field, i, j, k;
+function get_initial_bindings(expr) {
+    try {
+        var var_list = input_vars(expr);
+        var i;
+        var result = [];
+        for(i = 0; i < var_list.length; i++) {
+            result[i] = "F";
+        }
+        return result;
+    }
+    catch(err) {
+        throw new Error("Failed to create initial bindings");
+    }
+}
+function get_next_bindings(bindings) {
+    var i;
+    var carry = true;
+    for(i = 0; i < bindings.length; i++) {
+        if(carry) {
+            if(bindings[i] == "F") {
+                bindings[i] = "T";
+                carry = false;
+            }
+            else {
+                bindings[i] = "F";
+            }
+        }
+    }
+    if(carry) {
+        return [];
+    }
+    return bindings;
+}
 
+function build_form_fields(expr) {
+    var var_list = input_vars(expr);
+    var exp_list = get_ast(expr);
+    var container = document.getElementById('form_fields');
+    var item, field, i, num_rows;
+    var num_expr, num_cols;
+    var row_1, row_2;
+    var row_1_col, row_2_col;
+    var input_box;
+    var bindings = get_initial_bindings(expr);
     container.innerHTML = '';
-    /* outer loop = enumerate bindings */
-    var num_rows = 0;
-    var finished = false;
     i = 0;
-    while(!finished) {
+
+    /* outer loop = enumerate bindings */
+    while(bindings.length > 0) {
+        num_rows = 0;
         item = document.createElement('table');
         item.style.width='60%';
 
         /* inner loop 1 = enumerate subexpressions */
-        var num_expr = 0;
+        num_expr = 0;
         while(num_expr < exp_list.length) {
-            var row_1 = item.insertRow(num_rows);
+            row_1 = item.insertRow(num_rows);
             ++num_rows;
-            var row_2 = item.insertRow(num_rows);
+            row_2 = item.insertRow(num_rows);
             ++num_rows;
 
-            var num_cols = 0;
+            num_cols = 0;
             while(num_cols < var_list.length) {
-                row_1.insertCell(num_cols).innerHTML = var_list[num_cols];
-                row_2.insertCell(num_cols).innerHTML = "T";
+                row_1_col = row_1.insertCell(num_cols);
+                row_1_col.innerHTML = var_list[num_cols];
+                row_2_col = row_2.insertCell(num_cols);
+                row_2_col.innerHTML = bindings[num_cols];
                 ++num_cols;
             }
 
-            var input_box = document.createElement("input");
+            input_box = document.createElement("input");
             input_box.type = "text";
-            input_box.name = "subexpr_" + i.toString();
+            input_box.className = "result_input";
+            input_box.name = 'subexpr_result[' + i + ']';
             ++i;
 
-            row_1.insertCell(num_cols).innerHTML = exp_list[num_expr];
-            row_2.insertCell(num_cols).appendChild(input_box);
+            row_1_col = row_1.insertCell(num_cols);
+            row_1_col.innerHTML = exp_list[num_expr];
+            row_1_col.className = "subexps";
+            row_1_col.name = 'subexpr[' + i + ']';
+            row_2_col = row_2.insertCell(num_cols);
+            row_2_col.appendChild(input_box);
             ++num_expr;
         }
-        finished = true;
+        bindings = get_next_bindings(bindings);
+        console.log(bindings);
     }
     container.appendChild(item);
-
-            /*
-            field = document.createElement('text');
-            field.innerHTML = 'Name of Design';
-            item.appendChild(field);
-
-            field = document.createElement('input');
-            field.name = 'Design[' + i + ']';
-            field.type = 'text';
-            item.appendChild(field);
-
-            field = document.createElement('span');
-            field.innerHTML = 'Quantity of Design';
-            field.style.margin = '0px 10px';
-            item.appendChild(field);
-
-            field = document.createElement('input');
-            field.name = 'Quantity[' + i + ']';
-            field.type = 'text';
-            item.appendChild(field);
-            */
 }
