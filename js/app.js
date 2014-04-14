@@ -137,57 +137,61 @@ function build_form_fields(expr) {
     i = 0;
 
     /* outer loop = enumerate bindings */
-        item = document.createElement('table');
-        item.style.width='60%';
-        num_tbls = 0;
+    item = document.createElement('table');
+    item.style.width='60%';
+    num_tbls = 0;
     while(bindings.length > 0) {
-        num_rows = 0;
         sub_item = document.createElement('table');
         sub_item.style.width='60%';
         /* inner loop 1 = enumerate subexpressions */
+
+        row_1 = sub_item.insertRow(0);
+        row_2 = sub_item.insertRow(1);
+        /* Put variable names in row 1 */
+        num_cols = 0;
+        while(num_cols < var_list.length) {
+            row_1_col = row_1.insertCell(num_cols);
+            row_1_col.innerHTML = var_list[num_cols];
+            ++num_cols;
+        }
+
+        /* put expressions in row 1 */
         num_expr = 0;
         while(num_expr < exp_list.length) {
-            row_1 = sub_item.insertRow(num_rows);
-            ++num_rows;
-            row_2 = sub_item.insertRow(num_rows);
-            ++num_rows;
-
-            num_cols = 0;
-            while(num_cols < var_list.length) {
-                row_1_col = row_1.insertCell(num_cols);
-                row_1_col.innerHTML = var_list[num_cols];
-                row_2_col = row_2.insertCell(num_cols);
-                row_2_col.innerHTML = bindings[num_cols];
-                ++num_cols;
-            }
-
-            bindings_array[i] = bindings;
-
-            input_box = document.createElement("input");
-            input_box.type = "text";
-            input_box.className = "result_input";
-            input_box.name = 'subexpr_result[' + i + ']';
-            input_box.onkeyup = verify_input;
-
             row_1_col = row_1.insertCell(num_cols);
             row_1_col.innerHTML = exp_list[num_expr];
             row_1_col.className = "subexps";
             row_1_col.name = 'subexpr[' + i + ']';
+            ++num_cols;
+            ++num_expr;
+        }
+
+        /* Put variable bindings in row 2 */
+        num_cols = 0;
+        while(num_cols < var_list.length) {
+            row_2_col = row_2.insertCell(num_cols);
+            row_2_col.innerHTML = bindings[num_cols];
+            bindings_array[i] = bindings;
+            ++i;
+            ++num_cols;
+        }
+
+        /* put expression input boxes in row 2 */
+        num_expr = 0;
+        while(num_expr < exp_list.length) {
+            input_box = document.createElement("input");
+            input_box.type = "text";
+            input_box.className = "result.input";
+            input_box.name = 'subexpr_result[' + i + ']';
+            input_box.onkeyup = verify_input;
             row_2_col = row_2.insertCell(num_cols);
             row_2_col.appendChild(input_box);
             ++num_expr;
-            ++i;
+            ++num_cols;
         }
+        console.log("Hi");
         item_row = item.insertRow(num_tbls);
         item_row_cell = item_row.insertCell(0);
-        expand_button = document.createElement("input");
-        expand_button.type = "button";
-        expand_button.id = 'expand_button[' + i + ']';
-        expand_button.onClick = "toggle_table()";
-        expand_button.innerHTML = "Expand";
-        item_row_cell.appendChild(expand_button);
-
-        item_row_cell = item_row.insertCell(1);
         item_row_cell.appendChild(sub_item);
         ++num_tbls;
 
