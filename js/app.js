@@ -109,8 +109,11 @@ function verify_input() {
     var exprs = document.getElementsByClassName("subexps");
     var correct;
     var formula;
+    var inputCell;
+    var user_input;
     for(i = 0; i < inputs.length; i++) {
-        // formula = substitute_vars[i];
+        formula = substitute_vars[i];
+        console.log(formula);
         // correct = boolean_evaluate.parse(formula);
         /* expression with variables (string) */
         console.log(exprs[i].innerHTML);
@@ -119,6 +122,15 @@ function verify_input() {
         /* user input T or F or blank (string) */
         console.log(inputs[i].value);
         // console.log(correct);
+        if (input[i].value.toUpperCase() == "T" | input[i].value.toUpperCase() == "F"){
+            inputCell = inputs[i];
+            user_input = (input[i].value == "T");
+            if (boolean_evaluate.parse(formula) != ){
+                inputCell.style.backgroundColr = "red";
+            else {
+                inputCell.style.backgroundColr = "green";
+            }
+        }
     }
 }
 
