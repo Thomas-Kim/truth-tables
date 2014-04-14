@@ -61,6 +61,7 @@ function get_initial_bindings(expr) {
         throw new Error("Failed to create initial bindings");
     }
 }
+
 function get_next_bindings(bindings) {
     var i;
     for(i = bindings.length - 1; i >= 0; i--) {
@@ -109,11 +110,15 @@ function verify_input() {
     var correct;
     var formula;
     for(i = 0; i < inputs.length; i++) {
-        formula = substitute_vars[i];
-        correct = boolean_evaluate.parse(formula);
+        // formula = substitute_vars[i];
+        // correct = boolean_evaluate.parse(formula);
+        /* expression with variables (string) */
         console.log(exprs[i].innerHTML);
+        /* bindings for variables in this */
+        console.log(bindings_array[i]);
+        /* user input T or F or blank (string) */
         console.log(inputs[i].value);
-        console.log(correct);
+        // console.log(correct);
     }
 }
 
@@ -176,7 +181,7 @@ function build_form_fields(expr) {
         while(num_expr < exp_list.length) {
             input_box = document.createElement("input");
             input_box.type = "text";
-            input_box.className = "result.input";
+            input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + i + ']';
             input_box.onkeyup = verify_input;
             row_2_col = row_2.insertCell(num_cols);
