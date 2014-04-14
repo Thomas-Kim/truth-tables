@@ -62,22 +62,16 @@ function get_initial_bindings(expr) {
 }
 function get_next_bindings(bindings) {
     var i;
-    var carry = true;
-    for(i = 0; i < bindings.length; i++) {
-        if(carry) {
-            if(bindings[i] == "F") {
-                bindings[i] = "T";
-                carry = false;
-            }
-            else {
-                bindings[i] = "F";
-            }
+    for(i = bindings.length - 1; i >= 0; i--) {
+        if(bindings[i] == "F") {
+            bindings[i] = "T";
+            return bindings;
+        }
+        else {
+            bindings[i] = "T";
         }
     }
-    if(carry) {
-        return [];
-    }
-    return bindings;
+    return [];
 }
 
 function build_form_fields(expr) {
@@ -94,10 +88,10 @@ function build_form_fields(expr) {
     i = 0;
 
     /* outer loop = enumerate bindings */
-    while(bindings.length > 0) {
-        num_rows = 0;
         item = document.createElement('table');
         item.style.width='60%';
+        num_rows = 0;
+    while(bindings.length > 0) {
 
         /* inner loop 1 = enumerate subexpressions */
         num_expr = 0;
@@ -131,7 +125,6 @@ function build_form_fields(expr) {
             ++num_expr;
         }
         bindings = get_next_bindings(bindings);
-        console.log(bindings);
     }
     container.appendChild(item);
 }
