@@ -1,6 +1,8 @@
 var ast_arr = [];
 var bindings_array = [];
 var var_array = [];
+var num_expr;
+
 function get_ast(str) {
     try {
         var output = [];
@@ -133,12 +135,33 @@ function verify_input() {
     }
 }
 
+function highlight_column() {
+    var inputs = document.getElementsByClassName("result_input");
+    var col_no = this.getAttribute("col_no");
+    var cell_col_no;
+    var currentCell;
+    var i;
+    // alert(inputs.length);
+
+    this.style.backgroundColor = 'blue';
+
+    for(i = 0; i < inputs.length; i++) {
+        currentCell = inputs[i];
+
+        cell_col_no = currentCell.getAttribute("col_no");
+
+        if(cell_col_no == col_no) {
+            currentCell.style.backgroundColor = 'blue';
+        }
+    }
+}
+
 function build_form_fields(expr) {
     var var_list = input_vars(expr);
     var exp_list = get_ast(expr);
     var container = document.getElementById('form_fields');
     var item, field, i, num_rows, sub_item;
-    var num_expr, num_cols;
+    var num_cols;
     var row_1, row_2;
     var row_1_col, row_2_col;
     var item_row, item_row_cell;
@@ -194,7 +217,10 @@ function build_form_fields(expr) {
             input_box.type = "text";
             input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + i + ']';
+            // input_box.col_no = num_expr;
+            input_box.setAttribute("col_no",num_expr);
             input_box.onkeyup = verify_input;
+            input_box.onfocus = highlight_column;
             row_2_col = row_2.insertCell(num_cols);
             row_2_col.appendChild(input_box);
             ++num_expr;
