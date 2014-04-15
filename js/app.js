@@ -60,7 +60,7 @@ function get_initial_bindings(expr) {
         var i;
         var result = [];
         for(i = 0; i < var_list.length; i++) {
-            result[i] = "F";
+            result[i] = "T";
         }
         return result;
     }
@@ -70,17 +70,27 @@ function get_initial_bindings(expr) {
 }
 
 function get_next_bindings(bindings) {
+    console.log(bindings.slice());
     var i;
-    for(i = bindings.length - 1; i >= 0; i--) {
-        if(bindings[i] == "F") {
-            bindings[i] = "T";
-            return bindings;
-        }
-        else {
-            bindings[i] = "F";
+    var finished = true;
+    for(i = 0; i < bindings.length; i++) {
+        if(bindings[i] == "T") {
+            finished = false;
         }
     }
-    return [];
+    if(finished) {
+        return [];
+    }
+    for(i = bindings.length - 1; i >= 0; i--) {
+        if(bindings[i] == "T") {
+            bindings[i] = "F";
+            return bindings.slice();
+        }
+        else {
+            bindings[i] = "T";
+        }
+    }
+    return bindings.slice();
 }
 
 function lookup_var(var_name) {
@@ -142,7 +152,6 @@ function build_form_fields() {
     var var_list = input_vars(g_input_str);
     var exp_list = get_ast(g_input_str);
     var container = document.getElementById('form_fields');
-    console.log(container);
     var item, field, i, num_rows, sub_item;
     var num_expr, num_cols;
     var row_1, row_2;
