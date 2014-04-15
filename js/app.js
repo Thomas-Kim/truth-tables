@@ -3,7 +3,7 @@ var g_bindings_array = [];
 var g_var_array = [];
 var g_url_raw = "";
 var g_input_str = "";
-var num_expr;
+var g_num_expr;
 function get_ast(str) {
     try {
         var output = [];
@@ -72,7 +72,6 @@ function get_initial_bindings(expr) {
 }
 
 function get_next_bindings(bindings) {
-    console.log(bindings.slice());
     var i;
     var finished = true;
     for(i = 0; i < bindings.length; i++) {
@@ -105,7 +104,6 @@ function lookup_var(var_name) {
     return -1;
 }
 
-/* TODO: debug */
 function substitute_vars(index) {
     var result = "";
     var exprs = document.getElementsByClassName("subexps");
@@ -113,12 +111,11 @@ function substitute_vars(index) {
     subexpr = subexpr.replace(/&amp;/g, '&');
     subexpr = subexpr.replace(/&lt;/g, '<');
     subexpr = subexpr.replace(/&gt;/g, '>');
-    console.log(subexpr);
     var i;
     for(i = 0; i < subexpr.length; i++) {
         if(subexpr.charAt(i) >= 'a' && subexpr.charAt(i) <= 'z' &&
            subexpr.charAt(i) != 't' && subexpr.charAt(i) != 'f') {
-              result = result + bindings_array[index][lookup_var(subexpr.charAt(i))];
+              result = result + g_bindings_array[index][lookup_var(subexpr.charAt(i))];
         }
         else {
             result = result + subexpr.charAt(i);
@@ -137,7 +134,6 @@ function verify_input() {
     for(i = 0; i < inputs.length; i++) {
         formula = substitute_vars(i);
         correct = boolean_evaluate.parse(formula);
-        // console.log(correct);
         /* verification section */
         if (inputs[i].value.toUpperCase() == "T" | inputs[i].value.toUpperCase() == "F"){
             inputCell = inputs[i];
@@ -180,7 +176,7 @@ function build_form_fields() {
     var var_list = input_vars(g_input_str);
     var exp_list = get_ast(g_input_str);
     var container = document.getElementById('form_fields');
-    var item, field, i, num_rows, sub_item;
+    var item, field, i, j,  num_rows, sub_item;
     var num_cols;
     var row_1, row_2;
     var row_1_col, row_2_col;
@@ -195,6 +191,7 @@ function build_form_fields() {
     item = document.createElement('table');
     item.style.width='60%';
     num_tbls = 0;
+    j = 0;
     while(bindings.length > 0) {
         sub_item = document.createElement('table');
         sub_item.style.width='100%';
@@ -223,10 +220,11 @@ function build_form_fields() {
 
         /* Put variable bindings in row 2 */
         num_cols = 0;
+        bindings_set = false;
         while(num_cols < var_list.length) {
             row_2_col = row_2.insertCell(num_cols);
             row_2_col.innerHTML = bindings[num_cols];
-            g_bindings_array[i] = bindings.slice();
+            g_bindings_array[j] = bindings.slice();
             ++i;
             ++num_cols;
         }
@@ -254,6 +252,7 @@ function build_form_fields() {
         ++num_tbls;
 
         bindings = get_next_bindings(bindings);
+        ++j;
     }
     container.appendChild(item);
 }
