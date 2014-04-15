@@ -1,8 +1,9 @@
-var ast_arr = [];
-var bindings_array = [];
-var var_array = [];
+var g_ast_arr = [];
+var g_bindings_array = [];
+var g_var_array = [];
+var g_url_raw = "";
+var g_input_str = "";
 var num_expr;
-
 function get_ast(str) {
     try {
         var output = [];
@@ -16,18 +17,24 @@ function get_ast(str) {
     }
 }
 
+function get_URL_params() {
+    g_url_raw = document.URL;
+    var regex = /[?](.*)/g;
+    g_input_str = regex.exec(g_url_raw)[1];
+}
+
 function input_vars(expr) {
     try {
         output_arr = [];
         str = expr;
         var i;
-        for(i = 0; i < str.length; i++) {
-            if(str.charAt(i) >= 'a' &&
-              str.charAt(i) <= 'z' &&
-              str.charAt(i) != 't' &&
-              str.charAt(i) != 'f' &&
-              output_arr.indexOf(str.charAt(i)) == -1) {
-                  output_arr.push(str.charAt(i));
+        for(i = 0; i < g_input_str.length; i++) {
+            if(g_input_str.charAt(i) >= 'a' &&
+              g_input_str.charAt(i) <= 'z' &&
+              g_input_str.charAt(i) != 't' &&
+              g_input_str.charAt(i) != 'f' &&
+              output_arr.indexOf(g_input_str.charAt(i)) == -1) {
+                  output_arr.push(g_input_str.charAt(i));
             }
         }
         var_array = output_arr;
@@ -156,19 +163,22 @@ function highlight_column() {
     }
 }
 
-function build_form_fields(expr) {
-    var var_list = input_vars(expr);
-    var exp_list = get_ast(expr);
+function build_form_fields() {
+    get_URL_params();
+    var var_list = input_vars(g_input_str);
+    var exp_list = get_ast(g_input_str);
     var container = document.getElementById('form_fields');
+    console.log(container);
     var item, field, i, num_rows, sub_item;
     var num_cols;
     var row_1, row_2;
     var row_1_col, row_2_col;
     var item_row, item_row_cell;
     var input_box, expand_button;
-    var bindings = get_initial_bindings(expr);
-    container.innerHTML = '';
+    var bindings = get_initial_bindings(g_input_str);
     i = 0;
+
+    container.innerHTML = '';
 
     /* outer loop = enumerate bindings */
     item = document.createElement('table');
@@ -205,7 +215,7 @@ function build_form_fields(expr) {
         while(num_cols < var_list.length) {
             row_2_col = row_2.insertCell(num_cols);
             row_2_col.innerHTML = bindings[num_cols];
-            bindings_array[i] = bindings.slice();
+            g_bindings_array[i] = bindings.slice();
             ++i;
             ++num_cols;
         }
