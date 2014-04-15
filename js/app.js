@@ -142,7 +142,8 @@ function verify_input() {
     }
 }
 
-/* Highlight the entire column */
+/* Highlight the entire column
+   TODO: Remove highlight if user has no input box in focus. */
 function highlight_column() {
     var inputs = document.getElementsByClassName("result_input");
     var col_no = this.getAttribute("col_no");
