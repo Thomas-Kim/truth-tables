@@ -3,11 +3,12 @@ var g_bindings_array = [];
 var g_var_array = [];
 var g_url_raw = "";
 var g_input_str = "";
+var num_expr;
 function get_ast(str) {
     try {
         var output = [];
         output = boolean_print.parse(str);
-        g_ast_arr = output;
+        ast_arr = output;
         return output;
     }
     catch(err) {
@@ -25,6 +26,7 @@ function get_URL_params() {
 function input_vars(expr) {
     try {
         output_arr = [];
+        str = expr;
         var i;
         for(i = 0; i < g_input_str.length; i++) {
             if(g_input_str.charAt(i) >= 'a' &&
@@ -35,7 +37,7 @@ function input_vars(expr) {
                   output_arr.push(g_input_str.charAt(i));
             }
         }
-        g_var_array = output_arr;
+        var_array = output_arr;
         return output_arr;
     }
     catch(err) {
@@ -95,14 +97,15 @@ function get_next_bindings(bindings) {
 
 function lookup_var(var_name) {
     var i;
-    for(i = 0; i < g_var_array.length; i++) {
-        if(g_var_array[i] == var_name) {
+    for(i = 0; i < var_array.length; i++) {
+        if(var_array[i] == var_name) {
             return i;
         }
     }
     return -1;
 }
 
+/* TODO: debug */
 function substitute_vars(index) {
     var result = "";
     var exprs = document.getElementsByClassName("subexps");
@@ -110,11 +113,12 @@ function substitute_vars(index) {
     subexpr = subexpr.replace(/&amp;/g, '&');
     subexpr = subexpr.replace(/&lt;/g, '<');
     subexpr = subexpr.replace(/&gt;/g, '>');
+    console.log(subexpr);
     var i;
     for(i = 0; i < subexpr.length; i++) {
         if(subexpr.charAt(i) >= 'a' && subexpr.charAt(i) <= 'z' &&
            subexpr.charAt(i) != 't' && subexpr.charAt(i) != 'f') {
-              result = result + g_bindings_array[index][lookup_var(subexpr.charAt(i))];
+              result = result + bindings_array[index][lookup_var(subexpr.charAt(i))];
         }
         else {
             result = result + subexpr.charAt(i);
@@ -133,6 +137,7 @@ function verify_input() {
     for(i = 0; i < inputs.length; i++) {
         formula = substitute_vars(i);
         correct = boolean_evaluate.parse(formula);
+        // console.log(correct);
         /* verification section */
         if (inputs[i].value.toUpperCase() == "T" | inputs[i].value.toUpperCase() == "F"){
             inputCell = inputs[i];
@@ -147,13 +152,36 @@ function verify_input() {
     }
 }
 
+/* Highlight the entire column
+   TODO: Remove highlight if user has no input box in focus. */
+function highlight_column() {
+    var inputs = document.getElementsByClassName("result_input");
+    var col_no = this.getAttribute("col_no");
+    var cell_col_no;
+    var currentCell;
+    var i;
+
+    for(i = 0; i < inputs.length; i++) {
+        currentCell = inputs[i];
+
+        cell_col_no = currentCell.getAttribute("col_no");
+
+        if(cell_col_no == col_no) {
+            currentCell.style.borderColor = '#330000';
+        }
+        else {
+            currentCell.style.borderColor = 'initial';
+        }
+    }
+}
+
 function build_form_fields() {
     get_URL_params();
     var var_list = input_vars(g_input_str);
     var exp_list = get_ast(g_input_str);
     var container = document.getElementById('form_fields');
     var item, field, i, num_rows, sub_item;
-    var num_expr, num_cols;
+    var num_cols;
     var row_1, row_2;
     var row_1_col, row_2_col;
     var item_row, item_row_cell;
@@ -210,7 +238,9 @@ function build_form_fields() {
             input_box.type = "text";
             input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + i + ']';
+            input_box.setAttribute("col_no",num_expr);
             input_box.onkeyup = verify_input;
+            input_box.onfocus = highlight_column;
             row_2_col = row_2.insertCell(num_cols);
             row_2_col.appendChild(input_box);
             ++num_expr;
