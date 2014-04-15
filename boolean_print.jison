@@ -48,7 +48,7 @@ expressions
     ;
 
 eq
-    : imp EQ eq
+    : eq EQ eq
         {$$ = $1 + " = " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | imp
         {$$ = $1;}
@@ -73,7 +73,7 @@ or
     ;
 
 and
-    : not AND and
+    : and AND and
         {$$ = $1 + (" & ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | not
         {$$ = $1;}

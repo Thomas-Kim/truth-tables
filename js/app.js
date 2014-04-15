@@ -92,6 +92,8 @@ function substitute_vars(index) {
     var exprs = document.getElementsByClassName("subexps");
     var subexpr = exprs[index].innerHTML;
     subexpr = subexpr.replace(/&amp;/g, '&');
+    subexpr = subexpr.replace(/&lt;/g, '<');
+    subexpr = subexpr.replace(/&gt;/g, '>');
     console.log(subexpr);
     var i;
     for(i = 0; i < subexpr.length; i++) {
