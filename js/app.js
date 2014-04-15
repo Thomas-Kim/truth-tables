@@ -122,7 +122,7 @@ function verify_input() {
         /* verification section */
         if (inputs[i].value.toUpperCase() == "T" | inputs[i].value.toUpperCase() == "F"){
             inputCell = inputs[i];
-            user_input = (inputs[i].value == "T");
+            user_input = (inputs[i].value.toUpperCase() == "T");
             if (boolean_evaluate.parse(formula) != user_input){
                 inputCell.style.backgroundColor = "red";
             }

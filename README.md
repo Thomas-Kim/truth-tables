@@ -1,9 +1,8 @@
 truth-tables
 ============
 
-BUG:
-Inputs 'T', 'F', 'f' work, however, 't' does not
-
+Request:
+    Clear cells upon clearing input
 
 App to practice filling in a truth tables.
 
