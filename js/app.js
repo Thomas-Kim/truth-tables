@@ -142,6 +142,7 @@ function verify_input() {
     }
 }
 
+/* Highlight the entire column */
 function highlight_column() {
     var inputs = document.getElementsByClassName("result_input");
     var col_no = this.getAttribute("col_no");
@@ -150,15 +151,16 @@ function highlight_column() {
     var i;
     // alert(inputs.length);
 
-    this.style.backgroundColor = 'blue';
-
     for(i = 0; i < inputs.length; i++) {
         currentCell = inputs[i];
 
         cell_col_no = currentCell.getAttribute("col_no");
 
         if(cell_col_no == col_no) {
-            currentCell.style.backgroundColor = 'blue';
+            currentCell.style.borderColor = '#330000';
+        }
+        else {
+            currentCell.style.borderColor = 'initial';
         }
     }
 }
@@ -227,7 +229,6 @@ function build_form_fields() {
             input_box.type = "text";
             input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + i + ']';
-            // input_box.col_no = num_expr;
             input_box.setAttribute("col_no",num_expr);
             input_box.onkeyup = verify_input;
             input_box.onfocus = highlight_column;
