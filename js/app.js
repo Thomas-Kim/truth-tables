@@ -91,6 +91,8 @@ function substitute_vars(index) {
     var result = "";
     var exprs = document.getElementsByClassName("subexps");
     var subexpr = exprs[index].innerHTML;
+    subexpr = subexpr.replace(/&amp;/g, '&');
+    console.log(subexpr);
     var i;
     for(i = 0; i < subexpr.length; i++) {
         if(subexpr.charAt(i) >= 'a' && subexpr.charAt(i) <= 'z' &&
@@ -113,16 +115,9 @@ function verify_input() {
     var user_input;
     for(i = 0; i < inputs.length; i++) {
         formula = substitute_vars(i);
-        // correct = boolean_evaluate.parse(formula);
-        /* expression with variables (string) */
-        // console.log(exprs[i].innerHTML);
-        /* expression without variables (string) */
-        console.log(formula);
-        /* bindings for variables in this */
-        // console.log(bindings_array[i]);
-        /* user input T or F or blank (string) */
-        // console.log(inputs[i].value);
+        correct = boolean_evaluate.parse(formula);
         // console.log(correct);
+        /* verification section */
         if (inputs[i].value.toUpperCase() == "T" | inputs[i].value.toUpperCase() == "F"){
             inputCell = inputs[i];
             user_input = (inputs[i].value == "T");
@@ -185,7 +180,7 @@ function build_form_fields(expr) {
         while(num_cols < var_list.length) {
             row_2_col = row_2.insertCell(num_cols);
             row_2_col.innerHTML = bindings[num_cols];
-            bindings_array[i] = bindings;
+            bindings_array[i] = bindings.slice();
             ++i;
             ++num_cols;
         }
