@@ -149,7 +149,6 @@ function highlight_column() {
     var cell_col_no;
     var currentCell;
     var i;
-    // alert(inputs.length);
 
     for(i = 0; i < inputs.length; i++) {
         currentCell = inputs[i];
