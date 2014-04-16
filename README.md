@@ -2,10 +2,10 @@ truth-tables
 ============
 
 todo-1:
-    1. Define a function to highlight an entire column <Tyler>
+    1. Define a function to highlight an entire column <Tyler> <Bugfix: Thomas>
       1a. Define a function to de-highlight an entire column <Untaken>
     2. Adjust the grammar to properly parenthesize subexpressions <Thomas>
-    3. Create practice-mode and test-mode <Thomas>
+    3. Create test-mode <Thomas>
     4. Generate scores (log to console in javascript) <Untaken>
 
 Timeline to get tasks done:

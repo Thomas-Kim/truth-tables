@@ -4,6 +4,8 @@ var g_var_array = [];
 var g_url_raw = "";
 var g_input_str = "";
 var g_num_expr;
+var g_test_mode;
+
 function get_ast(str) {
     try {
         var output = [];
@@ -19,8 +21,10 @@ function get_ast(str) {
 
 function get_URL_params() {
     g_url_raw = document.URL;
-    var regex = /[?](.*)/g;
-    g_input_str = regex.exec(g_url_raw)[1];
+    var regex = /[?]([^?]*)[?].*=(.*)/g;
+    var regex_result = regex.exec(g_url_raw);
+    g_input_str = regex_result[1];
+    g_test_mode = regex_result[2];
 }
 
 function input_vars(expr) {
@@ -210,7 +214,6 @@ function build_form_fields() {
     binding_index = 0;
 
     while(bindings.length > 0) {
-        console.log(bindings);
         row_1_num_cols = 0;
         row_2_num_cols = 0;
         row_1_num_expr = 0;
@@ -255,7 +258,9 @@ function build_form_fields() {
             input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + row_2_binding_index + ']'; // wrong
             input_box.setAttribute("col_no", row_2_num_expr);
-            input_box.onkeyup = verify_input;
+            if(g_test_mode != "true") {
+              input_box.onkeyup = verify_input;
+            }
             input_box.onfocus = highlight_column;
             /* end declare input box */
 
@@ -280,6 +285,11 @@ function build_form_fields() {
 
         bindings = get_next_bindings(bindings);
     }
-    console.log(g_bindings_array);
     container.appendChild(item);
+    if(g_test_mode == "true") {
+        var submit_button = document.createElement("button");
+        submit_button.innerHTML = "Submit";
+        submit_button.onclick = verify_input;
+        document.body.appendChild(submit_button);
+    }
 }
