@@ -11,8 +11,8 @@ todo-1:
 
 todo-2:
     1. Add logic to remove redundant subexpressions <Thomas> <Finished>
-    2. Add logic to highlight relevant subexpression columns <Untaken>
-    3. Adjust the grammar to highlight subexpressions <Thomas>
+    2. Add logic to highlight relevant subexpression columns <Thomas>
+    3. Adjust the grammar to highlight subexpressions <Untaken>
 
 Timeline to get tasks done:
     Next prototype out by Thursday
