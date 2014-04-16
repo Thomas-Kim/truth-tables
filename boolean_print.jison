@@ -1,4 +1,3 @@
-
 /* description: Parses end executes mathematical expressions. */
 
 %{
@@ -29,14 +28,14 @@ var exp_final;
 
 /* operator associations and precedence */
 
-%left LPAREN RPAREN
-%left NOT
-%left AND
-%left OR XOR
-%left LIMP RIMP
-%left EQ
 %left BOOL
 %left VAR
+%left EQ
+%left LIMP RIMP
+%left OR XOR
+%left AND
+%left NOT
+%left LPAREN RPAREN
 
 %start expressions
 
@@ -48,7 +47,7 @@ expressions
     ;
 
 eq
-    : imp EQ eq
+    : eq EQ eq
         {$$ = $1 + " = " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | imp
         {$$ = $1;}
@@ -73,7 +72,7 @@ or
     ;
 
 and
-    : not AND and
+    : and AND and
         {$$ = $1 + (" & ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($$);}
     | not
         {$$ = $1;}

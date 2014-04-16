@@ -1,4 +1,3 @@
-
 /* description: Parses end executes mathematical expressions. */
 
 /* lexical grammar */
@@ -37,11 +36,11 @@
 
 expressions
     : eq EOF
-        { console.log($1); return $1; }
+        { return $1; }
     ;
 
 eq
-    : imp EQ eq
+    : eq EQ eq
         {$$ = (!$1 || $3) && ($1 || !$3);}
     | imp
         {$$ = $1;}
@@ -66,7 +65,7 @@ or
     ;
 
 and
-    : not AND and
+    : and AND and
         {$$ = $1 && $3;}
     | not
         {$$ = $1;}
