@@ -19,7 +19,6 @@ Timeline to get tasks done:
     todo-1 finished by end of day today
         All tasks have either finished or pushed forward
     todo-2 finished by end of day Wednesday
-        
 
 
 App to practice filling in a truth tables.

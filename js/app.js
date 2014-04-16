@@ -8,14 +8,22 @@ var g_test_mode;
 var g_score = -1.0;
 
 function get_ast(str) {
+    var i;
+    var ast_arr = [];
     try {
         var output = [];
         output = boolean_print.parse(str);
-        ast_arr = output;
-        return output;
+        for(i = 0; i < output.length; i++) {
+            console.log(ast_arr);
+            if(ast_arr.indexOf(output[i]) == -1) {
+                ast_arr[ast_arr.length] = output[i];
+            }
+        }
+        return ast_arr;
     }
     catch(err) {
         console.log("Error getting input from textbox");
+        console.log(err);
         return [];
     }
 }
@@ -157,7 +165,7 @@ function verify_input() {
         }
     }
     g_score = num_correct / inputs.length;
-    console.log(g_score);
+    console.log(g_score * 100 + "%");
 }
 
 function highlight_column(index) {
