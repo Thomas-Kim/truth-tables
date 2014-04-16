@@ -9,7 +9,11 @@
 </head>
 <body>
     <script type="text/x-handlebars" id="components/truth-row">
-        <p>test</p>
+        {{input}}
+    </script>
+
+    <script type="text/x-handlebars" id="components/truth-variable">
+        <p>{{truthValue}}</p>
     </script>
 
     <script type="text/x-handlebars" data-template-name="truth">
@@ -30,7 +34,7 @@
                 {{#each given_number in number_list}}
                 <tr>
                     {{#each variable in variables}}
-                        <td style="padding: 10px;border: 1px solid black;font-size: 16px;"> {{number}} </td>
+                        <td style="padding: 10px;border: 1px solid black;font-size: 16px;"> {{truth-variable variable_stuff=variable index=given_number variables_stuff=variables}} </td>
                     {{/each}}
                     {{#each node in ast}}
                     <td style="padding: 10px; border: 1px solid black;>
