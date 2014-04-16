@@ -15,7 +15,6 @@ App.Table = Ember.Object.extend ({
     parser: boolean_print,
     ast_value: '',
     ast: function() {
-        //console.log(this.get("parser.ast"))
         try {
             var output = new Array()
             output = this.get("parser").parse(this.get("input"))
@@ -39,7 +38,10 @@ App.Table = Ember.Object.extend ({
 
 App.TruthController = Ember.ObjectController.extend({
     variable_array: function(){
-        variable_list = _.uniq(this.get("model").input.split(/[^a-z]+/)).sort()
+        if(this.get("model").input.match(/[a-z|&]{2,}/)){
+            return ''
+        }
+        variable_list = _.uniq(this.get("model").input.split(/[^a-eg-su-z]+/)).sort()
         if(variable_list[0] === "")
             variable_list.splice(0, 1)
         this.set('model.variables', variable_list)
@@ -51,6 +53,19 @@ App.TruthRowComponent = Ember.Component.extend({
     variable_stuff: '',
     node_stuff: '',
     row: null,
+    guess: '',
+    colorCheck: function() {
+        console.log(this.get("truthAssignment") === 'true')
+        if(this.get("guess") === ""){
+            return "white"
+        }
+        else if((this.get("guess") === 'T' && this.get("truthAssignment") === true)||(this.get("guess") === 'F' && this.get("truthAssignment") === false)){
+            return "green"
+        }
+        else {
+            return "red"
+        }
+    }.property('truthAssignment', 'guess'),
     parser: boolean_evaluate,
     truthArray: function(){
         var output = Ember.A([])
@@ -93,4 +108,12 @@ App.TruthVariableComponent = Ember.Component.extend({
         else
             return "F"
     }.property('ast_stuff', 'variable', 'index')
+})
+
+App.TruthChecker = Ember.TextField.extend({
+    attributeBindings: ["style"],
+    color: null,
+    style: function(){
+        return "background-color:" + this.get("color") + ';'
+    }.property('color')
 })
