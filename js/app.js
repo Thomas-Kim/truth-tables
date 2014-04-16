@@ -5,6 +5,7 @@ var g_url_raw = "";
 var g_input_str = "";
 var g_num_expr;
 var g_test_mode;
+var g_score = -1.0;
 
 function get_ast(str) {
     try {
@@ -135,6 +136,7 @@ function verify_input() {
     var formula;
     var inputCell;
     var user_input;
+    var num_correct = 0;
     for(i = 0; i < inputs.length; i++) {
         formula = substitute_vars(i);
         correct = boolean_evaluate.parse(formula);
@@ -147,33 +149,51 @@ function verify_input() {
             }
             else {
                 inputCell.style.backgroundColor = "green";
+                ++num_correct;
             }
         }
         else {
             inputCell.style.backgroundColor = "white";
         }
     }
+    g_score = num_correct / inputs.length;
+    console.log(g_score);
 }
 
-/* Highlight the entire column
-   TODO: Remove highlight if user has no input box in focus. */
-function highlight_column() {
+function highlight_column(index) {
     var inputs = document.getElementsByClassName("result_input");
-    var col_no = this.getAttribute("col_no");
-    var cell_col_no;
-    var currentCell;
+    var col_num = inputs[index].getAttribute("col_num");
+    var cell_col_num;
+    var current_cell;
     var i;
 
     for(i = 0; i < inputs.length; i++) {
-        currentCell = inputs[i];
+        current_cell = inputs[i];
 
-        cell_col_no = currentCell.getAttribute("col_no");
+        cell_col_num = current_cell.getAttribute("col_num");
 
-        if(cell_col_no == col_no) {
-            currentCell.style.borderColor = '#330000';
+        if(cell_col_num == col_num) {
+            current_cell.style.borderColor = '#330000';
         }
         else {
-            currentCell.style.borderColor = 'initial';
+            current_cell.style.borderColor = 'initial';
+        }
+    }
+}
+
+function unhighlight_column(index) {
+    var inputs = document.getElementsByClassName("result_input");
+    var col_num = inputs[index].getAttribute("col_num");
+    var cell_col_num;
+    var current_cell;
+    var i;
+
+    for(i = 0; i < inputs.length; i++) {
+        current_cell = inputs[i];
+        cell_col_num = current_cell.getAttribute("col_num");
+
+        if(cell_col_num == col_num) {
+            current_cell.style.borderColor = 'initial';
         }
     }
 }
@@ -257,11 +277,10 @@ function build_form_fields() {
             input_box.type = "text";
             input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + row_2_binding_index + ']'; // wrong
-            input_box.setAttribute("col_no", row_2_num_expr);
+            input_box.setAttribute("col_num", row_2_num_expr);
             if(g_test_mode != "true") {
               input_box.onkeyup = verify_input;
             }
-            input_box.onfocus = highlight_column;
             /* end declare input box */
 
             row_2_col = row_2.insertCell(row_2_num_cols);
