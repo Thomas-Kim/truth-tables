@@ -39,7 +39,7 @@ App.Table = Ember.Object.extend ({
 
 App.TruthController = Ember.ObjectController.extend({
     variable_array: function(){
-        variable_list = _.uniq(this.get("model").input.split(/[|&()\s]+/)).sort()
+        variable_list = _.uniq(this.get("model").input.split(/[^a-z]+/)).sort()
         if(variable_list[0] === "")
             variable_list.splice(0, 1)
         this.set('model.variables', variable_list)
@@ -49,8 +49,38 @@ App.TruthController = Ember.ObjectController.extend({
 
 App.TruthRowComponent = Ember.Component.extend({
     variable_stuff: '',
-    ast_stuff: '',
-    row: null
+    node_stuff: '',
+    row: null,
+    parser: boolean_evaluate,
+    truthArray: function(){
+        var output = Ember.A([])
+        for(i = 0; i < this.get("variable_stuff").length; i++){
+            if((Math.pow(2, i)&this.get("row"))!= 0)
+                output.pushObject("T")
+            else
+                output.pushObject("F")
+        }
+        return output
+    }.property('row'),
+    truthAssignment: function(){
+        var outputString = this.get("node_stuff")
+        var variables = this.get("variable_stuff")
+        var truths = this.get("truthArray")
+        var length = variables.length
+        for(i = 0; i < length; i++){
+            variable = variables[i]
+            truth = truths[i]
+            outputString = outputString.replace(variable, truth)
+        }
+        try{
+            output = this.get("parser").parse(outputString)
+            return output
+        }
+        catch(err){
+            return "Error"
+        }
+        //return this.get("parser").parse(outputString)
+    }.property('truthArray', 'node_stuff', 'variable_stuff', 'parser')
 })
 
 App.TruthVariableComponent = Ember.Component.extend({
@@ -58,8 +88,6 @@ App.TruthVariableComponent = Ember.Component.extend({
     index: '',
     variables_stuff: '',
     truthValue: function(){
-        var index = this.get("variables_stuff").indexOf(this.get("variable"))
-        var poweroftwo=Math.pow(2, this.get("variables_stuff").indexOf(this.get("variable")))
         if((Math.pow(2, this.get("variables_stuff").indexOf(this.get("variable_stuff")))&this.get("index"))!= 0)
             return "T"
         else
