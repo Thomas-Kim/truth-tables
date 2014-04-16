@@ -135,8 +135,8 @@ function verify_input() {
         formula = substitute_vars(i);
         correct = boolean_evaluate.parse(formula);
         /* verification section */
+        inputCell = inputs[i];
         if (inputs[i].value.toUpperCase() == "T" | inputs[i].value.toUpperCase() == "F"){
-            inputCell = inputs[i];
             user_input = (inputs[i].value.toUpperCase() == "T");
             if (boolean_evaluate.parse(formula) != user_input){
                 inputCell.style.backgroundColor = "red";
@@ -144,6 +144,9 @@ function verify_input() {
             else {
                 inputCell.style.backgroundColor = "green";
             }
+        }
+        else {
+            inputCell.style.backgroundColor = "white";
         }
     }
 }
@@ -172,7 +175,6 @@ function highlight_column() {
 }
 
 function build_form_fields() {
-    /* Get parameters from the URL */
     get_URL_params();
     /* Get input variable list extracted from the URL parameters */
     var var_list = input_vars(g_input_str);
@@ -185,21 +187,11 @@ function build_form_fields() {
     /* sub_item holds the inner table in each iteration of the loop */
     var sub_item;
     /* binding_index holds the index of the corresponding binding */
-    var row_1_binding_index;
-    var row_2_binding_index;
+    var row_1_binding_index, row_2_binding_index;
     var binding_index;
-    /* row_1_num_cols holds the current number of columns in the subtable row 1 */
-    var row_1_num_cols;
-    /* row_2_num_cols holds the current number of columns in the subtable row 2 */
-    var row_2_num_cols;
-    /* row_1 holds the first row in the subtable */
-    var row_1;
-    /* row_2 holds the second row in the subtable */
-    var row_2;
-    /* row_1_col holds the current column in the first row of the subtable */
-    var row_1_col;
-    /* row_2_col holds the current column in the second row of the subtable */
-    var row_2_col;
+    var row_1_num_cols, row_2_num_cols;
+    var row_1, row_2;
+    var row_1_col, row_2_col;
     var row_1_num_expr, row_2_num_expr;
     var item_row, item_row_cell;
     var input_box, expand_button;
