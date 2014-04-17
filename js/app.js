@@ -1,4 +1,5 @@
 var g_ast_arr = [];
+var g_sub_ast_arr = [];
 var g_bindings_array = [];
 var g_var_array = [];
 var g_url_raw = "";
@@ -14,22 +15,18 @@ function get_ast(str) {
         var output = [];
         output = boolean_print.parse(str);
         for(i = 0; i < output.length; i++) {
-            console.log(ast_arr);
-            if(ast_arr.indexOf(output[i]) == -1) {
-                ast_arr[ast_arr.length] = output[i];
+            if(g_ast_arr.indexOf(output[i]) == -1) {
+                g_sub_ast_arr[g_sub_ast_arr.length] = output[i].slice();
+                output[i] = output[i].replace(/CUR/g, '');
+                g_ast_arr[g_ast_arr.length] = output[i].slice();
             }
         }
-        return ast_arr;
     }
     catch(err) {
         console.log("Error getting input from textbox");
         console.log(err);
-        return [];
+        g_ast_arr = [];
     }
-}
-
-function get_subexpr_cols(col_num) {
-    /* Case 1: No parenth */
 }
 
 function get_URL_params() {
@@ -38,6 +35,8 @@ function get_URL_params() {
     var regex_result = regex.exec(g_url_raw);
     g_input_str = regex_result[1];
     g_test_mode = regex_result[2];
+    g_input_str = g_input_str.replace(/%3E/g, '>');
+    g_input_str = g_input_str.replace(/%3C/g, '<');
 }
 
 function input_vars(expr) {
@@ -54,7 +53,7 @@ function input_vars(expr) {
                   output_arr.push(g_input_str.charAt(i));
             }
         }
-        var_array = output_arr;
+        g_var_array = output_arr;
         return output_arr;
     }
     catch(err) {
@@ -113,8 +112,8 @@ function get_next_bindings(bindings) {
 
 function lookup_var(var_name) {
     var i;
-    for(i = 0; i < var_array.length; i++) {
-        if(var_array[i] == var_name) {
+    for(i = 0; i < g_var_array.length; i++) {
+        if(g_var_array[i] == var_name) {
             return i;
         }
     }
@@ -169,8 +168,40 @@ function verify_input() {
         }
     }
     g_score = num_correct / inputs.length;
-    console.log(g_score * 100 + "%");
+    // console.log(g_score * 100 + "%");
 }
+
+function change_highlight() {
+    var inputs = document.getElementsByClassName("result_input");
+    var sub_exps = document.getElementsByClassName("subexps");
+    var col_num = this.getAttribute("col_num");
+    var cell_col_num;
+    var current_cell;
+    var i;
+    var split_expression;
+    var left_side, right_side;
+
+    /* sub_exps[index] holds the current subexpression with CUR separator */
+    split_expression = g_sub_ast_arr[col_num].split("CUR");
+    left_side = split_expression[0].replace(/^\s*\(?/m, '');
+    left_side = left_side.replace(/\)?\s*$/m, '');
+    right_side = split_expression[1].substring(2);
+    right_side = right_side.replace(/^\s*\(/m, '');
+    right_side = right_side.replace(/\)\s*$/m, '');
+    // console.log(g_sub_ast_arr[index]);
+    // console.log(left_side + " SEP " + right_side);
+    for(i = 0; i < inputs.length; i++) {
+        current_cell = inputs[i];
+        cell_col_num = current_cell.getAttribute("col_num");
+        if(g_ast_arr[cell_col_num] == left_side || g_ast_arr[cell_col_num] == right_side) {
+            highlight_column(cell_col_num);
+        }
+        else {
+            unhighlight_column(cell_col_num);
+        }
+    }
+}
+
 
 function highlight_column(index) {
     var inputs = document.getElementsByClassName("result_input");
@@ -186,9 +217,6 @@ function highlight_column(index) {
 
         if(cell_col_num == col_num) {
             current_cell.style.borderColor = '#330000';
-        }
-        else {
-            current_cell.style.borderColor = 'initial';
         }
     }
 }
@@ -212,10 +240,10 @@ function unhighlight_column(index) {
 
 function build_form_fields() {
     get_URL_params();
+    get_ast(g_input_str);
     /* Get input variable list extracted from the URL parameters */
     var var_list = input_vars(g_input_str);
     /* Get the subexpression list extracted from the URL parameters */
-    var exp_list = get_ast(g_input_str);
     /* get the form defined in html */
     var container = document.getElementById('form_fields');
     /* item is the outermost table */
@@ -264,9 +292,9 @@ function build_form_fields() {
         }
 
         /* put expressions in row 1 */
-        while(row_1_num_expr < exp_list.length) {
+        while(row_1_num_expr < g_ast_arr.length) {
             row_1_col = row_1.insertCell(row_1_num_cols);
-            row_1_col.innerHTML = exp_list[row_1_num_expr];
+            row_1_col.innerHTML = g_ast_arr[row_1_num_expr];
             row_1_col.className = "subexps";
             row_1_col.name = 'subexpr[' + row_1_binding_index + ']';
             ++row_1_binding_index;
@@ -283,13 +311,14 @@ function build_form_fields() {
         }
 
         /* put expression input boxes in row 2 */
-        while(row_2_num_expr < exp_list.length) {
+        while(row_2_num_expr < g_ast_arr.length) {
             /* declare input box */
             input_box = document.createElement("input");
             input_box.type = "text";
             input_box.className = "result_input";
             input_box.name = 'subexpr_result[' + row_2_binding_index + ']'; // wrong
             input_box.setAttribute("col_num", row_2_num_expr);
+            input_box.onfocus = change_highlight;
             if(g_test_mode != "true") {
               input_box.onkeyup = verify_input;
             }
@@ -302,7 +331,7 @@ function build_form_fields() {
         }
         /* create bindings */
         var temp = 0;
-        while(temp < exp_list.length) {
+        while(temp < g_ast_arr.length) {
             g_bindings_array[binding_index] = bindings.slice();
             ++binding_index;
             ++temp;
