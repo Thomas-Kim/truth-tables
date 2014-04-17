@@ -19,6 +19,7 @@ Timeline to get tasks done:
     todo-1 finished by end of day today
         All tasks have either finished or pushed forward
     todo-2 finished by end of day Wednesday
+        Tasks left unfinished, need clarification from Dr. Rich on some issues
 
 
 App to practice filling in a truth tables.

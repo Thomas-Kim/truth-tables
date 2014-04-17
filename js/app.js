@@ -28,6 +28,10 @@ function get_ast(str) {
     }
 }
 
+function get_subexpr_cols(col_num) {
+    /* Case 1: No parenth */
+}
+
 function get_URL_params() {
     g_url_raw = document.URL;
     var regex = /[?]([^?]*)[?].*=(.*)/g;
