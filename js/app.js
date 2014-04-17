@@ -1,13 +1,27 @@
+/* g_ast_arr holds the array of unqualified subexpressions */
 var g_ast_arr = [];
+/* g_sub_ast_arr holds the array of subexpressions qualified by CUR
+ *    see get_ast(1)
+ */
 var g_sub_ast_arr = [];
+/* g_bindings_array holds the list of T/F bindings */
 var g_bindings_array = [];
+/* g_var_array holds the list of variable names, ordered by the order of their appearance in the well-formed boolean expression */
 var g_var_array = [];
-var g_url_raw = "";
 var g_input_str = "";
 var g_num_expr;
 var g_test_mode;
 var g_score = -1.0;
 
+/* get_ast(1)
+ * synopsis:
+ *    input: well-formed boolean expression 
+ *    behavior:
+ *        breaks down expression into array of subexpressions for printing
+ *            see boolean_print.jison
+ *        breaks down expression into array of subexpressions with the 'main' operator qualified by a preceding CUR (This is for column highlighting)
+ *            see boolean_print.jison
+ */
 function get_ast(str) {
     var i;
     var ast_arr = [];
@@ -29,16 +43,39 @@ function get_ast(str) {
     }
 }
 
+/* get_URL_params(0)
+ * synopsis:
+ *    input: none
+ *    behavior:
+ *        extracts URL parameters from URL
+ *        URL form:
+ *            domain.page.html?<ARG1>?<ARG2>
+ *        ARG1:
+ *            well formed boolean expression with no spaces
+ *                see boolean_print.jison and boolean_evaluate.jison for grammar and tokens
+ *        ARG2:
+ *            boolean value for test mode
+ *            options:
+ *                test=true
+ *                test=false
+ */
 function get_URL_params() {
-    g_url_raw = document.URL;
+    var url_raw = document.URL;
     var regex = /[?]([^?]*)[?].*=(.*)/g;
-    var regex_result = regex.exec(g_url_raw);
+    var regex_result = regex.exec(url_raw);
     g_input_str = regex_result[1];
     g_test_mode = regex_result[2];
     g_input_str = g_input_str.replace(/%3E/g, '>');
     g_input_str = g_input_str.replace(/%3C/g, '<');
 }
 
+/* input_vars(1)
+ * synopsis:
+ *    input: well formed boolean expression as a string
+ *    behavior:
+ *        extracts variable names from expr
+ *            see boolean_print.jison and boolean_evaluate.jison for grammar and tokens
+ */
 function input_vars(expr) {
     try {
         output_arr = [];
@@ -72,6 +109,14 @@ function get_results(){
     }
 }
 
+/* get_initial_bindings(1) {
+ * synopsis:
+ *    input: well formed boolean expression as a string
+ *    behavior:
+ *        creates a string of form "TTTT.." where the number of T's corresponds to the number of unique variables in expr
+ *    output:
+ *        returns the string of form "TTTT.."
+ */
 function get_initial_bindings(expr) {
     try {
         var var_list = input_vars(expr);
