@@ -91,7 +91,7 @@ function get_URL_params() {
 function input_vars(expr) {
     try {
         var output_arr = [];
-        for(var i = 0; i < g_input_str.length; i++) {
+        for(i = 0; i < g_input_str.length; i++) {
             if(g_input_str.charAt(i) >= 'a' &&
               g_input_str.charAt(i) <= 'z' &&
               g_input_str.charAt(i) != 't' &&
@@ -115,6 +115,8 @@ function update_score() {
         var current_focus = document.activeElement;
         var current_input = document.activeElement.value.toUpperCase();
         var current_color = document.activeElement.style.backgroundColor;
+        if(current_color === "")
+            current_color = "white";
         var col_num = document.activeElement.attributes.col_num.value;
         var exp = g_sub_ast_arr[col_num];
         var current_operator;
@@ -134,17 +136,16 @@ function update_score() {
         if(exp.indexOf("CUR=") > -1)
             current_operator = operator_enum.EQ;
 
-        console.log(g_prev_focus);
+        // console.log(g_prev_focus);
 
         // switch focus -> wait for input
-        if(current_focus != g_prev_focus && g_prev_focus != null) {
+        if(current_focus != g_prev_focus && g_prev_focus !== null) {
             g_prev_focus = current_focus;
             g_prev_input = current_input;
             g_prev_color = current_color;
-            console.log(g_category_score);
         }
 
-        else if(g_prev_input != current_input || g_prev_focus == null) {
+        else if(g_prev_input != current_input || g_prev_focus === null) {
             g_prev_focus = current_focus;
             g_prev_input = current_input;
             if(current_color == "red" && g_prev_color == "white")
@@ -253,7 +254,7 @@ function verify_input() {
     var inputCell;
     var user_input;
     var num_correct = 0;
-    for(var i = 0; i < inputs.length; i++) {
+    for(i = 0; i < inputs.length; i++) {
         formula = substitute_vars(i);
         correct = boolean_evaluate.parse(formula);
         inputCell = inputs[i];
@@ -266,34 +267,6 @@ function verify_input() {
         }
         else
             inputCell.style.backgroundColor = "white";
-    }
-    update_score();
-}
-
-function change_highlight() {
-    var inputs = document.getElementsByClassName("result_input");
-    var sub_exps = document.getElementsByClassName("subexps");
-    var col_num = this.getAttribute("col_num");
-    var cell_col_num;
-    var current_cell;
-    var i;
-    var split_expression;
-    var left_side, right_side;
-
-    /* sub_exps[index] holds the current subexpression with CUR separator */
-    split_expression = g_sub_ast_arr[col_num].split("CUR");
-    left_side = split_expression[0].replace(/^\s*\(?/m, '');
-    left_side = left_side.replace(/\)?\s*$/m, '');
-    right_side = split_expression[1].substring(2);
-    right_side = right_side.replace(/^\s*\(/m, '');
-    right_side = right_side.replace(/\)\s*$/m, '');
-    for(i = 0; i < inputs.length; i++) {
-        current_cell = inputs[i];
-        cell_col_num = current_cell.getAttribute("col_num");
-        if(g_ast_arr[cell_col_num] == left_side || g_ast_arr[cell_col_num] == right_side)
-            highlight_column(cell_col_num);
-        else
-            unhighlight_column(cell_col_num);
     }
     update_score();
 }
@@ -328,12 +301,40 @@ function unhighlight_column(index) {
     }
 }
 
+function change_highlight() {
+    var inputs = document.getElementsByClassName("result_input");
+    var sub_exps = document.getElementsByClassName("subexps");
+    var col_num = this.getAttribute("col_num");
+    var cell_col_num;
+    var current_cell;
+    var i;
+    var split_expression;
+    var left_side, right_side;
+
+    /* sub_exps[index] holds the current subexpression with CUR separator */
+    split_expression = g_sub_ast_arr[col_num].split("CUR");
+    left_side = split_expression[0].replace(/^\s*\(?/m, '');
+    left_side = left_side.replace(/\)?\s*$/m, '');
+    right_side = split_expression[1].substring(2);
+    right_side = right_side.replace(/^\s*\(/m, '');
+    right_side = right_side.replace(/\)\s*$/m, '');
+    for(i = 0; i < inputs.length; i++) {
+        current_cell = inputs[i];
+        cell_col_num = current_cell.getAttribute("col_num");
+        if(g_ast_arr[cell_col_num] == left_side || g_ast_arr[cell_col_num] == right_side)
+            highlight_column(cell_col_num);
+        else
+            unhighlight_column(cell_col_num);
+    }
+    update_score();
+}
+
 function build_form_fields() {
     /* The following functions initialize global constants */
     get_URL_params();
     get_ast(g_input_str);
     input_vars(g_input_str);
-    for(var i = 0; i < operator_enum.EQ; i++)
+    for(i = 0; i < operator_enum.EQ; i++)
         g_category_score[i] = 0;
     /* End global constant initialization */
     /* get the form defined in html */
