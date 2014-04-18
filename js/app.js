@@ -11,8 +11,20 @@ var g_var_array = [];
 var g_input_str = "";
 var g_num_expr;
 var g_test_mode;
-var g_score = -1.0;
 var g_category_score = [];
+var g_prev_focus;
+var g_prev_input;
+var g_prev_color;
+
+operator_enum = {
+    NOT : 0,
+    AND : 1,
+    XOR : 2,
+    OR  : 3,
+    IMP : 4,
+    EQ  : 5
+}
+
 
 /* get_ast(1)
  * synopsis:
@@ -97,11 +109,49 @@ function input_vars(expr) {
     }
 }
 
-function update_score(){
+function update_score() {
+    /* Case practice mode */
     try {
+        var current_focus = document.activeElement;
+        var current_input = document.activeElement.value.toUpperCase();
+        var current_color = document.activeElement.style.backgroundColor;
+        var col_num = document.activeElement.attributes.col_num.value;
+        var exp = g_sub_ast_arr[col_num];
+        var current_operator;
+
+        if(exp.indexOf("CUR!") > -1)
+            current_operator = operator_enum.NOT;
+        if(exp.indexOf("CUR&") > -1)
+            current_operator = operator_enum.AND;
+        if(exp.indexOf("CURX") > -1)
+            current_operator = operator_enum.XOR;
+        if(exp.indexOf("CUR|") > -1)
+            current_operator = operator_enum.OR;
+        if(exp.indexOf("CUR->") > -1)
+            current_operator = operator_enum.IMP;
+        if(exp.indexOf("CUR<-") > -1)
+            current_operator = operator_enum.IMP;
+        if(exp.indexOf("CUR=") > -1)
+            current_operator = operator_enum.EQ;
+
+        if(current_focus != g_prev_focus) {
+            g_prev_focus = current_focus;
+            g_prev_input = current_input;
+            if(current_color == "red" && g_prev_color == "white")
+                g_category_score[current_operator] += 1;
+            g_prev_color = current_color;
+            console.log(g_category_score);
+        }
+        else if(g_prev_input != current_input) {
+            g_prev_input = current_input;
+            if(current_color == "red" && g_prev_color == "white")
+                g_category_score[current_operator] += 1;
+            g_prev_color = current_color;
+            console.log(g_category_score);
+        }
     }
     catch(err) {
-        console.log("Error getting input from form");
+        console.log("Error getting input from form" + err);
     }
 }
 
@@ -115,7 +165,6 @@ function update_score(){
  */
 function get_initial_bindings(expr) {
     try {
-        input_vars(expr);
         var i;
         var result = [];
         for(i = 0; i < g_var_array.length; i++)
@@ -214,6 +263,7 @@ function verify_input() {
         }
         else
             inputCell.style.backgroundColor = "white";
+        update_score();
     }
 }
 
@@ -243,7 +293,6 @@ function change_highlight() {
             unhighlight_column(cell_col_num);
     }
 }
-
 
 function highlight_column(index) {
     var inputs = document.getElementsByClassName("result_input");
@@ -276,11 +325,13 @@ function unhighlight_column(index) {
 }
 
 function build_form_fields() {
+    /* The following functions initialize global constants */
     get_URL_params();
     get_ast(g_input_str);
-    /* Get input variable list extracted from the URL parameters */
     input_vars(g_input_str);
-    /* Get the subexpression list extracted from the URL parameters */
+    for(var i = 0; i < operator_enum.EQ; i++)
+        g_category_score[i] = 0;
+    /* End global constant initialization */
     /* get the form defined in html */
     var container = document.getElementById('form_fields');
     /* item is the outermost table */
@@ -333,7 +384,6 @@ function build_form_fields() {
             row_1_col = row_1.insertCell(row_1_num_cols);
             row_1_col.innerHTML = g_ast_arr[row_1_num_expr];
             row_1_col.className = "subexps";
-            row_1_col.name = 'subexpr[' + row_1_binding_index + ']';
             ++row_1_binding_index;
             ++row_1_num_cols;
             ++row_1_num_expr;
@@ -353,7 +403,6 @@ function build_form_fields() {
             input_box = document.createElement("input");
             input_box.type = "text";
             input_box.className = "result_input";
-            input_box.name = 'subexpr_result[' + row_2_binding_index + ']'; // wrong
             input_box.setAttribute("col_num", row_2_num_expr);
             input_box.onfocus = change_highlight;
             if(g_test_mode != "true") {
