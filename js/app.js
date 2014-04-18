@@ -3,7 +3,7 @@ function build_form_fields() {
     get_URL_params();
     get_ast(g_input_str);
     input_vars(g_input_str);
-    for(i = 0; i < operator_enum.EQ; i++)
+    for(i = 0; i <= operator_enum.EQ; i++)
         g_category_score[i] = 0;
     /* End global constant initialization */
     /* get the form defined in html */
@@ -106,6 +106,7 @@ function build_form_fields() {
         bindings = get_next_bindings(bindings);
     }
     container.appendChild(item);
+    /* Add the submit button to test mode */
     if(g_test_mode == "true") {
         var submit_button = document.createElement("button");
         submit_button.innerHTML = "Submit";

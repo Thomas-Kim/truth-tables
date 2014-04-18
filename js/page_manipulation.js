@@ -27,12 +27,12 @@ function update_test_score() {
         col_num = inputs[i].attributes.col_num.value;
         exp = g_sub_ast_arr[col_num];
         current_operator = get_current_operator(exp);
-        console.log(current_operator);
         if(inputs[i].style.backgroundColor == "red")
             g_category_score[current_operator] += 1;
     }
     console.log(g_category_score);
 }
+
 function update_score() {
     /* Case practice mode */
     try {
