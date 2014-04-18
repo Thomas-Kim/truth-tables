@@ -12,9 +12,9 @@ var g_input_str = "";
 var g_num_expr;
 var g_test_mode;
 var g_category_score = [];
-var g_prev_focus;
+var g_prev_focus = null;
 var g_prev_input;
-var g_prev_color;
+var g_prev_color = "white";
 
 operator_enum = {
     NOT : 0,
@@ -134,15 +134,18 @@ function update_score() {
         if(exp.indexOf("CUR=") > -1)
             current_operator = operator_enum.EQ;
 
-        if(current_focus != g_prev_focus) {
+        console.log(g_prev_focus);
+
+        // switch focus -> wait for input
+        if(current_focus != g_prev_focus && g_prev_focus != null) {
             g_prev_focus = current_focus;
             g_prev_input = current_input;
-            if(current_color == "red" && g_prev_color == "white")
-                g_category_score[current_operator] += 1;
             g_prev_color = current_color;
             console.log(g_category_score);
         }
-        else if(g_prev_input != current_input) {
+
+        else if(g_prev_input != current_input || g_prev_focus == null) {
+            g_prev_focus = current_focus;
             g_prev_input = current_input;
             if(current_color == "red" && g_prev_color == "white")
                 g_category_score[current_operator] += 1;
@@ -263,8 +266,8 @@ function verify_input() {
         }
         else
             inputCell.style.backgroundColor = "white";
-        update_score();
     }
+    update_score();
 }
 
 function change_highlight() {
@@ -292,6 +295,7 @@ function change_highlight() {
         else
             unhighlight_column(cell_col_num);
     }
+    update_score();
 }
 
 function highlight_column(index) {
