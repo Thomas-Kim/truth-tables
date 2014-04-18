@@ -12,6 +12,7 @@ var g_input_str = "";
 var g_num_expr;
 var g_test_mode;
 var g_score = -1.0;
+var g_category_score = [];
 
 /* get_ast(1)
  * synopsis:
@@ -28,13 +29,12 @@ function get_ast(str) {
     try {
         var output = [];
         output = boolean_print.parse(str);
-        for(i = 0; i < output.length; i++) {
+        for(i = 0; i < output.length; i++)
             if(g_ast_arr.indexOf(output[i]) == -1) {
                 g_sub_ast_arr[g_sub_ast_arr.length] = output[i].slice();
                 output[i] = output[i].replace(/CUR/g, '');
                 g_ast_arr[g_ast_arr.length] = output[i].slice();
             }
-        }
     }
     catch(err) {
         console.log("Error getting input from textbox");
@@ -78,10 +78,8 @@ function get_URL_params() {
  */
 function input_vars(expr) {
     try {
-        output_arr = [];
-        str = expr;
-        var i;
-        for(i = 0; i < g_input_str.length; i++) {
+        var output_arr = [];
+        for(var i = 0; i < g_input_str.length; i++) {
             if(g_input_str.charAt(i) >= 'a' &&
               g_input_str.charAt(i) <= 'z' &&
               g_input_str.charAt(i) != 't' &&
@@ -99,17 +97,15 @@ function input_vars(expr) {
     }
 }
 
-function get_results(){
+function update_score(){
     try {
-        return [];
     }
     catch(err) {
         console.log("Error getting input from form");
-        return [];
     }
 }
 
-/* get_initial_bindings(1) {
+/* get_initial_bindings(1)
  * synopsis:
  *    input: well formed boolean expression as a string
  *    behavior:
@@ -119,49 +115,62 @@ function get_results(){
  */
 function get_initial_bindings(expr) {
     try {
-        var var_list = input_vars(expr);
+        input_vars(expr);
         var i;
         var result = [];
-        for(i = 0; i < var_list.length; i++) {
+        for(i = 0; i < g_var_array.length; i++)
             result[i] = "T";
-        }
         return result;
     }
     catch(err) {
         throw new Error("Failed to create initial bindings");
     }
 }
-
+/* get_next_bindings(1)
+ * synopsis:
+ *    input: set of bindings /[TF]+/ as a string
+ *    behavior:
+ *        creates successor to bindings
+ *    output:
+ *        returns a string of form /[TF]+/
+ */
 function get_next_bindings(bindings) {
     var i;
     var finished = true;
-    for(i = 0; i < bindings.length; i++) {
-        if(bindings[i] == "T") {
+    for(i = 0; i < bindings.length; i++)
+        if(bindings[i] == "T")
             finished = false;
-        }
-    }
-    if(finished) {
+    if(finished)
         return [];
-    }
     for(i = bindings.length - 1; i >= 0; i--) {
         if(bindings[i] == "T") {
             bindings[i] = "F";
             return bindings.slice();
         }
-        else {
+        else
             bindings[i] = "T";
-        }
     }
     return bindings.slice();
 }
 
+/* lookup_var(1)
+ * synopsis:
+ *    input:
+ *        name of var as string
+ *            see boolean_print.jison and boolean_evaluate.jison for tokens
+ *    behavior:
+ *        looks up the variable name in g_var_array
+ *    output:
+ *        returns the index of the variable name in g_var_array which is parallel to g_bindings_array[index]
+ *        where index is the index of the bindings to the current subexpression
+ *            see substitute_vars(1)
+ *        returns -1 on error (should NOT happen)
+ */
 function lookup_var(var_name) {
     var i;
-    for(i = 0; i < g_var_array.length; i++) {
-        if(g_var_array[i] == var_name) {
+    for(i = 0; i < g_var_array.length; i++)
+        if(g_var_array[i] == var_name)
             return i;
-        }
-    }
     return -1;
 }
 
@@ -178,9 +187,8 @@ function substitute_vars(index) {
            subexpr.charAt(i) != 't' && subexpr.charAt(i) != 'f') {
               result = result + g_bindings_array[index][lookup_var(subexpr.charAt(i))];
         }
-        else {
+        else
             result = result + subexpr.charAt(i);
-        }
     }
     return result;
 }
@@ -193,27 +201,20 @@ function verify_input() {
     var inputCell;
     var user_input;
     var num_correct = 0;
-    for(i = 0; i < inputs.length; i++) {
+    for(var i = 0; i < inputs.length; i++) {
         formula = substitute_vars(i);
         correct = boolean_evaluate.parse(formula);
-        /* verification section */
         inputCell = inputs[i];
         if (inputs[i].value.toUpperCase() == "T" | inputs[i].value.toUpperCase() == "F"){
             user_input = (inputs[i].value.toUpperCase() == "T");
-            if (boolean_evaluate.parse(formula) != user_input){
+            if (boolean_evaluate.parse(formula) != user_input)
                 inputCell.style.backgroundColor = "red";
-            }
-            else {
+            else
                 inputCell.style.backgroundColor = "green";
-                ++num_correct;
-            }
         }
-        else {
+        else
             inputCell.style.backgroundColor = "white";
-        }
     }
-    g_score = num_correct / inputs.length;
-    // console.log(g_score * 100 + "%");
 }
 
 function change_highlight() {
@@ -233,17 +234,13 @@ function change_highlight() {
     right_side = split_expression[1].substring(2);
     right_side = right_side.replace(/^\s*\(/m, '');
     right_side = right_side.replace(/\)\s*$/m, '');
-    // console.log(g_sub_ast_arr[index]);
-    // console.log(left_side + " SEP " + right_side);
     for(i = 0; i < inputs.length; i++) {
         current_cell = inputs[i];
         cell_col_num = current_cell.getAttribute("col_num");
-        if(g_ast_arr[cell_col_num] == left_side || g_ast_arr[cell_col_num] == right_side) {
+        if(g_ast_arr[cell_col_num] == left_side || g_ast_arr[cell_col_num] == right_side)
             highlight_column(cell_col_num);
-        }
-        else {
+        else
             unhighlight_column(cell_col_num);
-        }
     }
 }
 
@@ -257,12 +254,9 @@ function highlight_column(index) {
 
     for(i = 0; i < inputs.length; i++) {
         current_cell = inputs[i];
-
         cell_col_num = current_cell.getAttribute("col_num");
-
-        if(cell_col_num == col_num) {
-            current_cell.style.borderColor = '#330000';
-        }
+        if(cell_col_num == col_num)
+            current_cell.style.borderColor = 'black';
     }
 }
 
@@ -276,10 +270,8 @@ function unhighlight_column(index) {
     for(i = 0; i < inputs.length; i++) {
         current_cell = inputs[i];
         cell_col_num = current_cell.getAttribute("col_num");
-
-        if(cell_col_num == col_num) {
+        if(cell_col_num == col_num)
             current_cell.style.borderColor = 'initial';
-        }
     }
 }
 
@@ -287,7 +279,7 @@ function build_form_fields() {
     get_URL_params();
     get_ast(g_input_str);
     /* Get input variable list extracted from the URL parameters */
-    var var_list = input_vars(g_input_str);
+    input_vars(g_input_str);
     /* Get the subexpression list extracted from the URL parameters */
     /* get the form defined in html */
     var container = document.getElementById('form_fields');
@@ -330,9 +322,9 @@ function build_form_fields() {
         row_2 = sub_item.insertRow(1);
 
         /* Put variable names in row 1 */
-        while(row_1_num_cols < var_list.length) {
+        while(row_1_num_cols < g_var_array.length) {
             row_1_col = row_1.insertCell(row_1_num_cols);
-            row_1_col.innerHTML = var_list[row_1_num_cols];
+            row_1_col.innerHTML = g_var_array[row_1_num_cols];
             ++row_1_num_cols;
         }
 
@@ -349,7 +341,7 @@ function build_form_fields() {
 
         /* Put variable bindings in row 2 */
         bindings_set = false;
-        while(row_2_num_cols < var_list.length) {
+        while(row_2_num_cols < g_var_array.length) {
             row_2_col = row_2.insertCell(row_2_num_cols);
             row_2_col.innerHTML = bindings[row_2_num_cols];
             ++row_2_num_cols;
