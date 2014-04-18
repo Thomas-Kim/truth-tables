@@ -77,7 +77,8 @@ yy: {},
 symbols_: {"error":2,"expressions":3,"eq":4,"EOF":5,"EQ":6,"imp":7,"RIMP":8,"LIMP":9,"or":10,"OR":11,"XOR":12,"and":13,"AND":14,"not":15,"NOT":16,"primary":17,"LPAREN":18,"RPAREN":19,"BOOL":20,"$accept":0,"$end":1},
 terminals_: {2:"error",5:"EOF",6:"EQ",8:"RIMP",9:"LIMP",11:"OR",12:"XOR",14:"AND",16:"NOT",18:"LPAREN",19:"RPAREN",20:"BOOL"},
 productions_: [0,[3,2],[4,3],[4,1],[7,3],[7,3],[7,1],[10,3],[10,3],[10,1],[13,3],[13,1],[15,2],[15,1],[17,3],[17,1]],
-performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
+performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */
+/**/) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
@@ -577,7 +578,8 @@ stateStackSize:function stateStackSize() {
         return this.conditionStack.length;
     },
 options: {},
-performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
+performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START
+/**/) {
 
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
