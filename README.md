@@ -14,11 +14,11 @@ Open truth tables in a new window
 
     make run
 
-and append onto the end of web address some boolean expression ([EXPRESSION]) you want to practice
+and append onto the end of web address some boolean expression ([EXPRESSION]) you want to practice and set test to false. The address should take the form
 
-    ?[EXPRESSION]?test=false
+    index.html?[EXPRESSION]?test=false
 
-It should look like this: 
+Example: 
 index.html?a|b?test=false
 
 Testing mode
@@ -31,9 +31,9 @@ Open truth tables in a new window
 
     make run
 
-and append onto the end of web address some boolean expression ([EXPRESSION]) you want to test
+and append onto the end of web address some boolean expression ([EXPRESSION]) you want to practice and set test to true. The address should take the form
 
-    ?[EXPRESSION]?test=true
+    index.html?[EXPRESSION]?test=true
 
-It should look like this: 
+Example: 
 index.html?a|b?test=true
