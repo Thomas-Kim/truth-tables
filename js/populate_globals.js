@@ -14,7 +14,7 @@ function get_ast(str) {
         var output = [];
         output = boolean_print.parse(str);
         for(i = 0; i < output.length; i++)
-            if(g_ast_arr.indexOf(output[i]) == -1) {
+            if(g_sub_ast_arr.indexOf(output[i]) == -1) {
                 g_sub_ast_arr[g_sub_ast_arr.length] = output[i].slice();
                 output[i] = output[i].replace(/CUR/g, '');
                 g_ast_arr[g_ast_arr.length] = output[i].slice();
