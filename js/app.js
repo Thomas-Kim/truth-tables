@@ -25,6 +25,9 @@ function build_form_fields() {
 
     container.innerHTML = '';
 
+    item = document.createTextNode("Expression: " + g_ast_arr[g_ast_arr.length - 1]);
+    container.appendChild(item);
+
     /* outer loop = enumerate bindings */
     /* Create the outermost table */
     item = document.createElement('table');
