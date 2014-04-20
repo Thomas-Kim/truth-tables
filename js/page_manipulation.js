@@ -146,6 +146,8 @@ function change_highlight() {
     var inputs = document.getElementsByClassName("result_input");
     var sub_exps = document.getElementsByClassName("subexps");
     var col_num = this.getAttribute("col_num");
+    var right_paren_regex = /\)\s*$/m;
+    var left_paren_regex = /^\s*\(/m;
     var cell_col_num;
     var current_cell;
     var i;
@@ -154,11 +156,28 @@ function change_highlight() {
 
     /* sub_exps[index] holds the current subexpression with CUR separator */
     split_expression = g_sub_ast_arr[col_num].split("CUR");
-    left_side = split_expression[0].replace(/^\s*\(?/m, '');
-    left_side = left_side.replace(/\)?\s*$/m, '');
+    left_side = split_expression[0];
     right_side = split_expression[1].substring(2);
-    right_side = right_side.replace(/^\s*\(/m, '');
-    right_side = right_side.replace(/\)\s*$/m, '');
+    /* If the left side is enclosed by parentheses, remove the parentheses and the trailing/leading whitespace */
+    if (left_paren_regex.test(left_side) && right_paren_regex.test(left_side)) {
+        left_side = left_side.replace(/^\s*\(?/m, '');
+        left_side = left_side.replace(/\)?\s*$/m, '');
+    }
+    /* Otherwise strip only the trailing and leading whitespace */
+    else {
+        left_side = left_side.replace(/^\s*/m, '');
+        left_side = left_side.replace(/\s*$/m, '');
+    }
+    /* If the right side is enclosed by parentheses, remove the parenthesis and the trailing/leading whitespace */
+    if (left_paren_regex.test(right_side) && right_paren_regex.test(right_side)) {
+        right_side = right_side.replace(/^\s*\(/m, '');
+        right_side = right_side.replace(/\)\s*$/m, '');
+    }
+    /* otherwise strip only the trailing/leading whitespace */
+    else {
+        right_side = right_side.replace(/^\s*/m, '');
+        right_side = right_side.replace(/\s*$/m, '');
+    }
     for(i = 0; i < inputs.length; i++) {
         current_cell = inputs[i];
         cell_col_num = current_cell.getAttribute("col_num");
