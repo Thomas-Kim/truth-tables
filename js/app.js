@@ -80,6 +80,7 @@ function build_form_fields() {
             input_box = document.createElement("input");
             input_box.type = "text";
             input_box.className = "result_input";
+            input_box.maxLength = "1";
             input_box.setAttribute("col_num", row_2_num_expr);
             input_box.onfocus = change_highlight;
             if(g_test_mode != "true") {
