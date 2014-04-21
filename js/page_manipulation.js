@@ -37,9 +37,23 @@ function update_test_score() {
         if(inputs[i].style.backgroundColor == g_incorrect_color)
             g_category_score[current_operator] += 1;
     }
-    console.log(g_category_score);
+    console.log("Number incorrect: " + g_category_score);
 }
 
+/* http://haacked.com/archive/2009/12/29/convert-rgb-to-hex.aspx/ */
+function colorToHex(color) {
+    if (color.substr(0, 1) === '#') {
+        return color;
+    }
+    var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+
+    var red = parseInt(digits[2], 10);
+    var green = parseInt(digits[3], 10);
+    var blue = parseInt(digits[4], 10);
+
+    var rgb = blue | (green << 8) | (red << 16);
+    return digits[1] + '#' + rgb.toString(16);
+}
 /* Score updating function for practice mode
  * This function is called every time the focused input box changes as well as
  * every time verify_input is called
@@ -66,10 +80,10 @@ function update_score() {
         else if(g_prev_input != current_input || g_prev_focus === null) {
             g_prev_focus = current_focus;
             g_prev_input = current_input;
-            if(current_color == g_incorrect_color && g_prev_color == "white")
+            if(colorToHex(current_color) == g_incorrect_color && g_prev_color == "white")
                 g_category_score[current_operator] += 1;
             g_prev_color = current_color;
-            console.log(g_category_score);
+            console.log("Number incorrect: " + g_category_score);
         }
     }
     catch(err) {

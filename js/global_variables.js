@@ -17,9 +17,16 @@ var g_prev_input;
 var g_prev_color = "white";
 
 /* Color values for correct/incorrect */
+/* Correct does not need to be represented as a hex number */
 var g_correct_color = "LightGreen";
-var g_incorrect_color = "pink";
+/* incorrect must be represented as a hex number in order to do input verification properly */
+/* lowercase letters, alter colorToHex in page_manipulation.hs if uppercase letters are preferable */
+var g_incorrect_color = "#ffc0cb";
 
+/* operator_enum indexes into g_category_score
+ * for each incorrect answer, g_category_score[operator_enum.XX] is incremented
+ * the index chosen depends on the current operator the student gets incorrect
+ */
 operator_enum = {
     NOT : 0,
     AND : 1,
