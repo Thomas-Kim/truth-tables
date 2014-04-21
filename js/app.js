@@ -1,11 +1,14 @@
 function build_form_fields() {
-    /* The following functions initialize global constants */
+    /* The following functions initialize global constants
+     *    See js/populate_globals.js
+     */
     get_URL_params();
     get_ast(g_input_str);
     input_vars(g_input_str);
+    /* End global constant initialization */
+    /* Initialize global score array */
     for(i = 0; i <= operator_enum.EQ; i++)
         g_category_score[i] = 0;
-    /* End global constant initialization */
     /* get the form defined in html */
     var container = document.getElementById('form_fields');
     /* item is the outermost table */
@@ -15,16 +18,24 @@ function build_form_fields() {
     /* binding_index holds the index of the corresponding binding */
     var row_1_binding_index, row_2_binding_index;
     var binding_index;
+    /* row_N_num_cols tracks the number of columns currently inserted into each row */
     var row_1_num_cols, row_2_num_cols;
+    /* row_N holds table row objects */
     var row_1, row_2;
+    /* row_N_col holds table column objects */
     var row_1_col, row_2_col;
+    /* row_N_num_expr holds the index of the current expression being added to the row */
     var row_1_num_expr, row_2_num_expr;
+    /* item_row is used to insert subtables into the parent 'item' */
     var item_row, item_row_cell;
-    var input_box, expand_button;
+    /* input_box holds instantiated input boxes which are appended to row_N */
+    var input_box;
+    /* bindings holds the T/F bindings for all variables in the expression */
     var bindings = get_initial_bindings(g_input_str);
 
     container.innerHTML = '';
 
+    /* display the current expression */
     item = document.createTextNode("Expression: " + g_ast_arr[g_ast_arr.length - 1]);
     container.appendChild(item);
 

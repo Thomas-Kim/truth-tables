@@ -1,3 +1,6 @@
+/* expressions may be qualified with the keyword CUR directly preceding the current operator in the AST 
+ * this function extracts the current operator as type operator_enum and returns it
+ */
 function get_current_operator(exp) {
     var current_operator;
     if(exp.indexOf("CUR!") > -1)
@@ -18,6 +21,10 @@ function get_current_operator(exp) {
 }
 
 
+/* Score updating function for test mode
+ * This function is called from verify_input
+ * see verify_input(0)
+ */
 function update_test_score() {
     var inputs = document.getElementsByClassName("result_input");
     var col_num;
@@ -27,12 +34,17 @@ function update_test_score() {
         col_num = inputs[i].attributes.col_num.value;
         exp = g_sub_ast_arr[col_num];
         current_operator = get_current_operator(exp);
-        if(inputs[i].style.backgroundColor == "red")
+        if(inputs[i].style.backgroundColor == g_incorrect_color)
             g_category_score[current_operator] += 1;
     }
     console.log(g_category_score);
 }
 
+/* Score updating function for practice mode
+ * This function is called every time the focused input box changes as well as
+ * every time verify_input is called
+ * see verify_input(0)
+ */
 function update_score() {
     /* Case practice mode */
     try {
@@ -54,7 +66,7 @@ function update_score() {
         else if(g_prev_input != current_input || g_prev_focus === null) {
             g_prev_focus = current_focus;
             g_prev_input = current_input;
-            if(current_color == "red" && g_prev_color == "white")
+            if(current_color == g_incorrect_color && g_prev_color == "white")
                 g_category_score[current_operator] += 1;
             g_prev_color = current_color;
             console.log(g_category_score);
@@ -65,6 +77,10 @@ function update_score() {
     }
 }
 
+/* uses the global variable g_bindings_array to determine the correct bindings for an expression
+ * then substitutes in "T" and "F" string values for variables
+ * returns the substituted expression without any variables
+ */
 function substitute_vars(index) {
     var result = "";
     var exprs = document.getElementsByClassName("subexps");
@@ -84,6 +100,9 @@ function substitute_vars(index) {
     return result;
 }
 
+/* Manages checking input boxes for correct answers
+ * calls the correct score updating function based on the current mode
+ */
 function verify_input() {
     var inputs = document.getElementsByClassName("result_input");
     var exprs = document.getElementsByClassName("subexps");
@@ -99,9 +118,9 @@ function verify_input() {
         if (inputs[i].value.toUpperCase() == "T" | inputs[i].value.toUpperCase() == "F"){
             user_input = (inputs[i].value.toUpperCase() == "T");
             if (boolean_evaluate.parse(formula) != user_input)
-                inputCell.style.backgroundColor = "red";
+                inputCell.style.backgroundColor = g_incorrect_color;
             else
-                inputCell.style.backgroundColor = "green";
+                inputCell.style.backgroundColor = g_correct_color;
         }
         else
             inputCell.style.backgroundColor = "white";

@@ -16,6 +16,10 @@ var g_prev_focus = null;
 var g_prev_input;
 var g_prev_color = "white";
 
+/* Color values for correct/incorrect */
+var g_correct_color = "LightGreen";
+var g_incorrect_color = "pink";
+
 operator_enum = {
     NOT : 0,
     AND : 1,
@@ -24,5 +28,4 @@ operator_enum = {
     IMP : 4,
     EQ  : 5
 };
-
 
