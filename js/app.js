@@ -19,6 +19,10 @@ App.Table = Ember.Object.extend ({
             var output = new Array()
             output = this.get("parser").parse(this.get("input"))
             this.set("ast_value", output)
+            this.get("ast_value").foreach
+            for(i = 0; i < this.get("ast_value").length; i++){
+                this.get("ast_value")[i] = this.get("ast_value")[i].replace("CUR","");
+            }
             return this.get("ast_value")
         }
         catch(err) {
