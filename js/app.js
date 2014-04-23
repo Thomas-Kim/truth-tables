@@ -1,8 +1,7 @@
 window.App = Ember.Application.create();
 
 App.Router.map(function() {
-    this.resource('truth', { path: '/' });
-    this.resource('test', { path: '/test/:test' });
+    this.resource('test', { path: '/:test' });
 });
 
 App.TruthRoute = Ember.Route.extend ({
@@ -81,14 +80,14 @@ App.TruthRowComponent = Ember.Component.extend({
     guess: '',
     colorCheck: function() {
         console.log(this.get("truthAssignment") === 'true')
-        if(this.get("guess") === ""){
-            return "white"
-        }
-        else if((this.get("guess") === 'T' && this.get("truthAssignment") === true)||(this.get("guess") === 'F' && this.get("truthAssignment") === false)){
+        if(((this.get("guess") === "T" || this.get("guess") === "true" || this.get("guess") === "True") && this.get("truthAssignment") === true) || ((this.get("guess") === "F" || this.get("guess") === "false" || this.get("guess") === "False") && this.get("truthAssignment") === false)){
             return "99FF66"
         }
-        else {
+        else if(((this.get("guess") === "T" || this.get("guess") === "true" || this.get("guess") === "True") && this.get("truthAssignment") === false) || ((this.get("guess") === "F" || this.get("guess") === "false" || this.get("guess") === "False") && this.get("truthAssignment") === true)){
             return "#FF3333"
+        }
+        else {
+            return "white"
         }
     }.property('truthAssignment', 'guess'),
     parser: boolean_evaluate,
