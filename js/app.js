@@ -66,10 +66,10 @@ App.TruthRowComponent = Ember.Component.extend({
             return "white"
         }
         else if((this.get("guess") === 'T' && this.get("truthAssignment") === true)||(this.get("guess") === 'F' && this.get("truthAssignment") === false)){
-            return "green"
+            return "99FF66"
         }
         else {
-            return "red"
+            return "#FF3333"
         }
     }.property('truthAssignment', 'guess'),
     parser: boolean_evaluate,
