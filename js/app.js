@@ -1,6 +1,7 @@
 window.App = Ember.Application.create()
 
 App.Router.map(function() {
+    this.resource('explain', { path: '/' })
     this.resource('feedback', { path: '/:feedback' }, function(){
         this.resource('truth', { path: '/:exp' })
     });

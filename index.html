@@ -25,12 +25,16 @@
         {{outlet}}
     </script>
 
+    <script type="text/x-handlebars" data-template-name="explain">
+        <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please click {{#link-to 'truth' "true" "a|b"}}here{{/link-to}} </p>
+    </script>
+
     <script type="text/x-handlebars" data-template-name="feedback">
         {{outlet}}
     </script>
     <script type="text/x-handlebars" data-template-name="truth">
         <div class="header">
-            <p> Welcome to the DIY truth table! To use the truth table, simply put in a boolean expression in the top input box. A truth table with all of the possible truth assignments for the variables will be generated, but it's up to you to come up with the solution for the equations with these values. Input 'T' for true and 'F' for false. Good luck! </p>
+            <h3> Truth Table</h3>
         </div>
         <div class="table">
             <table>
