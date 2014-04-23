@@ -8,6 +8,11 @@
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body>
+    <script type="text/x-handlebars" id="truth">
+        <div class="input">
+            {{input type="text" value=input}}
+        </div>
+    </script>
     <script type="text/x-handlebars" id="components/truth-row">
         {{view App.TruthChecker valueBinding=guess cols=2 rows=1 colorBinding=colorCheck}}
     </script>
@@ -16,13 +21,9 @@
         <p>{{truthValue}}</p>
     </script>
 
-    <script type="text/x-handlebars" data-template-name="truth">
+    <script type="text/x-handlebars" data-template-name="test">
         <div class="header">
             <p> Welcome to the DIY truth table! To use the truth table, simply put in a boolean expression in the top input box. A truth table with all of the possible truth assignments for the variables will be generated, but it's up to you to come up with the solution for the equations with these values. Input 'T' for true and 'F' for false. Good luck! </p>
-        </div>
-
-        <div class="input">
-            {{input type="text" value=input}}
         </div>
         <div class="table">
             <table>

@@ -2,11 +2,21 @@ window.App = Ember.Application.create();
 
 App.Router.map(function() {
     this.resource('truth', { path: '/' });
+    this.resource('test', { path: '/test/:test' });
 });
 
 App.TruthRoute = Ember.Route.extend ({
     model: function() {
         return App.Table.create()
+    }
+})
+
+App.TestRoute = Ember.Route.extend ({
+    model: function(params) {
+        console.log(params.test)
+        var testing = App.Table.create()
+        testing.input = params.test
+        return testing
     }
 })
 
@@ -32,7 +42,16 @@ App.Table = Ember.Object.extend ({
         }
         return output;
     }.property('input', 'parser', 'ast_value'),
-    variables: '',
+    variables: function(){
+        if(this.get("input").match(/[a-z]{2,}/)){
+            console.log("I got here")
+            return ''
+        }
+        variable_list = _.uniq(this.get("input").split(/[^a-eg-su-z]+/)).sort()
+        if(variable_list[0] === "")
+            variable_list.splice(0, 1)
+        return variable_list
+    }.property('input'),
     number_list: function(){
         var output = Ember.A([])
         for(i = 0; i < Math.pow(2, (this.get("variables").length)); i++){
@@ -42,7 +61,7 @@ App.Table = Ember.Object.extend ({
     }.property('variables')
 })
 
-App.TruthController = Ember.ObjectController.extend({
+App.TestController = Ember.ObjectController.extend({
     variable_array: function(){
         if(this.get("model").input.match(/[a-z|&]{2,}/)){
             return ''
