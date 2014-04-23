@@ -109,13 +109,15 @@ App.TruthRowComponent = Ember.Component.extend({
         for(i = 0; i < length; i++){
             variable = variables[i]
             truth = truths[i]
-            outputString = outputString.replace(variable, truth)
+            var regex = new RegExp(variable, 'g')
+            outputString = outputString.replace(regex, truth)
         }
         try{
             output = this.get("parser").parse(outputString)
             return output
         }
         catch(err){
+            console.log(err)
             return "Error"
         }
         //return this.get("parser").parse(outputString)
