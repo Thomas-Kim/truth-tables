@@ -1,21 +1,23 @@
-window.App = Ember.Application.create();
+window.App = Ember.Application.create()
 
 App.Router.map(function() {
-    this.resource('test', { path: '/:test' });
-});
+    this.resource('feedback', { path: '/:feedback' }, function(){
+        this.resource('truth', { path: '/:exp' })
+    });
+})
 
 App.TruthRoute = Ember.Route.extend ({
-    model: function() {
-        return App.Table.create()
+    model: function(params) {
+        var table = App.Table.create()
+        table.feedback = this.modelFor("feedback")
+        table.input = params.exp
+        return table
     }
 })
 
-App.TestRoute = Ember.Route.extend ({
+App.FeedbackRoute = Ember.Route.extend ({
     model: function(params) {
-        console.log(params.test)
-        var testing = App.Table.create()
-        testing.input = params.test
-        return testing
+        return params.feedback
     }
 })
 
@@ -23,6 +25,7 @@ App.Table = Ember.Object.extend ({
     input: '',
     parser: boolean_print,
     ast_value: '',
+    feedback: '',
     ast: function() {
         try {
             var output = new Array()
@@ -60,7 +63,7 @@ App.Table = Ember.Object.extend ({
     }.property('variables')
 })
 
-App.TestController = Ember.ObjectController.extend({
+App.TruthController = Ember.ObjectController.extend({
     variable_array: function(){
         if(this.get("model").input.match(/[a-z|&]{2,}/)){
             return ''
@@ -78,7 +81,11 @@ App.TruthRowComponent = Ember.Component.extend({
     node_stuff: '',
     row: null,
     guess: '',
+    feedback_stuff: "false",
     colorCheck: function() {
+        if(this.get("feedback_stuff") === "false")
+            return "white"
+
         console.log(this.get("truthAssignment") === 'true')
         if(((this.get("guess") === "T" || this.get("guess") === "true" || this.get("guess") === "True") && this.get("truthAssignment") === true) || ((this.get("guess") === "F" || this.get("guess") === "false" || this.get("guess") === "False") && this.get("truthAssignment") === false)){
             return "99FF66"
@@ -89,7 +96,7 @@ App.TruthRowComponent = Ember.Component.extend({
         else {
             return "white"
         }
-    }.property('truthAssignment', 'guess'),
+    }.property('truthAssignment', 'guess', 'feedback_stuff'),
     parser: boolean_evaluate,
     truthArray: function(){
         var output = Ember.A([])
