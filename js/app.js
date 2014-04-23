@@ -23,6 +23,8 @@ App.Table = Ember.Object.extend ({
             for(i = 0; i < this.get("ast_value").length; i++){
                 this.get("ast_value")[i] = this.get("ast_value")[i].replace("CUR","");
             }
+
+            this.set("ast_value", _.uniq(this.get("ast_value")));
             return this.get("ast_value")
         }
         catch(err) {
