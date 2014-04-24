@@ -34,7 +34,7 @@ function update_test_score() {
         col_num = inputs[i].attributes.col_num.value;
         exp = g_sub_ast_arr[col_num];
         current_operator = get_current_operator(exp);
-        if(inputs[i].style.backgroundColor == g_incorrect_color)
+        if(colorToHex(inputs[i].style.backgroundColor) == g_incorrect_color)
             g_category_score[current_operator] += 1;
     }
     console.log("Number incorrect: " + g_category_score);
@@ -43,6 +43,9 @@ function update_test_score() {
 /* http://haacked.com/archive/2009/12/29/convert-rgb-to-hex.aspx/ */
 function colorToHex(color) {
     if (color.substr(0, 1) === '#') {
+        return color;
+    }
+    if (/rgb/.exec(color) === null) {
         return color;
     }
     var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
