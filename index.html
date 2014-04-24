@@ -6,16 +6,15 @@
     <script type="text/javascript" src="js/libs/boolean_print.js"></script>
     <script type="text/javascript" src="js/libs/underscore-min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/application.css">
 </head>
 <body>
     <script type="text/x-handlebars" data-template-name="components/truth-row">
         {{#each variable in variables}}
-        <td style="padding: 10px;border: 1px solid black;font-size: 16px;"> {{truth-variable variable_stuff=variable index=row variables_stuff=variables}} </td>
+          {{truth-variable selectedExpression=selectedExpression variable_stuff=variable index=row variables_stuff=variables tagName="td" classNames="large-font"}} 
         {{/each}}
         {{#each node in ast}}
-        <td style="padding: 10px; border: 1px solid black;>
-            {{truth-node selectedNode=selectedNode node_stuff=node variable_stuff=variables row=row feedback_stuff=feedback}}
-        </td>
+            {{truth-node selectedExpression=selectedExpression node_stuff=node variable_stuff=variables row=row feedback_stuff=feedback tagName="td"}}
         {{/each}}
     </script>
     <script type="text/x-handlebars" id="input">
@@ -25,12 +24,7 @@
     </script>
 
     <script type="text/x-handlebars" id="components/truth-node">
-    {{#if isSubexpressionOfSelected}}
-      yes
-    {{else}}
-      no
-    {{/if}}
-        {{view App.TruthChecker valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression"}}
+        {{view App.TruthChecker valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression" focus-out="clearSelectedExpression"}}
     </script>
 
     <script type="text/x-handlebars" id="components/truth-variable">
@@ -56,10 +50,10 @@
             <table>
                 <tr>
                 {{#each variable in variables}}
-                    <td style="padding: 10px;border: 1px solid black;font-size: 16px;"> {{variable}} </td>
+                    <td class="large-font"> {{variable}} </td>
                 {{/each}}
-                {{#each node in ast}}
-                    <td style="padding: 10px;border: 1px solid black;font-size: 16px;"> {{node}} </td>
+                {{#each node in ast_clean}}
+                    <td class="large-font"> {{node}} </td>
                 {{/each}}
                 </tr>
                 {{#each given_number in number_list}}

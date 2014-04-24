@@ -33,9 +33,9 @@ App.Table = Ember.Object.extend ({
             output = this.get("parser").parse(this.get("input"))
             this.set("ast_value", output)
             this.get("ast_value").foreach
-            for(i = 0; i < this.get("ast_value").length; i++){
-                this.get("ast_value")[i] = this.get("ast_value")[i].replace("CUR","");
-            }
+            //for(i = 0; i < this.get("ast_value").length; i++){
+                //this.get("ast_value")[i] = this.get("ast_value")[i].replace("CUR","");
+            //}
 
             this.set("ast_value", _.uniq(this.get("ast_value")));
             return this.get("ast_value")
@@ -45,9 +45,16 @@ App.Table = Ember.Object.extend ({
         }
         return output;
     }.property('input', 'parser', 'ast_value'),
+    ast_clean: function(){
+        var output = Ember.A([]);
+        for(i = 0; i < this.get("ast").length; i++){
+            output.pushObject(this.get("ast")[i].replace("CUR",""));
+        }
+        return output;
+    }.property('ast'),
+        
     variables: function(){
         if(this.get("input").match(/[a-z]{2,}/)){
-            console.log("I got here")
             return ''
         }
         variable_list = _.uniq(this.get("input").split(/[^a-eg-su-z]+/)).sort()
@@ -78,8 +85,12 @@ App.TruthController = Ember.ObjectController.extend({
 })
 
 App.TruthNodeComponent = Ember.Component.extend({
+    classNameBindings: ['isSubexpressionOfSelected'],
     variable_stuff: '',
     node_stuff: '',
+    expression: function(){
+        return this.get("node_stuff").replace("CUR","");
+    }.property("node_stuff"),
     row: null,
     guess: '',
     feedback_stuff: "false",
@@ -89,6 +100,9 @@ App.TruthNodeComponent = Ember.Component.extend({
 actions: {
     updateSelectedExpression: function(){
         this.set('selectedExpression', this.get('node_stuff'))
+    },
+    clearSelectedExpression: function(){
+        this.set('selectedExpression', null);
     }
 },
     correctAnswer: function(){
@@ -100,12 +114,11 @@ actions: {
         }
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
-        console.log(this.get("selectedExpression"));
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/cur./i)
-            return subexpressions.indexOf(this.get("node_stuff")) != -1
+            subexpressions = this.get('selectedExpression').split(/\scur.\s/i)
+            return subexpressions.indexOf(this.get("expression")) != -1
         }
-    }.property('selectedExpression', "node_stuff"),
+    }.property('selectedExpression', "expression"),
     colorCheck: function() {
         if(this.get("feedback_stuff") === "false")
             return "white"
@@ -134,7 +147,7 @@ actions: {
         return output
     }.property('row'),
     truthAssignment: function(){
-        var outputString = this.get("node_stuff")
+        var outputString = this.get("expression")
         var variables = this.get("variable_stuff")
         var truths = this.get("truthArray")
         var length = variables.length
@@ -154,13 +167,20 @@ actions: {
             return "Error"
         }
         //return this.get("parser").parse(outputString)
-    }.property('truthArray', 'node_stuff', 'variable_stuff', 'parser')
+    }.property('truthArray', 'expression', 'variable_stuff', 'parser')
 })
 
 App.TruthVariableComponent = Ember.Component.extend({
     variable_stuff: '',
+    classNameBindings: ['isSubexpressionOfSelected'],
     index: '',
     variables_stuff: '',
+    isSubexpressionOfSelected: function(){
+        if(this.get('selectedExpression')){
+            subexpressions = this.get('selectedExpression').split(/\scur.\s/i)
+            return subexpressions.indexOf(this.get("variable_stuff")) != -1
+        }
+    }.property('selectedExpression', "variable_stuff"),
     truthValue: function(){
         if((Math.pow(2, this.get("variables_stuff").indexOf(this.get("variable_stuff")))&this.get("index"))!= 0)
             return "T"
