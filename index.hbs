@@ -1,4 +1,4 @@
-<head>
+head>
     <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/libs/handlebars-1.0.0.js"></script>
     <script type="text/javascript" src="js/libs/ember.js"></script>
@@ -8,29 +8,13 @@
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body>
-    <script type="text/x-handlebars" data-template-name="components/truth-row">
-        {{#each variable in variables}}
-        <td style="padding: 10px;border: 1px solid black;font-size: 16px;"> {{truth-variable variable_stuff=variable index=row variables_stuff=variables}} </td>
-        {{/each}}
-        {{#each node in ast}}
-        <td style="padding: 10px; border: 1px solid black;>
-            {{truth-node selectedNode=selectedNode node_stuff=node variable_stuff=variables row=row feedback_stuff=feedback}}
-        </td>
-        {{/each}}
-    </script>
     <script type="text/x-handlebars" id="input">
         <div class="input">
             {{input type="text" value=input}}
         </div>
     </script>
-
-    <script type="text/x-handlebars" id="components/truth-node">
-    {{#if isSubexpressionOfSelected}}
-      yes
-    {{else}}
-      no
-    {{/if}}
-        {{view App.TruthChecker valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression"}}
+    <script type="text/x-handlebars" id="components/truth-row">
+        {{view App.TruthChecker valueBinding=guess cols=2 rows=1 colorBinding=colorCheck}}
     </script>
 
     <script type="text/x-handlebars" id="components/truth-variable">
@@ -63,7 +47,16 @@
                 {{/each}}
                 </tr>
                 {{#each given_number in number_list}}
-                    {{truth-row ast=ast variables=variables row=given_number feedback=feedback tagName="tr"}}
+                <tr>
+                    {{#each variable in variables}}
+                        <td style="padding: 10px;border: 1px solid black;font-size: 16px;"> {{truth-variable variable_stuff=variable index=given_number variables_stuff=variables}} </td>
+                    {{/each}}
+                    {{#each node in ast}}
+                    <td style="padding: 10px; border: 1px solid black;>
+                        {{truth-row node_stuff=node variable_stuff=variables row=given_number feedback_stuff=feedback}}
+                    </td>
+                    {{/each}}
+                </tr>
                 {{/each}}
             </table>
         </div>

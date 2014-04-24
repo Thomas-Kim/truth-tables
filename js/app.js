@@ -77,27 +77,51 @@ App.TruthController = Ember.ObjectController.extend({
     }.observes('model.input')
 })
 
-App.TruthRowComponent = Ember.Component.extend({
+App.TruthNodeComponent = Ember.Component.extend({
     variable_stuff: '',
     node_stuff: '',
     row: null,
     guess: '',
     feedback_stuff: "false",
+    validAnswer: function(){
+        return ["T", "F", "true", "false", "True", "False"].indexOf(this.get("guess")) != -1
+    }.property("guess"),
+actions: {
+    updateSelectedExpression: function(){
+        this.set('selectedExpression', this.get('node_stuff'))
+    }
+},
+    correctAnswer: function(){
+        if(this.get("truthAssignment")){
+            return (["T", "true", "True"].indexOf(this.get("guess")) != -1)
+        }
+        else{
+            return (["F", "false", "False"].indexOf(this.get("guess")) != -1)
+        }
+    }.property("truthAssignment", "guess"),
+    isSubexpressionOfSelected: function(){
+        console.log(this.get("selectedExpression"));
+        if(this.get('selectedExpression')){
+            subexpressions = this.get('selectedExpression').split(/cur./i)
+            return subexpressions.indexOf(this.get("node_stuff")) != -1
+        }
+    }.property('selectedExpression', "node_stuff"),
     colorCheck: function() {
         if(this.get("feedback_stuff") === "false")
             return "white"
 
-        console.log(this.get("truthAssignment") === 'true')
-        if(((this.get("guess") === "T" || this.get("guess") === "true" || this.get("guess") === "True") && this.get("truthAssignment") === true) || ((this.get("guess") === "F" || this.get("guess") === "false" || this.get("guess") === "False") && this.get("truthAssignment") === false)){
-            return "99FF66"
-        }
-        else if(((this.get("guess") === "T" || this.get("guess") === "true" || this.get("guess") === "True") && this.get("truthAssignment") === false) || ((this.get("guess") === "F" || this.get("guess") === "false" || this.get("guess") === "False") && this.get("truthAssignment") === true)){
-            return "#FF3333"
+        if(this.get("validAnswer")){
+            if(this.get("correctAnswer")){
+                return "99FF66"
+            }
+            else{
+                return "#FF3333"
+            }
         }
         else {
             return "white"
         }
-    }.property('truthAssignment', 'guess', 'feedback_stuff'),
+    }.property('validAnswer', 'correctAnswer', 'feedback_stuff'),
     parser: boolean_evaluate,
     truthArray: function(){
         var output = Ember.A([])
@@ -119,6 +143,7 @@ App.TruthRowComponent = Ember.Component.extend({
             truth = truths[i]
             var regex = new RegExp(variable, 'g')
             outputString = outputString.replace(regex, truth)
+            subexpressions = this.get('selectedExpression').split(/cur./i)
         }
         try{
             output = this.get("parser").parse(outputString)
@@ -142,6 +167,10 @@ App.TruthVariableComponent = Ember.Component.extend({
         else
             return "F"
     }.property('ast_stuff', 'variable', 'index')
+})
+
+App.TruthRowComponent = Ember.Component.extend({
+    selectedExpression: null
 })
 
 App.TruthChecker = Ember.TextField.extend({
