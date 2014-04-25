@@ -20,7 +20,7 @@
     </script>
 
     <script type="text/x-handlebars" id="components/truth-node">
-        {{view App.TruthChecker valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression" focus-out="clearSelectedExpression"}}
+        {{view App.TruthChecker size=1 maxlength=1 valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression" focus-out="clearSelectedExpression"}}
     </script>
 
     <script type="text/x-handlebars" id="components/truth-variable">
@@ -76,7 +76,6 @@
             <div class="row">
                 <p> {{mistakes}} mistakes made so far. </p>
             </div>
-            {{else}}
             {{/if}}
           </div>
         </div>

@@ -107,6 +107,7 @@ App.TruthNodeComponent = Ember.Component.extend({
     classNameBindings: ['isSubexpressionOfSelected'],
     variable: '',
     node: '',
+    last_truth_value: null,
     expression: function(){
         return this.get("node").replace("CUR","");
     }.property("node"),
@@ -139,23 +140,37 @@ actions: {
         }
     }.property('selectedExpression', "expression"),
     colorCheck: function() {
-        if(this.get("feedback") === "false")
-            return "#EEEEEE"
-
         if(this.get("validAnswer")){
             if(this.get("correctAnswer")){
-                return "99FF66"
+              if(this.get("last_truth_value") == false && this.get("feedback") === "false"){
+                this.set("mistakes", this.get("mistakes") - 1)
+              }
+              this.set("last_truth_value", true);
+
+              if(this.get("feedback") === "false")
+                return "#EEEEEE"
+
+              return "99FF66"
             }
             else{
-                console.log(this.get("mistakes"));
+              if(this.get("last_truth_value") != false){
                 this.set("mistakes", this.get("mistakes") + 1);
-                return "#FF3333"
+              }
+              this.set("last_truth_value", false);
+              if(this.get("feedback") === "false")
+                return "#EEEEEE"
+
+              return "#FF3333"
             }
         }
         else {
+            if(this.get("last_truth_value") == false && this.get("feedback") === "false"){
+              this.set("mistakes", this.get("mistakes") - 1)
+            }
+            this.set("last_truth_value", null);
             return "#EEEEEE"
         }
-    }.property('validAnswer', 'correctAnswer', 'feedback', 'mistakes'),
+    }.property('validAnswer', 'correctAnswer', 'feedback', 'mistakes', 'last_truth_value'),
     parser: boolean_evaluate,
     truthArray: function(){
         var output = Ember.A([])
