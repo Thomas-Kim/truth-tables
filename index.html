@@ -36,7 +36,9 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="explain">
-        <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please click {{#link-to 'truth' "true" "a|b"}}here{{/link-to}} </p>
+        <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please click {{#link-to 'truth' feedback expression}}here{{/link-to}} </p>
+        Expression:{{input value=expression}}
+        Want feedback? {{input type="checkbox" checkedBinding="feedback"}}
     </script>
 
     <script type="text/x-handlebars" data-template-name="feedback">

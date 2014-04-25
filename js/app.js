@@ -16,10 +16,20 @@ App.TruthRoute = Ember.Route.extend ({
     }
 })
 
+App.ExplainRoute = Ember.Route.extend({
+    model: function(){
+        return new App.ExplainModel
+    }
+})
+
 App.FeedbackRoute = Ember.Route.extend ({
     model: function(params) {
         return params.feedback
     }
+})
+
+App.ExplainModel = Ember.Object.extend({
+    feedback: true
 })
 
 App.Table = Ember.Object.extend ({
