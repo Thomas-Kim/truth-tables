@@ -5,6 +5,7 @@ App.Router.map(function() {
     this.resource('feedback', { path: '/:feedback' }, function(){
         this.resource('truth', { path: '/:exp' })
     });
+    this.resource('evaluation');
 })
 
 App.TruthRoute = Ember.Route.extend ({
@@ -32,11 +33,30 @@ App.ExplainModel = Ember.Object.extend({
     feedback: true
 })
 
+App.EvaluationRoute = Ember.Route.extend({
+  model: function(){
+    if(this.modelFor("truth") === undefined){
+      console.log("test")
+      return false
+    }
+    return this.modelFor("truth")
+  }
+})
+
 App.Table = Ember.Object.extend ({
     expression: '',
     parser: boolean_print,
     ast_value: '',
     feedback: '',
+    mistakes: 0,
+    answered: 0,
+    percentage_result: function(){
+      var correct = this.get("answered") - this.get("mistakes")
+      return (correct / this.get("total")) * 100
+    }.property('answered', 'mistakes', 'total'),
+    total: function(){
+      return this.get("ast").length * this.get("number_list").length
+    }.property('ast', 'number_list'),
     feedback_bool: function(){
       if(this.get("feedback") == "true"){
         return true
@@ -45,7 +65,6 @@ App.Table = Ember.Object.extend ({
         return false
       }
     }.property("feedback"),
-    mistakes: 0,
     ast: function() {
         try {
             var output = new Array()
@@ -108,12 +127,13 @@ App.TruthNodeComponent = Ember.Component.extend({
     variable: '',
     node: '',
     last_truth_value: null,
-    expression: function(){
-        return this.get("node").replace("CUR","");
-    }.property("node"),
+    answered: '',
     row: null,
     guess: '',
     feedback: "false",
+    expression: function(){
+        return this.get("node").replace("CUR","");
+    }.property("node"),
     validAnswer: function(){
         return ["T", "t", "f", "F", "true", "false", "True", "False"].indexOf(this.get("guess")) != -1
     }.property("guess"),
@@ -145,6 +165,10 @@ actions: {
               if(this.get("last_truth_value") == false && this.get("feedback") === "false"){
                 this.set("mistakes", this.get("mistakes") - 1)
               }
+              if(this.get("last_truth_value") == null){
+                this.set("answered", this.get("answered") + 1)
+                console.log(this.get("answered"))
+              }
               this.set("last_truth_value", true);
 
               if(this.get("feedback") === "false")
@@ -155,6 +179,10 @@ actions: {
             else{
               if(this.get("last_truth_value") != false){
                 this.set("mistakes", this.get("mistakes") + 1);
+              }
+              if(this.get("last_truth_value") == null){
+                this.set("answered", this.get("answered") + 1)
+                console.log(this.get("answered"))
               }
               this.set("last_truth_value", false);
               if(this.get("feedback") === "false")
@@ -167,10 +195,13 @@ actions: {
             if(this.get("last_truth_value") == false && this.get("feedback") === "false"){
               this.set("mistakes", this.get("mistakes") - 1)
             }
+            if(this.get("last_truth_value") != null){
+              this.set("answered", this.get("answered") - 1)
+            }
             this.set("last_truth_value", null);
             return "#EEEEEE"
         }
-    }.property('validAnswer', 'correctAnswer', 'feedback', 'mistakes', 'last_truth_value'),
+    }.property('validAnswer', 'correctAnswer', 'feedback', 'mistakes', 'last_truth_value', 'answered'),
     parser: boolean_evaluate,
     truthArray: function(){
         var output = Ember.A([])

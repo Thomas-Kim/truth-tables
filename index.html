@@ -15,7 +15,7 @@
           {{truth-variable selectedExpression=selectedExpression variable=variable index=row variables=variables tagName="td" classNames="large-font variable"}} 
         {{/each}}
         {{#each node in ast}}
-            {{truth-node selectedExpression=selectedExpression mistakes=mistakes node=node variable=variables row=row feedback=feedback tagName="td" classNames="guess"}}
+            {{truth-node selectedExpression=selectedExpression mistakes=mistakes node=node variable=variables answered=answered row=row feedback=feedback tagName="td" classNames="guess"}}
         {{/each}}
     </script>
 
@@ -67,17 +67,40 @@
               </thead>
               <tbody>
                 {{#each given_number in number_list}}
-                    {{truth-row ast=ast variables=variables row=given_number feedback=feedback tagName="tr" mistakes=mistakes}}
+                    {{truth-row ast=ast variables=variables row=given_number feedback=feedback tagName="tr" mistakes=mistakes answered=answered}}
                 {{/each}}
               </tbody>
             </table>
 
-            {{#if feedback_bool}}
             <div class="row">
+            {{#if feedback_bool}}
                 <p> {{mistakes}} mistakes made so far. </p>
-            </div>
+            {{else}}
+              {{#link-to "evaluation" tagName="button"}} Evaluate {{/link-to}}
             {{/if}}
+            </div>
           </div>
         </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="evaluation">
+      {{#if model}}
+        <div class="row title">
+          <h3> Evaluation for <b>{{expression}}</b> </h3>
+        </div>
+        <div class="row">
+          <p>Mistakes made {{mistakes}} out of {{answered}} answered</p>
+          <p>Answered {{answered}} out of {{total}} </p>
+          <p>Final result: {{percentage_result}}%</p>
+          {{#link-to 'truth' feedback expression tagName="button"}} Go back {{/link-to}}
+        </div>
+      {{else}}
+        <div class="row title">
+          <h3> Evaluation failed </h3>
+        </div>
+        <div class="row">
+          You must take a test first!
+        </div>
+      {{/if}}
     </script>
 </body>
