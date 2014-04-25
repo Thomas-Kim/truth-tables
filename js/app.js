@@ -105,7 +105,7 @@ App.TruthNodeComponent = Ember.Component.extend({
     guess: '',
     feedback_stuff: "false",
     validAnswer: function(){
-        return ["T", "F", "true", "false", "True", "False"].indexOf(this.get("guess")) != -1
+        return ["T", "t", "f", "F", "true", "false", "True", "False"].indexOf(this.get("guess")) != -1
     }.property("guess"),
 actions: {
     updateSelectedExpression: function(){
@@ -117,10 +117,10 @@ actions: {
 },
     correctAnswer: function(){
         if(this.get("truthAssignment")){
-            return (["T", "true", "True"].indexOf(this.get("guess")) != -1)
+            return (["T", "t", "true", "True"].indexOf(this.get("guess")) != -1)
         }
         else{
-            return (["F", "false", "False"].indexOf(this.get("guess")) != -1)
+            return (["F", "f", "false", "False"].indexOf(this.get("guess")) != -1)
         }
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
