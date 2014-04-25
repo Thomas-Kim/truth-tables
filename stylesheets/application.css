@@ -1,3 +1,7 @@
+body {
+  background-color: #FCFBF0
+}
+
 td {
     padding: 10px;
     border: 1px solid black;
@@ -9,4 +13,35 @@ td {
 
 .large-font {
     font-size: 16px;
+}
+
+.input {
+  background-color: #EEEEEE;
+}
+
+.row {
+  text-align: center;
+}
+
+.table {
+  margin-left: 50px;
+  margin-top: 25px;
+}
+
+.title {
+  margin-top: 25px;
+}
+
+thead {
+  background-color: #AAAAAA;
+}
+
+.variable {
+  padding-top: 15px;
+  padding-bottom: 0px;
+}
+
+.guess {
+  padding-left: 15px;
+  padding-right: 15px;
 }

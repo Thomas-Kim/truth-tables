@@ -6,21 +6,17 @@
     <script type="text/javascript" src="js/libs/boolean_print.js"></script>
     <script type="text/javascript" src="js/libs/underscore-min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/application.css">
 </head>
 <body>
     <script type="text/x-handlebars" data-template-name="components/truth-row">
         {{#each variable in variables}}
-          {{truth-variable selectedExpression=selectedExpression variable_stuff=variable index=row variables_stuff=variables tagName="td" classNames="large-font"}} 
+          {{truth-variable selectedExpression=selectedExpression variable=variable index=row variables=variables tagName="td" classNames="large-font variable"}} 
         {{/each}}
         {{#each node in ast}}
-            {{truth-node selectedExpression=selectedExpression node_stuff=node variable_stuff=variables row=row feedback_stuff=feedback tagName="td"}}
+            {{truth-node selectedExpression=selectedExpression mistakes=mistakes node=node variable=variables row=row feedback=feedback tagName="td" classNames="guess"}}
         {{/each}}
-    </script>
-    <script type="text/x-handlebars" id="input">
-        <div class="input">
-            {{input type="text" value=input}}
-        </div>
     </script>
 
     <script type="text/x-handlebars" id="components/truth-node">
@@ -32,36 +28,57 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="application">
+      <div class="container">
         {{outlet}}
+      </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="explain">
-        <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please click {{#link-to 'truth' feedback expression}}here{{/link-to}} </p>
-        Expression:{{input value=expression}}
+      <div class="row title">
+        <h2> Truth Table Creator </h2>
+      </div>
+      <div class="row">
+        <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please put in an expression below and give it a shot! </p>
+      </div>
+      <div class="row">
+        Expression:{{input value=expression placeholder="a|b&c" classNames="input"}}
         Want feedback? {{input type="checkbox" checkedBinding="feedback"}}
+        {{#link-to 'truth' feedback expression tagName="button"}}Enter{{/link-to}}
+      </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="feedback">
         {{outlet}}
     </script>
     <script type="text/x-handlebars" data-template-name="truth">
-        <div class="header">
-            <h3> Truth Table</h3>
+        <div class="title row">
+          <h3> Truth Table for <b>{{expression}}</b></h3>
         </div>
-        <div class="table">
+        <div class="row">
+          <div class="table">
             <table>
-                <tr>
+              <thead>
                 {{#each variable in variables}}
                     <td class="large-font"> {{variable}} </td>
                 {{/each}}
                 {{#each node in ast_clean}}
                     <td class="large-font"> {{node}} </td>
                 {{/each}}
-                </tr>
+              </thead>
+              <tbody>
                 {{#each given_number in number_list}}
-                    {{truth-row ast=ast variables=variables row=given_number feedback=feedback tagName="tr"}}
+                    {{truth-row ast=ast variables=variables row=given_number feedback=feedback tagName="tr" mistakes=mistakes}}
                 {{/each}}
+              </tbody>
             </table>
+
+            {{#if feedback_bool}}
+            <div class="row">
+                <p> {{mistakes}} mistakes made so far. </p>
+            </div>
+            {{else}}
+            {{/if}}
+          </div>
         </div>
     </script>
 </body>
