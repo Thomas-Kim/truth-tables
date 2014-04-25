@@ -20,6 +20,11 @@ App.TruthRoute = Ember.Route.extend ({
 App.ExplainRoute = Ember.Route.extend({
     model: function(){
         return new App.ExplainModel
+    },
+    actions: {
+      hitEnter: function(expression){
+        this.transitionTo('truth', this.modelFor("explain").feedback, expression)
+      }
     }
 })
 
@@ -120,6 +125,9 @@ App.TruthController = Ember.ObjectController.extend({
         this.set('model.variables', variable_list)
         return variable_list
     }.observes('model.expression')
+})
+
+App.ExplainController = Ember.ObjectController.extend({
 })
 
 App.TruthNodeComponent = Ember.Component.extend({

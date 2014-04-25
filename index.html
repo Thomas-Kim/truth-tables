@@ -41,7 +41,7 @@
         <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please put in an expression below and give it a shot! </p>
       </div>
       <div class="row">
-        Expression:{{input value=expression placeholder="a|b&c" classNames="input"}}
+        Expression:{{input value=expression placeholder="a|b&c" classNames="input" action="hitEnter"}}
         Want feedback? {{input type="checkbox" checkedBinding="feedback"}}
         {{#link-to 'truth' feedback expression tagName="button"}}Enter{{/link-to}}
       </div>

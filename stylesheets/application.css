@@ -5,6 +5,7 @@ body {
 td {
     padding: 10px;
     border: 1px solid black;
+    text-align: center;
 }
 
 .is-subexpression-of-selected {
@@ -16,7 +17,7 @@ td {
 }
 
 .input {
-  background-color: #EEEEEE;
+  background-color: white;
 }
 
 .row {
