@@ -189,38 +189,34 @@ function change_highlight() {
     var i;
     var split_expression;
     var left_side, right_side;
-
+    var left_side_mod, right_side_mod;
     /* sub_exps[index] holds the current subexpression with CUR separator */
     split_expression = g_sub_ast_arr[col_num].split("CUR");
     left_side = split_expression[0];
-    console.log(split_expression);
     right_side = split_expression[1].substring(1);
     if(right_side[0] == '>' || right_side[0] == '-')
         right_side = right_side.substring(1);
+    /* Strip the trailing and leading whitespace from each side of the current operator */
+    left_side = left_side.replace(/^\s*/m, '');
+    left_side = left_side.replace(/\s*$/m, '');
+    right_side = right_side.replace(/^\s*/m, '');
+    right_side = right_side.replace(/\s*$/m, '');
     /* If the left side is enclosed by parentheses, remove the parentheses and the trailing/leading whitespace */
     if (left_paren_regex.test(left_side) && right_paren_regex.test(left_side)) {
-        left_side = left_side.replace(/^\s*\(?/m, '');
-        left_side = left_side.replace(/\)?\s*$/m, '');
-    }
-    /* Otherwise strip only the trailing and leading whitespace */
-    else {
-        left_side = left_side.replace(/^\s*/m, '');
-        left_side = left_side.replace(/\s*$/m, '');
+        left_side_mod = left_side.replace(/^\s*\(?/m, '');
+        left_side_mod = left_side_mod.replace(/\)?\s*$/m, '');
     }
     /* If the right side is enclosed by parentheses, remove the parenthesis and the trailing/leading whitespace */
     if (left_paren_regex.test(right_side) && right_paren_regex.test(right_side)) {
-        right_side = right_side.replace(/^\s*\(/m, '');
-        right_side = right_side.replace(/\)\s*$/m, '');
+        right_side_mod = right_side.replace(/^\s*\(/m, '');
+        right_side_mod = right_side_mod.replace(/\)\s*$/m, '');
     }
     /* otherwise strip only the trailing/leading whitespace */
-    else {
-        right_side = right_side.replace(/^\s*/m, '');
-        right_side = right_side.replace(/\s*$/m, '');
-    }
+    console.log(left_side + "R" + right_side + "L" + left_side_mod + "R" + right_side_mod);
     for(i = 0; i < inputs.length; i++) {
         current_cell = inputs[i];
         cell_col_num = current_cell.getAttribute("col_num");
-        if(g_ast_arr[cell_col_num] == left_side || g_ast_arr[cell_col_num] == right_side)
+        if(g_ast_arr[cell_col_num] == left_side || g_ast_arr[cell_col_num] == right_side || g_ast_arr[cell_col_num] == right_side_mod || g_ast_arr[cell_col_num] == left_side_mod)
             highlight_column(cell_col_num);
         else
             unhighlight_column(cell_col_num);
