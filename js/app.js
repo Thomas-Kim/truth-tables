@@ -35,7 +35,8 @@ App.FeedbackRoute = Ember.Route.extend ({
 })
 
 App.ExplainModel = Ember.Object.extend({
-    feedback: true
+    feedback: true,
+    expression: 'a|b&c'
 })
 
 App.EvaluationRoute = Ember.Route.extend({
@@ -163,7 +164,12 @@ actions: {
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\scur.\s/i)
+            subexpressions = this.get('selectedExpression').split(/\s?cur.\s?/i)
+            console.log(subexpressions)
+            if(subexpressions[1].charAt(0) === '>'){
+              subexpressions[1] = subexpressions[1].slice(2);
+            }
+            console.log(subexpressions)
             return subexpressions.indexOf(this.get("expression")) != -1
         }
     }.property('selectedExpression', "expression"),
@@ -252,7 +258,7 @@ App.TruthVariableComponent = Ember.Component.extend({
     variables: '',
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\scur.\s/i)
+            subexpressions = this.get('selectedExpression').split(/\s?cur.\s?/i)
             return subexpressions.indexOf(this.get("variable")) != -1
         }
     }.property('selectedExpression', "variable"),
@@ -271,6 +277,7 @@ App.TruthRowComponent = Ember.Component.extend({
 App.TruthChecker = Ember.TextField.extend({
     attributeBindings: ["style"],
     color: null,
+    classNames: ['guess-input'],
     style: function(){
         return "background-color:" + this.get("color") + ';'
     }.property('color')

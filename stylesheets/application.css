@@ -17,7 +17,7 @@ td {
 }
 
 .input {
-  background-color: white;
+  background-color: #EEEEEE;
 }
 
 .row {
@@ -45,4 +45,8 @@ thead {
 .guess {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.guess-input {
+  text-align: center;
 }
