@@ -165,11 +165,15 @@ actions: {
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
             subexpressions = this.get('selectedExpression').split(/\s?cur.\s?/i)
-            console.log(subexpressions)
-            if(subexpressions[1].charAt(0) === '>'){
-              subexpressions[1] = subexpressions[1].slice(2);
+            /* Ignore 2 characters in case -> or <- */
+            /* TODO?: Change this to a regular expression that slices [^\(\)[a-zTF] */
+            if(subexpressions[1].charAt(0) === '>' || subexpressions[1].charAt(0) === '-'){
+              subexpressions[1] = subexpressions[1].slice(2)
             }
-            console.log(subexpressions)
+            for(i = 0; i < 2; i++) {
+                subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
+                subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
+            }
             return subexpressions.indexOf(this.get("expression")) != -1
         }
     }.property('selectedExpression', "expression"),
