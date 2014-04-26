@@ -193,7 +193,9 @@ function change_highlight() {
     /* sub_exps[index] holds the current subexpression with CUR separator */
     split_expression = g_sub_ast_arr[col_num].split("CUR");
     left_side = split_expression[0];
-    right_side = split_expression[1].substring(2);
+    console.log(split_expression);
+    right_side = split_expression[1].substring(1);
+    console.log(right_side);
     /* If the left side is enclosed by parentheses, remove the parentheses and the trailing/leading whitespace */
     if (left_paren_regex.test(left_side) && right_paren_regex.test(left_side)) {
         left_side = left_side.replace(/^\s*\(?/m, '');
