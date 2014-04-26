@@ -195,7 +195,8 @@ function change_highlight() {
     left_side = split_expression[0];
     console.log(split_expression);
     right_side = split_expression[1].substring(1);
-    console.log(right_side);
+    if(right_side[0] == '>' || right_side[0] == '-')
+        right_side = right_side.substring(1);
     /* If the left side is enclosed by parentheses, remove the parentheses and the trailing/leading whitespace */
     if (left_paren_regex.test(left_side) && right_paren_regex.test(left_side)) {
         left_side = left_side.replace(/^\s*\(?/m, '');
