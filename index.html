@@ -42,9 +42,9 @@
         <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please put in an expression below and give it a shot! </p>
       </div>
       <div class="row">
-        Expression: {{input valueBinding="expression" placeholder="a|b&c" classNames="input" action="hitEnter"}}
-        Want feedback? {{input type="checkbox" checkedBinding="feedback"}} 
-        {{#link-to 'truth' feedback expression tagName="button"}}Enter{{/link-to}}
+        Expression: {{view App.ExpressionChecker valueBinding="expression" rows=1 invalidExpressionBinding="invalidExpression"}}
+        Want feedback? {{input type="checkbox" checkedBinding="feedback"}}
+        {{#link-to 'truth' feedback expression}}<button {{bind-attr disabled="invalidExpression"}} class="enter-expression">Enter</button>{{/link-to}}
       </div>
     </script>
 
@@ -77,7 +77,7 @@
             {{#if feedback_bool}}
                 <p> {{mistakes}} mistakes made so far. </p>
             {{else}}
-              {{#link-to "evaluation" tagName="button"}} Evaluate {{/link-to}}
+              {{#link-to "evaluation" tagName="button" classNames='evaluate-button'}} Evaluate {{/link-to}}
             {{/if}}
             </div>
           </div>

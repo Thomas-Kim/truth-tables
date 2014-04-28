@@ -36,7 +36,17 @@ App.FeedbackRoute = Ember.Route.extend ({
 
 App.ExplainModel = Ember.Object.extend({
     feedback: true,
-    expression: 'a|b&c'
+    expression: 'a|b&c',
+    invalidExpression: function(){
+      parser = boolean_print
+      try{
+         testParse = parser.parse(this.get("expression"))
+         return false
+      }
+      catch(err){
+        return true
+      }
+    }.property("expression")
 })
 
 App.EvaluationRoute = Ember.Route.extend({
@@ -126,9 +136,6 @@ App.TruthController = Ember.ObjectController.extend({
         this.set('model.variables', variable_list)
         return variable_list
     }.observes('model.expression')
-})
-
-App.ExplainController = Ember.ObjectController.extend({
 })
 
 App.TruthNodeComponent = Ember.Component.extend({
@@ -285,4 +292,19 @@ App.TruthChecker = Ember.TextField.extend({
     style: function(){
         return "background-color:" + this.get("color") + ';'
     }.property('color')
+})
+
+App.ExpressionChecker = Ember.TextField.extend({
+    attributeBindings: ["style"],
+    invalidExpression: false,
+    style: function(){
+      console.log(this.get("invalidExpression"))
+      if(this.get("invalidExpression") == true){
+        console.log("Got here")
+        return "background-color:#FF3333;"
+      }
+      else {
+        return ""
+      }
+    }.property("invalidExpression")
 })

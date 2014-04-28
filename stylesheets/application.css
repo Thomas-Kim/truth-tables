@@ -1,19 +1,35 @@
 body {
-  background-color: #FCFBF0
+  /*Taken from CSS-tricks*/
+  /* fallback */
+  background-color: white;
+
+  /* Safari 4-5, Chrome 1-9 */
+  /* Can't specify a percentage size? Laaaaaame. */
+  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#FFFFFF), to(#AAAAAA));
+
+  /* Safari 5.1+, Chrome 10+ */
+  background: -webkit-radial-gradient(circle, #FFFFFF, #AAAAAA);
+
+  /* Firefox 3.6+ */
+  background: -moz-radial-gradient(circle, #FFFFFF, #AAAAAA);
+
+  /* IE 10 */
+  background: -ms-radial-gradient(circle, #FFFFFF, #AAAAAA);
+
 }
 
 td {
-    padding: 10px;
-    border: 1px solid black;
-    text-align: center;
+  padding: 10px;
+  border: 1px solid black;
+  text-align: center;
 }
 
 .is-subexpression-of-selected {
-    background-color: #DDDDDD;
+  background-color: #A8AFED;
 }
 
 .large-font {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .input {
@@ -25,8 +41,12 @@ td {
 }
 
 .table {
-  margin-left: 50px;
   margin-top: 25px;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .title {
@@ -49,4 +69,12 @@ thead {
 
 .guess-input {
   text-align: center;
+}
+
+.evaluate-button {
+  margin-top: 15px;
+}
+
+.enter-expression {
+  color: black;
 }
