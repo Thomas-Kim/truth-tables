@@ -17,7 +17,7 @@ var exp_final;
 "->"                  return 'RIMP'
 "<-"                  return 'LIMP'
 "|"                   return 'OR'
-"X"                   return 'XOR'
+[X]                   return 'XOR'
 "&"                   return 'AND'
 "!"                   return 'NOT'
 "("                   return 'LPAREN'
