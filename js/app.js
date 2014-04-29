@@ -168,7 +168,7 @@ actions: {
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z]+\s?/)
+            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z()]+\s?/)
             for(i = 0; i < 2; i++) {
               if(subexpressions[i] === '!'){
                 subexpression[i] = subexpression[i].slice(1)
@@ -264,7 +264,7 @@ App.TruthVariableComponent = Ember.Component.extend({
     variables: '',
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z]+\s?/)
+            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z()]+\s?/)
             for(i = 0; i < 2; i++){
               if(subexpressions[i] === '!'){
                 subexpression[i] = subexpression[i].slice(1)
