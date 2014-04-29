@@ -52,7 +52,7 @@ App.ExplainModel = Ember.Object.extend({
 App.EvaluationRoute = Ember.Route.extend({
   model: function(){
     if(this.modelFor("truth") === undefined){
-      console.log("test")
+      //console.log("test")
       return false
     }
     return this.modelFor("truth")
@@ -70,8 +70,7 @@ App.Table = Ember.Object.extend ({
       var correct = this.get("answered") - this.get("mistakes")
       return (correct / this.get("total")) * 100
     }.property('answered', 'mistakes', 'total'),
-    total: function(){
-      return this.get("ast").length * this.get("number_list").length
+k
     }.property('ast', 'number_list'),
     feedback_bool: function(){
       if(this.get("feedback") == "true"){
@@ -171,12 +170,8 @@ actions: {
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?cur.\s?/i)
-            /* Ignore 2 characters in case -> or <- */
-            /* TODO?: Change this to a regular expression that slices [^\(\)[a-zTF] */
-            if(subexpressions[1].charAt(0) === '>' || subexpressions[1].charAt(0) === '-'){
-              subexpressions[1] = subexpressions[1].slice(2)
-            }
+            subexpressions = this.get('selectedExpression').split(/\s?cur\S+\s?/i)
+            console.log(subexpressions)
             for(i = 0; i < 2; i++) {
                 subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
                 subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
@@ -192,7 +187,7 @@ actions: {
               }
               if(this.get("last_truth_value") == null){
                 this.set("answered", this.get("answered") + 1)
-                console.log(this.get("answered"))
+                //console.log(this.get("answered"))
               }
               this.set("last_truth_value", true);
 
@@ -207,7 +202,7 @@ actions: {
               }
               if(this.get("last_truth_value") == null){
                 this.set("answered", this.get("answered") + 1)
-                console.log(this.get("answered"))
+                //console.log(this.get("answered"))
               }
               this.set("last_truth_value", false);
               if(this.get("feedback") === "false")
@@ -269,7 +264,7 @@ App.TruthVariableComponent = Ember.Component.extend({
     variables: '',
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?cur.\s?/i)
+            subexpressions = this.get('selectedExpression').split(/\s?cur\S+\s?/i)
             return subexpressions.indexOf(this.get("variable")) != -1
         }
     }.property('selectedExpression', "variable"),
@@ -298,9 +293,9 @@ App.ExpressionChecker = Ember.TextField.extend({
     attributeBindings: ["style"],
     invalidExpression: false,
     style: function(){
-      console.log(this.get("invalidExpression"))
+      //console.log(this.get("invalidExpression"))
       if(this.get("invalidExpression") == true){
-        console.log("Got here")
+        //console.log("Got here")
         return "background-color:#FF3333;"
       }
       else {
