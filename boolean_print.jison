@@ -16,6 +16,8 @@ var exp_final;
 "="                   return 'EQ'
 "->"                  return 'RIMP'
 "<-"                  return 'LIMP'
+"NAND"                return 'NAND'
+"NOR"                 return 'NOR'
 "|"                   return 'OR'
 [X]                   return 'XOR'
 "&"                   return 'AND'
@@ -33,8 +35,8 @@ var exp_final;
 %left VAR
 %left EQ
 %left LIMP RIMP
-%left OR XOR
-%left AND
+%left OR XOR NOR
+%left AND NAND
 %left NOT
 %left LPAREN RPAREN
 
@@ -49,49 +51,53 @@ expressions
 
 eq
     : eq EQ eq
-        {$$ = $1 + " = " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR= " + $3);}
+        { $$ = $1 + " = " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR= " + $3); }
     | imp
-        {$$ = $1;}
+        { $$ = $1;}
     ;
 
 imp
     : imp RIMP imp
-        {$$ = $1 + " -> " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR-> " + $3);}
+        { $$ = $1 + " -> " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR-> " + $3); }
     | imp LIMP imp
-        {$$ = $1 + " <- " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR<- " + $3);}
+        { $$ = $1 + " <- " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR<- " + $3); }
     | or
-        {$$ = $1;}
+        { $$ = $1;}
     ;
 
 or
     : or OR or
-        {$$ = $1 + (" | ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR| " + $3);}
+        { $$ = $1 + " | " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR| " + $3); }
     | or XOR or
-        {$$ = $1 + (" X ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURX " + $3);}
+        { $$ = $1 + " X " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURX " + $3); }
+    | or NOR or
+        { $$ = $1 + " NOR " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURNOR " + $3); }
     | and
-        {$$ = $1;}
+        { $$ = $1;}
     ;
 
 and
     : and AND and
-        {$$ = $1 + (" & ") + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR& " + $3);}
+        { $$ = $1 + " & " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR& " + $3); }
+    | and NAND and
+        { $$ = $1 + " NAND " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURNAND " + $3); }
     | not
-        {$$ = $1;}
+        { $$ = $1;}
     ;
 
 not
     : NOT primary
-        {$$ = "!" + $2; if(exp_list == null) exp_list = new Array(); exp_list.push("CUR!" + $2);}
+        { $$ = "!" + $2; if(exp_list == null) exp_list = new Array(); exp_list.push("CUR!" + $2); }
     | primary
-        {$$ = $1;}
+        { $$ = $1; }
     ;
 
 primary
     : LPAREN eq RPAREN
-        {$$ = "(" + $2 + ")";}
+        { $$ = "(" + $2 + ")"; }
     | BOOL
-        {$$ = yytext;}
+        { $$ = yytext; }
     | VAR
-        {$$ = yytext;}
+        { $$ = yytext; }
     ;
 
