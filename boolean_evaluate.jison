@@ -10,8 +10,10 @@
 "="                   return 'EQ'
 "->"                  return 'RIMP'
 "<-"                  return 'LIMP'
+"NAND"                return 'NAND'
+"NOR"                 return 'NOR'
 "|"                   return 'OR'
-"X"                   return 'XOR'
+[X]                   return 'XOR'
 "&"                   return 'AND'
 "!"                   return 'NOT'
 "("                   return 'LPAREN'
@@ -25,8 +27,8 @@
 
 %left LPAREN RPAREN
 %left NOT
-%left AND
-%left OR XOR
+%left AND NAND
+%left OR XOR NOR
 %left LIMP RIMP
 %left EQ
 %left BOOL
@@ -42,47 +44,51 @@ expressions
 
 eq
     : eq EQ eq
-        {$$ = (!$1 || $3) && ($1 || !$3);}
+        { $$ = (!$1 || $3) && ($1 || !$3); }
     | imp
-        {$$ = $1;}
+        { $$ = $1; }
     ;
 
 imp
     : imp RIMP imp
-        {$$ = !$1 || $3;}
+        { $$ = !$1 || $3; }
     | imp LIMP imp
-        {$$ = $1 || !$3;}
+        { $$ = $1 || !$3; }
     | or
-        {$$ = $1;}
+        { $$ = $1; }
     ;
 
 or
     : or OR or
-        {$$ = $1 || $3;}
+        { $$ = $1 || $3; }
     | or XOR or
-        {$$ = !$1 && $3 || $1 && !$3;}
+        { $$ = !$1 && $3 || $1 && !$3; }
+    | or NOR or
+        { $$ = !($1 || $3) }
     | and
-        {$$ = $1;}
+        { $$ = $1; }
     ;
 
 and
     : and AND and
-        {$$ = $1 && $3;}
+        { $$ = $1 && $3; }
+    | and NAND and
+        { $$ = !($1 && $3); }
     | not
-        {$$ = $1;}
+        { $$ = $1; }
     ;
 
 not
     : NOT primary
-        {$$ = !$2;}
+        { $$ = !$2; }
     | primary
-        {$$ = $1;}
+        { $$ = $1; }
     ;
 
 primary
     : LPAREN eq RPAREN
-        {$$ = $2;}
+        { $$ = $2; }
     | BOOL
-        {$$ = yytext == 'T';}
+        { $$ = yytext == 'T'; }
     ;
 
