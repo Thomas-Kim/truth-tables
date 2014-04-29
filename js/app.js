@@ -70,8 +70,6 @@ App.Table = Ember.Object.extend ({
       var correct = this.get("answered") - this.get("mistakes")
       return (correct / this.get("total")) * 100
     }.property('answered', 'mistakes', 'total'),
-k
-    }.property('ast', 'number_list'),
     feedback_bool: function(){
       if(this.get("feedback") == "true"){
         return true
@@ -170,11 +168,14 @@ actions: {
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?cur\S+\s?/i)
+            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z]+\s?/)
             console.log(subexpressions)
             for(i = 0; i < 2; i++) {
-                subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
-                subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
+              if(subexpressions[i] === '!'){
+                subexpression[i] = subexpression[i].slice(1)
+              }
+              subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
+              subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
             }
             return subexpressions.indexOf(this.get("expression")) != -1
         }
@@ -264,7 +265,14 @@ App.TruthVariableComponent = Ember.Component.extend({
     variables: '',
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?cur\S+\s?/i)
+            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z]+\s?/)
+            console.log(subexpressions)
+            for(i = 0; i < 2; i++){
+              if(subexpressions[i] === '!'){
+                subexpression[i] = subexpression[i].slice(1)
+              }
+              console.log(subexpressions)
+            }
             return subexpressions.indexOf(this.get("variable")) != -1
         }
     }.property('selectedExpression', "variable"),

@@ -29,9 +29,12 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="application">
-      <div class="container">
-        {{outlet}}
-      </div>
+      <div id="wrap">
+          <div id="main" class="container clear-top">
+            {{outlet}}
+          </div>
+        </div>
+        <footer class="footer"><p>LICENSE</p><p> You may use, redistribute, sell, modify this code as long as you credit Bastion Fennell, Eysa Lee, and Thomas Kim.</p><p>if modified, you must state that the code has been modified from its original form</p></footer>
     </script>
 
     <script type="text/x-handlebars" data-template-name="explain">
@@ -40,6 +43,7 @@
       </div>
       <div class="row">
         <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please put in an expression below and give it a shot! </p>
+        <p>The source code for this project can be found here: <a href="https://github.com/Thomas-Kim/truth-tables">https://github.com/Thomas-Kim/truth-tables</a></p>
       </div>
       <div class="row">
         Expression: {{view App.ExpressionChecker valueBinding="expression" rows=1 invalidExpressionBinding="invalidExpression"}}
