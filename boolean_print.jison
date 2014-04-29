@@ -86,7 +86,7 @@ and
     ;
 
 not
-    : NOT primary
+    : NOT not
         { $$ = "!" + $2; if(exp_list == null) exp_list = new Array(); exp_list.push("CUR!" + $2); }
     | primary
         { $$ = $1; }
