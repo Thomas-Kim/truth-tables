@@ -64,8 +64,8 @@ top
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
     | half CUR NAND half
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR NOT half
-        { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
+    | CUR NOT half
+        { if(exp_list == null) exp_list = new Array(); exp_list.push($3); }
     ;
 
 half
