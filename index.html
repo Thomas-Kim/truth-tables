@@ -17,12 +17,12 @@
           {{truth-variable selectedExpression=selectedExpression variable=variable index=row variables=variables tagName="td" classNames="large-font variable"}} 
         {{/each}}
         {{#each node in ast}}
-            {{truth-node selectedExpression=selectedExpression mistakes=mistakes node=node variable=variables answered=answered row=row feedback=feedback tagName="td" classNames="guess"}}
+            {{truth-node selectedExpression=selectedExpression mistakes=mistakes node=node variable=variables answered=answered row=row feedback=feedback evaluation=evaluation tagName="td" classNames="guess"}}
         {{/each}}
     </script>
 
     <script type="text/x-handlebars" id="components/truth-node">
-        {{view App.TruthChecker size=1 maxlength=1 valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression" focus-out="clearSelectedExpression" answerBinding=truthAssignment}}
+        {{view App.TruthChecker size=1 maxlength=1 disabledBinding=evaluation valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression" focus-out="clearSelectedExpression" answerBinding=truthAssignment}}
     </script>
 
     <script type="text/x-handlebars" id="components/truth-variable">
@@ -122,7 +122,7 @@
               </thead>
               <tbody>
                 {{#each given_number in number_list}}
-                    {{truth-row ast=ast variables=variables row=given_number feedback=feedback tagName="tr" mistakes=mistakes answered=answered}}
+                    {{truth-row ast=ast variables=variables row=given_number feedback=feedback tagName="tr" mistakes=mistakes answered=answered evaluation=evaluation}}
                 {{/each}}
               </tbody>
             </table>
@@ -131,31 +131,10 @@
             {{#if feedback_bool}}
                 <p> {{mistakes}} mistakes made so far. </p>
             {{else}}
-              {{#link-to "evaluation" tagName="button" classNames='evaluate-button'}} Evaluate {{/link-to}}
+              <button {{action 'evaluate'}}>Evaluate </button>
             {{/if}}
             </div>
           </div>
         </div>
-    </script>
-
-    <script type="text/x-handlebars" data-template-name="evaluation">
-      {{#if model}}
-        <div class="row title">
-          <h3> Evaluation for <b>{{{formatted_expression}}}</b> </h3>
-        </div>
-        <div class="row">
-          <p>Mistakes made {{mistakes}} out of {{answered}} answered</p>
-          <p>Answered {{answered}} out of {{total}} </p>
-          <p>Final result: {{percentage_result}}%</p>
-          {{#link-to 'truth' feedback expression tagName="button"}} Go back {{/link-to}}
-        </div>
-      {{else}}
-        <div class="row title">
-          <h3> Evaluation failed </h3>
-        </div>
-        <div class="row">
-          You must take a test first!
-        </div>
-      {{/if}}
     </script>
 </body>
