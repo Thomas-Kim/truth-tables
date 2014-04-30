@@ -68,14 +68,14 @@ App.Table = Ember.Object.extend ({
     answered: 0,
     formatted_expression: function(){
       output = this.get("expression").replace(/&/g, "&and;");
-      output = output.replace(/\|/g, "&or;", 'g');
-      output = output.replace(/->/g, "&rarr;");
-      output = output.replace(/<-/g, "&larr;");
-      output = output.replace(/!/g, "&not;");
-      output = output.replace(/=/g, "&equiv;");
-      output = output.replace(/NAND/g, "&#8892;");
-      output = output.replace(/NOR/g, "&#8893;");
-      output = output.replace(/X/g, "&#8891;");
+      output = output.replace(/\s?\|\s?/g, " &or; ", 'g');
+      output = output.replace(/\s?->\s?/g, " &rarr; ");
+      output = output.replace(/\s?<-\s?/g, " &larr; ");
+      output = output.replace(/\s?!\s?/g, " &not; ");
+      output = output.replace(/\s?=\s?/g, " &equiv; ");
+      output = output.replace(/\s?NAND\s?/g, " &#8892; ");
+      output = output.replace(/\s?NOR\s?/g, " &#8893; ");
+      output = output.replace(/\s?X\s?/g, " &#8891; ");
       return output
     }.property("expression"),
     percentage_result: function(){
