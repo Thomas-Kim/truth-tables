@@ -79,7 +79,7 @@ and
     ;
 
 not
-    : NOT primary
+    : NOT not
         { $$ = !$2; }
     | primary
         { $$ = $1; }
