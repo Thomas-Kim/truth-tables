@@ -72,8 +72,10 @@ App.Table = Ember.Object.extend ({
       output = output.replace(/->/g, "&rarr;");
       output = output.replace(/<-/g, "&larr;");
       output = output.replace(/!/g, "&not;");
+      output = output.replace(/=/g, "&equiv;");
       output = output.replace(/NAND/g, "&#8892;");
       output = output.replace(/NOR/g, "&#8893;");
+      output = output.replace(/XOR/g, "&#8891;");
       return output
     }.property("expression"),
     percentage_result: function(){
