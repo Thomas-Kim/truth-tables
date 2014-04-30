@@ -66,6 +66,16 @@ App.Table = Ember.Object.extend ({
     feedback: '',
     mistakes: 0,
     answered: 0,
+    formatted_expression: function(){
+      output = this.get("expression").replace(/&/g, "&and;");
+      output = output.replace(/\|/g, "&or;", 'g');
+      output = output.replace(/->/g, "&rarr;");
+      output = output.replace(/<-/g, "&larr;");
+      output = output.replace(/!/g, "&not;");
+      output = output.replace(/NAND/g, "&#8892;");
+      output = output.replace(/NOR/g, "&#8893;");
+      return output
+    }.property("expression"),
     percentage_result: function(){
       var correct = this.get("answered") - this.get("mistakes")
       return (correct / this.get("total")) * 100
