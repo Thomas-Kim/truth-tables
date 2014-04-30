@@ -1,6 +1,3 @@
-
-/* description: Parses end executes mathematical expressions. */
-
 %{
 var exp_list = null;
 var exp_final;
@@ -31,14 +28,14 @@ var exp_final;
 
 /* operator associations and precedence */
 
+%left LPAREN RPAREN
+%left NOT
+%left AND NAND
+%left OR XOR NOR
+%left LIMP RIMP
+%left EQ
 %left BOOL
 %left VAR
-%left EQ
-%left LIMP RIMP
-%left OR XOR NOR
-%left AND NAND
-%left NOT
-%left LPAREN RPAREN
 
 %start expressions
 

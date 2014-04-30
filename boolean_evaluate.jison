@@ -1,6 +1,3 @@
-
-/* description: Parses end executes mathematical expressions. */
-
 /* lexical grammar */
 %lex
 %%
@@ -32,6 +29,7 @@
 %left LIMP RIMP
 %left EQ
 %left BOOL
+%left VAR
 
 %start expressions
 
