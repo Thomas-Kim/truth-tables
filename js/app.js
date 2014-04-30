@@ -166,6 +166,7 @@ App.TruthNodeComponent = Ember.Component.extend({
     row: null,
     guess: '',
     feedback: "false",
+    column_split: boolean_split,
     expression: function(){
         return this.get("node").replace("CUR","");
     }.property("node"),
@@ -190,11 +191,7 @@ actions: {
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?CUR!?[^a-z()\s!]*\s?/)
-            for(i = 0; subexpressions[i] != null && i < 2; i++) {
-              subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
-              subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
-            }
+            subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
             return subexpressions.indexOf(this.get("expression")) != -1
         }
     }.property('selectedExpression', "expression"),
@@ -281,13 +278,10 @@ App.TruthVariableComponent = Ember.Component.extend({
     classNameBindings: ['isSubexpressionOfSelected'],
     index: '',
     variables: '',
+    column_split: boolean_split,
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?CUR!?[^a-z()\s!]*\s?/)
-            for(i = 0; subexpressions[i] != null && i < 2; i++) {
-              subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
-              subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
-            }
+            subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
             return subexpressions.indexOf(this.get("variable")) != -1
         }
     }.property('selectedExpression', "variable"),

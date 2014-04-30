@@ -44,7 +44,7 @@ var exp_final;
 
 expressions
     : top EOF
-        { console.log(exp_list); exp_final = exp_list; exp_list = null; return exp_final; }
+        { exp_final = exp_list; exp_list = null; return exp_final; }
     ;
 
 top
