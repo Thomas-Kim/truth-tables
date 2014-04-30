@@ -56,6 +56,12 @@ App.Table = Ember.Object.extend ({
     mistakes: 0,
     answered: 0,
     evaluation: false,
+    total: function(){
+        return this.get("ast").length * Math.pow(2, this.get("variables").length)
+    }.property('ast', 'variables'),
+    correct: function(){
+        return this.get("answered") - this.get("mistakes")
+    }.property('answered', 'mistakes'),
     formatted_expression: function(){
       output = this.get("expression").replace(/&/g, "&and;");
       output = output.replace(/\s?\|\s?/g, " &or; ", 'g');
@@ -68,10 +74,9 @@ App.Table = Ember.Object.extend ({
       output = output.replace(/\s?X\s?/g, " &#8891; ");
       return output
     }.property("expression"),
-    percentage_result: function(){
-      var correct = this.get("answered") - this.get("mistakes")
-      return (correct / this.get("total")) * 100
-    }.property('answered', 'mistakes', 'total'),
+    percentageResult: function(){
+      return (this.get("correct") / this.get("total")) * 100
+    }.property('correct', 'total'),
     feedback_bool: function(){
       if(this.get("feedback") == "true"){
         return true

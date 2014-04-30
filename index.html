@@ -128,10 +128,16 @@
             </table>
 
             <div class="row">
+            {{#if evaluation}}
+                <p>You answered {{answered}} out of {{total}}</p>
+                <p>You answered {{correct}} correctly</p>
+                <p>Your total score: {{percentageResult}}</p>
+            {{else}}
             {{#if feedback_bool}}
                 <p> {{mistakes}} mistakes made so far. </p>
             {{else}}
               <button {{action 'evaluate'}}>Evaluate </button>
+            {{/if}}
             {{/if}}
             </div>
           </div>
