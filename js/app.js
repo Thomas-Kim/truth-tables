@@ -168,11 +168,8 @@ actions: {
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z()\s!]*\s?/)
+            subexpressions = this.get('selectedExpression').split(/\s?CUR!?[^a-z()\s!]*\s?/)
             for(i = 0; subexpressions[i] != null && i < 2; i++) {
-              if(subexpressions[i].indexOf('!') == 0){
-                subexpressions[i] = subexpressions[i].slice(1)
-              }
               subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
               subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
             }
@@ -264,11 +261,8 @@ App.TruthVariableComponent = Ember.Component.extend({
     variables: '',
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get('selectedExpression').split(/\s?CUR[^a-z()\s!]*\s?/)
-            for(i = 0; subexpressions[i] != null && i < 2; i++){
-              if(subexpressions[i].indexOf('!') == 0){
-                subexpressions[i] = subexpressions[i].slice(1)
-              }
+            subexpressions = this.get('selectedExpression').split(/\s?CUR!?[^a-z()\s!]*\s?/)
+            for(i = 0; subexpressions[i] != null && i < 2; i++) {
               subexpressions[i+2] = subexpressions[i].replace(/^\s*\(/m, '')
               subexpressions[i+2] = subexpressions[i+2].replace(/\)\s*$/m, '')
             }
