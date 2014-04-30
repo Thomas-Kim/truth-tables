@@ -5,7 +5,6 @@ App.Router.map(function() {
     this.resource('feedback', { path: '/:feedback' }, function(){
         this.resource('truth', { path: '/:exp' })
     });
-    this.resource('evaluation');
 })
 
 App.TruthRoute = Ember.Route.extend ({
@@ -49,16 +48,6 @@ App.ExplainModel = Ember.Object.extend({
     }.property("expression")
 })
 
-App.EvaluationRoute = Ember.Route.extend({
-  model: function(){
-    if(this.modelFor("truth") === undefined){
-      //console.log("test")
-      return false
-    }
-    return this.modelFor("truth")
-  }
-})
-
 App.Table = Ember.Object.extend ({
     expression: '',
     parser: boolean_print,
@@ -66,6 +55,7 @@ App.Table = Ember.Object.extend ({
     feedback: '',
     mistakes: 0,
     answered: 0,
+    evaluation: false,
     formatted_expression: function(){
       output = this.get("expression").replace(/&/g, "&and;");
       output = output.replace(/\s?\|\s?/g, " &or; ", 'g');
@@ -154,7 +144,15 @@ App.TruthController = Ember.ObjectController.extend({
             variable_list.splice(0, 1)
         this.set('model.variables', variable_list)
         return variable_list
-    }.observes('model.expression')
+    }.observes('model.expression'),
+    actions: {
+        evaluate: function(){
+            console.log(this.get('model').evaluation)
+            this.set('model.evaluation', true)
+            console.log(this.get('model.evaluation'))
+        }
+    }
+
 })
 
 App.TruthNodeComponent = Ember.Component.extend({
@@ -167,6 +165,7 @@ App.TruthNodeComponent = Ember.Component.extend({
     guess: '',
     feedback: "false",
     column_split: boolean_split,
+    evaluation: null,
     expression: function(){
         return this.get("node").replace("CUR","");
     }.property("node"),
@@ -207,7 +206,7 @@ actions: {
               }
               this.set("last_truth_value", true);
 
-              if(this.get("feedback") === "false")
+              if(this.get("feedback") === "false" && this.get("evaluation") === false)
                 return "#EEEEEE"
 
               return "99FF66"
@@ -221,7 +220,7 @@ actions: {
                 //console.log(this.get("answered"))
               }
               this.set("last_truth_value", false);
-              if(this.get("feedback") === "false")
+              if(this.get("feedback") === "false" && this.get("evaluation") === false)
                 return "#EEEEEE"
 
               return "#FF3333"
@@ -237,7 +236,7 @@ actions: {
             this.set("last_truth_value", null);
             return "#EEEEEE"
         }
-    }.property('validAnswer', 'correctAnswer', 'feedback', 'mistakes', 'last_truth_value', 'answered'),
+    }.property('validAnswer', 'correctAnswer', 'feedback', 'mistakes', 'last_truth_value', 'answered', 'evaluation'),
     parser: boolean_evaluate,
     truthArray: function(){
         var output = Ember.A([])
@@ -269,7 +268,7 @@ actions: {
             return "Error"
         }
         //return this.get("parser").parse(outputString)
-    }.property('truthArray', 'expression', 'variable', 'parser')
+    }.property('truthArray', 'expression', 'variable', 'parser'),
 })
 
 App.TruthVariableComponent = Ember.Component.extend({
