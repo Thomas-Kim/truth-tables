@@ -50,6 +50,55 @@
         Want feedback? {{input type="checkbox" checkedBinding="feedback"}}
         {{#link-to 'truth' feedback expression}}<button {{bind-attr disabled="invalidExpression"}} class="enter-expression">Enter</button>{{/link-to}}
       </div>
+      <div class="row">
+        <p>Legend:</p>
+        <div class="table">
+          <table>
+            <thead>
+              <td>Operator</td>
+              <td>What to Type</td>
+            </thead>
+            <tbody>
+              <tr>
+                <td>&or;</td>
+                <td>|</td>
+              </tr>
+              <tr>
+                <td>&and;</td>
+                <td>&</td>
+              </tr>
+              <tr>
+                <td>&rarr;</td>
+                <td>-></td>
+              </tr>
+              <tr>
+                <td>&larr;</td>
+                <td><-</td>
+              </tr>
+              <tr>
+                <td>&not;</td>
+                <td>!</td>
+              </tr>
+              <tr>
+                <td>&equiv;</td>
+                <td>=</td>
+              </tr>
+              <tr>
+                <td>&#8891;</td>
+                <td>X</td>
+              </tr>
+              <tr>
+                <td>&#8892;</td>
+                <td>NAND</td>
+              </tr>
+              <tr>
+                <td>&#8893;</td>
+                <td>NOR</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="feedback">
