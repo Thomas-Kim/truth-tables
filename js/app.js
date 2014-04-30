@@ -303,8 +303,6 @@ App.TruthChecker = Ember.TextField.extend({
     value: null,
     keyDown: function(e){
       if(e.ctrlKey && e.keyCode === 191){
-        console.log("Hit ctrl+?")
-        console.log(this.get("answer"))
         if(this.get("answer")){
           this.set("value", 'T')
         }
