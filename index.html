@@ -22,7 +22,7 @@
     </script>
 
     <script type="text/x-handlebars" id="components/truth-node">
-        {{view App.TruthChecker size=1 maxlength=1 valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression" focus-out="clearSelectedExpression"}}
+        {{view App.TruthChecker size=1 maxlength=1 valueBinding=guess cols=2 rows=1 colorBinding=colorCheck focus-in="updateSelectedExpression" focus-out="clearSelectedExpression" answerBinding=truthAssignment}}
     </script>
 
     <script type="text/x-handlebars" id="components/truth-variable">

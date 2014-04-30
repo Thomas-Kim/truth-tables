@@ -259,7 +259,6 @@ actions: {
             truth = truths[i]
             var regex = new RegExp(variable, 'g')
             outputString = outputString.replace(regex, truth)
-            subexpressions = this.get('selectedExpression').split(/cur./i)
         }
         try{
             output = this.get("parser").parse(outputString)
@@ -300,6 +299,20 @@ App.TruthRowComponent = Ember.Component.extend({
 App.TruthChecker = Ember.TextField.extend({
     attributeBindings: ["style"],
     color: null,
+    answer: null,
+    value: null,
+    keyDown: function(e){
+      if(e.ctrlKey && e.keyCode === 191){
+        console.log("Hit ctrl+?")
+        console.log(this.get("answer"))
+        if(this.get("answer")){
+          this.set("value", 'T')
+        }
+        else{
+          this.set("value", 'F')
+        }
+      }
+    },
     classNames: ['guess-input'],
     style: function(){
         return "background-color:" + this.get("color") + ';'
