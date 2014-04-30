@@ -68,14 +68,14 @@ App.Table = Ember.Object.extend ({
     answered: 0,
     formatted_expression: function(){
       output = this.get("expression").replace(/&/g, "&and;");
-      output = output.replace(/\|/g, "&or;", 'g');
-      output = output.replace(/->/g, "&rarr;");
-      output = output.replace(/<-/g, "&larr;");
-      output = output.replace(/!/g, "&not;");
-      output = output.replace(/=/g, "&equiv;");
-      output = output.replace(/NAND/g, "&#8892;");
-      output = output.replace(/NOR/g, "&#8893;");
-      output = output.replace(/XOR/g, "&#8891;");
+      output = output.replace(/\s?\|\s?/g, " &or; ", 'g');
+      output = output.replace(/\s?->\s?/g, " &rarr; ");
+      output = output.replace(/\s?<-\s?/g, " &larr; ");
+      output = output.replace(/\s?!\s?/g, " &not; ");
+      output = output.replace(/\s?=\s?/g, " &equiv; ");
+      output = output.replace(/\s?NAND\s?/g, " &#8892; ");
+      output = output.replace(/\s?NOR\s?/g, " &#8893; ");
+      output = output.replace(/\s?X\s?/g, " &#8891; ");
       return output
     }.property("expression"),
     percentage_result: function(){
@@ -111,7 +111,17 @@ App.Table = Ember.Object.extend ({
     ast_clean: function(){
         var output = Ember.A([]);
         for(i = 0; i < this.get("ast").length; i++){
-            output.pushObject(this.get("ast")[i].replace("CUR",""));
+            expression = this.get("ast")[i].replace("CUR", "");
+            expression = expression.replace(/&/g, "&and;");
+            expression = expression.replace(/\s?\|\s?/g, " &or; ", 'g');
+            expression = expression.replace(/\s?->\s?/g, " &rarr; ");
+            expression = expression.replace(/\s?<-\s?/g, " &larr; ");
+            expression = expression.replace(/\s?!\s?/g, " &not; ");
+            expression = expression.replace(/\s?=\s?/g, " &equiv; ");
+            expression = expression.replace(/\s?NAND\s?/g, " &#8892; ");
+            expression = expression.replace(/\s?NOR\s?/g, " &#8893; ");
+            expression = expression.replace(/\s?X\s?/g, " &#8891; ");
+            output.pushObject(expression);
         }
         return output;
     }.property('ast'),
