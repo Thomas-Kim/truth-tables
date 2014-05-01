@@ -69,7 +69,23 @@ top
     ;
 
 half
-    : LPAREN half RPAREN    %prec LPAREN
+    : LPAREN half RPAREN EQ half %prec AND
+        { $$ = $2 + " = " + $5 }
+    | LPAREN half RPAREN LIMP half %prec AND
+        { $$ = $2 + " <- " + $5 }
+    | LPAREN half RPAREN RIMP half %prec AND
+        { $$ = $2 + " -> " + $5 }
+    | LPAREN half RPAREN OR half %prec AND
+        { $$ = $2 + " | " + $5 }
+    | LPAREN half RPAREN XOR half %prec AND
+        { $$ = $2 + " X " + $5 }
+    | LPAREN half RPAREN NOR half %prec AND
+        { $$ = $2 + " NOR " + $5 }
+    | LPAREN half RPAREN AND half %prec AND
+        { $$ = $2 + " & " + $5 }
+    | LPAREN half RPAREN NAND half %prec AND
+        { $$ = $2 + " NAND " + $5 }
+    | LPAREN half RPAREN    %prec LPAREN
         { $$ = $2; }
     | eq                    %prec EQ
         { $$ = $1; }
