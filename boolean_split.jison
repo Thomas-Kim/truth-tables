@@ -21,7 +21,7 @@ var exp_final;
 "!"                   return 'NOT'
 "("                   return 'LPAREN'
 ")"                   return 'RPAREN'
-"CUR"                 return 'CUR'
+(CUR)                 return 'CUR'
 <<EOF>>               return 'EOF'
 .                     return 'INVALID'
 
