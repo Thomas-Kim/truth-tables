@@ -69,9 +69,9 @@ App.Table = Ember.Object.extend ({
       output = output.replace(/\s?<-\s?/g, " &larr; ");
       output = output.replace(/\s?!\s?/g, " &not; ");
       output = output.replace(/\s?=\s?/g, " &equiv; ");
-      output = output.replace(/\s?NAND\s?/g, " &#8892; ");
-      output = output.replace(/\s?NOR\s?/g, " &#8893; ");
-      output = output.replace(/\s?X\s?/g, " &#8891; ");
+      output = output.replace(/\s?NAND\s?/g, " NAND ");
+      output = output.replace(/\s?NOR\s?/g, " NOR ");
+      output = output.replace(/\s?X\s?/g, " XOR ");
       return output
     }.property("expression"),
     percentageResult: function(){
@@ -113,9 +113,9 @@ App.Table = Ember.Object.extend ({
             expression = expression.replace(/\s?<-\s?/g, " &larr; ");
             expression = expression.replace(/\s?!\s?/g, " &not; ");
             expression = expression.replace(/\s?=\s?/g, " &equiv; ");
-            expression = expression.replace(/\s?NAND\s?/g, " &#8892; ");
-            expression = expression.replace(/\s?NOR\s?/g, " &#8893; ");
-            expression = expression.replace(/\s?X\s?/g, " &#8891; ");
+            expression = expression.replace(/\s?NAND\s?/g, " NAND ");
+            expression = expression.replace(/\s?NOR\s?/g, " NOR ");
+            expression = expression.replace(/\s?X\s?/g, " XOR ");
             output.pushObject(expression);
         }
         return output;
