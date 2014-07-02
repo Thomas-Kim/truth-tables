@@ -49,7 +49,7 @@
       <div class="row">
         Expression: {{view App.ExpressionChecker valueBinding="expression" rows=1 invalidExpressionBinding="invalidExpression"}}
         Want feedback? {{input type="checkbox" checkedBinding="feedback"}}
-        {{#link-to 'truth' feedback expression}}<button {{bind-attr disabled="invalidExpression"}} class="enter-expression">Enter</button>{{/link-to}}
+        {{#link-to 'truth' feedback expression}}<button {{bind-attr disabled="invalidExpression"}} class="enter-expression">Create Table</button>{{/link-to}}
       </div>
       <div class="row">
         <p>Legend:</p>
@@ -134,7 +134,7 @@
                 <p>Your total score: {{percentageResult}}</p>
             {{else}}
             {{#if feedback_bool}}
-                <p> {{mistakes}} mistakes made so far. </p>
+                <p> {{mistakes}} mistake{{#if pluralizeMistakes}}s{{/if}} made so far. </p>
             {{else}}
               <button {{action 'evaluate'}}>Evaluate </button>
             {{/if}}

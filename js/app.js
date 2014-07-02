@@ -54,6 +54,9 @@ App.Table = Ember.Object.extend ({
     ast_value: '',
     feedback: '',
     mistakes: 0,
+    pluralizeMistakes: function(){
+      return this.get("mistakes") != 1
+    }.property("mistakes"),
     answered: 0,
     evaluation: false,
     total: function(){
@@ -152,9 +155,7 @@ App.TruthController = Ember.ObjectController.extend({
     }.observes('model.expression'),
     actions: {
         evaluate: function(){
-            console.log(this.get('model').evaluation)
             this.set('model.evaluation', true)
-            console.log(this.get('model.evaluation'))
         }
     }
 
@@ -207,7 +208,6 @@ actions: {
               }
               if(this.get("last_truth_value") == null){
                 this.set("answered", this.get("answered") + 1)
-                //console.log(this.get("answered"))
               }
               this.set("last_truth_value", true);
 
@@ -222,7 +222,6 @@ actions: {
               }
               if(this.get("last_truth_value") == null){
                 this.set("answered", this.get("answered") + 1)
-                //console.log(this.get("answered"))
               }
               this.set("last_truth_value", false);
               if(this.get("feedback") === "false" && this.get("evaluation") === false)
@@ -245,13 +244,13 @@ actions: {
     parser: boolean_evaluate,
     truthArray: function(){
         var output = Ember.A([])
-        for(i = 0; i < this.get("variable").length; i++){
-            if((Math.pow(2, i)&this.get("row"))!= 0)
+        for(i = this.get("variable").length; i > 0; i--){
+            if((Math.pow(2, this.get("variable").length - i)&this.get("row"))!= 0)
                 output.pushObject("F")
             else
                 output.pushObject("T")
         }
-        return output
+        return output.reverse();
     }.property('row'),
     truthAssignment: function(){
         var outputString = this.get("expression")
@@ -289,7 +288,7 @@ App.TruthVariableComponent = Ember.Component.extend({
         }
     }.property('selectedExpression', "variable"),
     truthValue: function(){
-        if((Math.pow(2, this.get("variables").indexOf(this.get("variable")))&this.get("index"))!= 0)
+        if((Math.pow(2, this.get("variables").length - 1 - this.get("variables").indexOf(this.get("variable")))&this.get("index"))!= 0)
             return "F"
         else
             return "T"
@@ -325,9 +324,7 @@ App.ExpressionChecker = Ember.TextField.extend({
     attributeBindings: ["style"],
     invalidExpression: false,
     style: function(){
-      //console.log(this.get("invalidExpression"))
       if(this.get("invalidExpression") == true){
-        //console.log("Got here")
         return "background-color:#FF3333;"
       }
       else {
