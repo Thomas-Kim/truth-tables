@@ -8,21 +8,21 @@ var exp_final;
 %%
 
 \s+                   /* skip whitespace */
-[a-eg-su-z]           return 'VAR'
-[TF]                  return 'BOOL'
-"="                   return 'EQ'
-"->"                  return 'RIMP'
-"<-"                  return 'LIMP'
-(NAND)                return 'NAND'
-(NOR)                 return 'NOR'
-"|"                   return 'OR'
-(X)                   return 'XOR'
-"&"                   return 'AND'
-"!"                   return 'NOT'
-"("                   return 'LPAREN'
-")"                   return 'RPAREN'
-<<EOF>>               return 'EOF'
-.                     return 'INVALID'
+[TF]                    return 'BOOL'
+"="                     return 'EQ'
+"->"                    return 'RIMP'
+"<-"                    return 'LIMP'
+(NAND)                  return 'NAND'
+(NOR)                   return 'NOR'
+"|"                     return 'OR'
+(X)                     return 'XOR'
+"&"                     return 'AND'
+"!"                     return 'NOT'
+"("                     return 'LPAREN'
+")"                     return 'RPAREN'
+<<EOF>>                 return 'EOF'
+[a-eg-su-zA-EG-SU-WYZ]  return 'VAR'
+.                       return 'INVALID'
 
 /lex
 

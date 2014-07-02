@@ -592,39 +592,39 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 23
+case 1:return 22
 break;
-case 2:return 22
+case 2:return 6
 break;
-case 3:return 6
+case 3:return 8
 break;
-case 4:return 8
+case 4:return 9
 break;
-case 5:return 9
+case 5:return 16
 break;
-case 6:return 16
+case 6:return 13
 break;
-case 7:return 13
+case 7:return 11
 break;
-case 8:return 11
+case 8:return 12
 break;
-case 9:return 12
+case 9:return 15
 break;
-case 10:return 15
+case 10:return 18
 break;
-case 11:return 18
+case 11:return 20
 break;
-case 12:return 20
+case 12:return 21
 break;
-case 13:return 21
+case 13:return 5
 break;
-case 14:return 5
+case 14:return 23
 break;
 case 15:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:[a-eg-su-z])/,/^(?:[TF])/,/^(?:=)/,/^(?:->)/,/^(?:<-)/,/^(?:(NAND))/,/^(?:(NOR))/,/^(?:\|)/,/^(?:(X))/,/^(?:&)/,/^(?:!)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:[TF])/,/^(?:=)/,/^(?:->)/,/^(?:<-)/,/^(?:(NAND))/,/^(?:(NOR))/,/^(?:\|)/,/^(?:(X))/,/^(?:&)/,/^(?:!)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:[a-eg-su-zA-EG-SU-WYZ])/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"inclusive":true}}
 };
 return lexer;
