@@ -125,10 +125,10 @@ App.Table = Ember.Object.extend ({
     }.property('ast'),
         
     variables: function(){
-        if(this.get("expression").match(/[a-z]{2,}/)){
+        if(this.get("expression").match(/[a-zA-WYZ]{2,}/)){
             return ''
         }
-        variable_list = _.uniq(this.get("expression").split(/[^a-eg-su-z]+/)).sort()
+        variable_list = _.uniq(this.get("expression").split(/[^a-eg-su-zA-EG-SU-WYZ]+/)).sort()
         if(variable_list[0] === "")
             variable_list.splice(0, 1)
         return variable_list
@@ -144,10 +144,10 @@ App.Table = Ember.Object.extend ({
 
 App.TruthController = Ember.ObjectController.extend({
     variable_array: function(){
-        if(this.get("model").expression.match(/[a-z|&]{2,}/)){
+        if(this.get("model").expression.match(/[a-zA-WYZ|&]{2,}/)){
             return ''
         }
-        variable_list = _.uniq(this.get("model").expression.split(/[^a-eg-su-z]+/)).sort()
+        variable_list = _.uniq(this.get("model").expression.split(/[^a-eg-su-zA-EG-SU-WYZ]]+/)).sort()
         if(variable_list[0] === "")
             variable_list.splice(0, 1)
         this.set('model.variables', variable_list)
