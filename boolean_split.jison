@@ -69,22 +69,22 @@ top
     ;
 
 half
-    : LPAREN half RPAREN EQ half %prec AND
-        { $$ = "(" + $2 + ")" + " = " + $5; }
-    | LPAREN half RPAREN LIMP half %prec AND
-        { $$ = "(" + $2 + ")" + " <- " + $5; }
-    | LPAREN half RPAREN RIMP half %prec AND
-        { $$ = "(" + $2 + ")" + " -> " + $5; }
-    | LPAREN half RPAREN OR half %prec AND
-        { $$ = "(" + $2 + ")" + " | " + $5; }
-    | LPAREN half RPAREN XOR half %prec AND
-        { $$ = "(" + $2 + ")" + " X " + $5; }
-    | LPAREN half RPAREN NOR half %prec AND
-        { $$ = "(" + $2 + ")" + " NOR " + $5; }
-    | LPAREN half RPAREN AND half %prec AND
-        { $$ = "(" + $2 + ")" + " & " + $5; }
-    | LPAREN half RPAREN NAND half %prec AND
-        { $$ = "(" + $2 + ")" + " NAND " + $5; }
+    : LPAREN half RPAREN EQ LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " = "    + "(" + $6 + ")"; }
+    | LPAREN half RPAREN LIMP LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " <- "   + "(" + $6 + ")"; }
+    | LPAREN half RPAREN RIMP LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " -> "   + "(" + $6 + ")"; }
+    | LPAREN half RPAREN OR LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " | "    + "(" + $6 + ")"; }
+    | LPAREN half RPAREN XOR LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " X "    + "(" + $6 + ")"; }
+    | LPAREN half RPAREN NOR LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " NOR "  + "(" + $6 + ")"; }
+    | LPAREN half RPAREN AND LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " & "    + "(" + $6 + ")"; }
+    | LPAREN half RPAREN NAND LPAREN half RPAREN %prec AND
+        { $$ = "(" + $2 + ")" + " NAND " + "(" + $6 + ")"; }
     | LPAREN half RPAREN    %prec LPAREN
         { $$ = $2; }
     | eq                    %prec EQ

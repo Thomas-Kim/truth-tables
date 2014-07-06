@@ -147,7 +147,7 @@ App.TruthController = Ember.ObjectController.extend({
         if(this.get("model").expression.match(/[a-zA-WYZ|&]{2,}/)){
             return ''
         }
-        variable_list = _.uniq(this.get("model").expression.split(/[^a-eg-su-zA-EG-SU-WYZ]]+/)).sort()
+        variable_list = _.uniq(this.get("model").expression.split(/[^a-eg-su-zA-EG-SU-WYZ]+/)).sort()
         if(variable_list[0] === "")
             variable_list.splice(0, 1)
         this.set('model.variables', variable_list)
@@ -197,6 +197,8 @@ actions: {
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
             subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
+            console.log(this.get("selectedExpression"))
+            console.log(subexpressions)
             return subexpressions.indexOf(this.get("expression")) != -1
         }
     }.property('selectedExpression', "expression"),
