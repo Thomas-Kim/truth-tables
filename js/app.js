@@ -171,6 +171,7 @@ App.TruthNodeComponent = Ember.Component.extend({
     guess: '',
     feedback: "false",
     column_split: boolean_split,
+    column_split_2: boolean_split_2,
     evaluation: null,
     expression: function(){
         return this.get("node").replace("CUR","");
@@ -196,7 +197,13 @@ actions: {
     }.property("truthAssignment", "guess"),
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
+            try{
+                subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
+                subexpressions.concat(this.get("column_split_2").parse(this.get('selectedExpression')))
+            }
+            catch(err) {
+                subexpressions = this.get("column_split_2").parse(this.get('selectedExpression'))
+            }
             console.log(this.get("selectedExpression"))
             console.log(subexpressions)
             return subexpressions.indexOf(this.get("expression")) != -1
@@ -283,9 +290,16 @@ App.TruthVariableComponent = Ember.Component.extend({
     index: '',
     variables: '',
     column_split: boolean_split,
+    column_split_2: boolean_split_2,
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
-            subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
+            try{
+                subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
+                subexpressions.concat(this.get("column_split_2").parse(this.get('selectedExpression')))
+            }
+            catch(err) {
+                subexpressions = this.get("column_split_2").parse(this.get('selectedExpression'))
+            }
             return subexpressions.indexOf(this.get("variable")) != -1
         }
     }.property('selectedExpression', "variable"),
