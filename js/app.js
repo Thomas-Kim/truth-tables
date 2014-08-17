@@ -172,6 +172,7 @@ App.TruthNodeComponent = Ember.Component.extend({
     feedback: "false",
     column_split: boolean_split,
     column_split_2: boolean_split_2,
+    column_split_3: boolean_split_3,
     evaluation: null,
     expression: function(){
         return this.get("node").replace("CUR","");
@@ -199,10 +200,15 @@ actions: {
         if(this.get('selectedExpression')){
             try{
                 subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
-                subexpressions.concat(this.get("column_split_2").parse(this.get('selectedExpression')))
+                subexpressions = subexpressions.concat(this.get("column_split_2").parse(this.get('selectedExpression')))
             }
             catch(err) {
                 subexpressions = this.get("column_split_2").parse(this.get('selectedExpression'))
+            }
+            try{
+                subexpressions = subexpressions.concat(this.get("column_split_3").parse(this.get('selectedExpression')))
+            }
+            catch(err) {
             }
             console.log(this.get("selectedExpression"))
             console.log(subexpressions)
@@ -291,14 +297,20 @@ App.TruthVariableComponent = Ember.Component.extend({
     variables: '',
     column_split: boolean_split,
     column_split_2: boolean_split_2,
+    column_split_3: boolean_split_3,
     isSubexpressionOfSelected: function(){
         if(this.get('selectedExpression')){
             try{
                 subexpressions = this.get("column_split").parse(this.get('selectedExpression'))
-                subexpressions.concat(this.get("column_split_2").parse(this.get('selectedExpression')))
+                subexpressions = subexpressions.concat(this.get("column_split_2").parse(this.get('selectedExpression')))
             }
             catch(err) {
                 subexpressions = this.get("column_split_2").parse(this.get('selectedExpression'))
+            }
+            try{
+                subexpressions = subexpressions.concat(this.get("column_split_3").parse(this.get('selectedExpression')))
+            }
+            catch(err) {
             }
             return subexpressions.indexOf(this.get("variable")) != -1
         }

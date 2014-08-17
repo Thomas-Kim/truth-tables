@@ -48,47 +48,24 @@ expressions
     ;
 
 top
-    : half CUR EQ half
+    : eq CUR EQ eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR LIMP half
+    | eq CUR LIMP eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR RIMP half
+    | eq CUR RIMP eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR OR half
+    | eq CUR OR eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR XOR half
+    | eq CUR XOR eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR NOR half
+    | eq CUR NOR eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR AND half
+    | eq CUR AND eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | half CUR NAND half
+    | eq CUR NAND eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($1); exp_list.push($4); }
-    | CUR NOT half
+    | CUR NOT eq
         { if(exp_list == null) exp_list = new Array(); exp_list.push($3); }
-    ;
-
-half
-    : LPAREN half RPAREN EQ LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " = "    + "(" + $6 + ")"; }
-    | LPAREN half RPAREN LIMP LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " <- "   + "(" + $6 + ")"; }
-    | LPAREN half RPAREN RIMP LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " -> "   + "(" + $6 + ")"; }
-    | LPAREN half RPAREN OR LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " | "    + "(" + $6 + ")"; }
-    | LPAREN half RPAREN XOR LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " X "    + "(" + $6 + ")"; }
-    | LPAREN half RPAREN NOR LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " NOR "  + "(" + $6 + ")"; }
-    | LPAREN half RPAREN AND LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " & "    + "(" + $6 + ")"; }
-    | LPAREN half RPAREN NAND LPAREN half RPAREN %prec AND
-        { $$ = "(" + $2 + ")" + " NAND " + "(" + $6 + ")"; }
-    | LPAREN half RPAREN    %prec LPAREN
-        { $$ = $2; }
-    | eq                    %prec EQ
-        { $$ = $1; }
     ;
 
 eq
