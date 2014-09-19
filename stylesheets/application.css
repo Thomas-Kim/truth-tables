@@ -8,6 +8,14 @@ html, body {
 
 #main {
   padding-bottom: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-top: 50px;
+  margin-bottom: 100px;
+
+  background-color: white;
+
+  border-radius: 40px;
 }
 
 .footer {
@@ -21,23 +29,11 @@ html, body {
 }
 
 body {
-  /*Taken from CSS-tricks*/
-  /* fallback */
-  background-color: white;
+  background-color: lightcyan;
+}
 
-  /* Safari 4-5, Chrome 1-9 */
-  /* Can't specify a percentage size? Laaaaaame. */
-  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#FFFFFF), to(#AAAAAA));
-
-  /* Safari 5.1+, Chrome 10+ */
-  background: -webkit-radial-gradient(circle, #FFFFFF, #AAAAAA);
-
-  /* Firefox 3.6+ */
-  background: -moz-radial-gradient(circle, #FFFFFF, #AAAAAA);
-
-  /* IE 10 */
-  background: -ms-radial-gradient(circle, #FFFFFF, #AAAAAA);
-
+.expression-entry {
+  padding-top: 100px;
 }
 
 td {
@@ -58,10 +54,6 @@ td {
   background-color: #EEEEEE;
 }
 
-.row {
-  text-align: center;
-}
-
 .table {
   margin-top: 25px;
 }
@@ -73,10 +65,15 @@ table {
 
 .title {
   margin-top: 25px;
+  text-align: center;
 }
 
 thead {
-  background-color: #AAAAAA;
+  background-color: #0099CC;
+}
+
+tbody {
+  background-color: #66CCFF;
 }
 
 .variable {
@@ -100,4 +97,8 @@ thead {
 
 .enter-expression {
   color: black;
+}
+
+.evaluation {
+  text-align: center;
 }

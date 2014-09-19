@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/application.css">
 </head>
+
 <body>
     <script type="text/x-handlebars" data-template-name="components/truth-row">
         {{#each variable in variables}}
@@ -45,61 +46,64 @@
         <h2> Truth Table Creator </h2>
       </div>
       <div class="row">
-        <p> Welcome to the truth app landing page! It's still a work in progress, but if you'd like to check it out, please put in an expression below and give it a shot! </p>
+        <p> Welcome to the interactive truth table app. This app is used for creating empty truth tables for you to fill out. Just enter a boolean expression below and it will break it apart into smaller subexpressions for you to solve in the truth table. </p>
+        <p> The app has two modes, immediate feedback and 'test' mode. Immediate feedback will immediately tell you when you get an answer wrong, while test mode won't tell you how many you got wrong until you submit the table. You can use the immediate feedback mode to practice, then use the test mode to make sure you understand everything. </p>
+        <p> To use the app, enter a boolean logic expression below. There is a legend to show you computer friendly ways to type each of the symbols that are normally used for boolean logic. Once you're done, pick which mode you want to use and create the table. Fill the tables with f's and t's and try to get all of the answers right. Good luck! </p>
         <p>The source code for this project can be found here: <a href="https://github.com/Thomas-Kim/truth-tables">https://github.com/Thomas-Kim/truth-tables</a></p>
       </div>
       <div class="row">
-        Expression: {{view App.ExpressionChecker valueBinding="expression" rows=1 invalidExpressionBinding="invalidExpression"}}
-        Want feedback? {{input type="checkbox" checkedBinding="feedback"}}
-        {{#link-to 'truth' feedback expression}}<button {{bind-attr disabled="invalidExpression"}} class="enter-expression">Create Table</button>{{/link-to}}
-      </div>
-      <div class="row">
-        <p>Legend:</p>
-        <div class="table">
-          <table>
-            <thead>
-              <td>Operator</td>
-              <td>What to Type</td>
-            </thead>
-            <tbody>
-              <tr>
-                <td>&or;</td>
-                <td>|</td>
-              </tr>
-              <tr>
-                <td>&and;</td>
-                <td>&</td>
-              </tr>
-              <tr>
-                <td>&rarr;</td>
-                <td>-></td>
-              </tr>
-              <tr>
-                <td>&larr;</td>
-                <td><-</td>
-              </tr>
-              <tr>
-                <td>&not;</td>
-                <td>!</td>
-              </tr>
-              <tr>
-                <td>&equiv;</td>
-                <td>=</td>
-              </tr>
-              <tr>
-                <td>XOR</td>
-                <td>X</td>
-              </tr>
-              <tr>
-                <td>NAND</td>
-                <td>NAND</td>
-              </tr>
-              <tr>
-                <td>NOR</td>
-                <td>NOR</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="col-md-4">
+          <div class="table">
+            <table>
+              <thead>
+                <td>Operator</td>
+                <td>What to Type</td>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>&or;</td>
+                  <td>|</td>
+                </tr>
+                <tr>
+                  <td>&and;</td>
+                  <td>&</td>
+                </tr>
+                <tr>
+                  <td>&rarr;</td>
+                  <td>-></td>
+                </tr>
+                <tr>
+                  <td>&larr;</td>
+                  <td><-</td>
+                </tr>
+                <tr>
+                  <td>&not;</td>
+                  <td>!</td>
+                </tr>
+                <tr>
+                  <td>&equiv;</td>
+                  <td>=</td>
+                </tr>
+                <tr>
+                  <td>XOR</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td>NAND</td>
+                  <td>NAND</td>
+                </tr>
+                <tr>
+                  <td>NOR</td>
+                  <td>NOR</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-8 expression-entry">
+          Expression: {{view App.ExpressionChecker valueBinding="expression" rows=1 invalidExpressionBinding="invalidExpression"}}
+          Want immediate feedback? {{input type="checkbox" checkedBinding="feedback"}}
+          {{#link-to 'truth' feedback expression}}<button {{bind-attr disabled="invalidExpression"}} class="enter-expression">Create Table</button>{{/link-to}}
         </div>
       </div>
     </script>
@@ -129,7 +133,7 @@
               </tbody>
             </table>
 
-            <div class="row">
+            <div class="row evaluation">
             {{#if evaluation}}
                 <p>You answered {{answered}} out of {{total}}</p>
                 <p>You answered {{correct}} correctly</p>
