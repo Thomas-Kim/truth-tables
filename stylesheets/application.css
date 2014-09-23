@@ -29,7 +29,7 @@ html, body {
 }
 
 body {
-  background-color: lightcyan;
+  background-color: lightblue;
 }
 
 .expression-entry {
@@ -100,5 +100,6 @@ tbody {
 }
 
 .evaluation {
+  padding-top: 20px;
   text-align: center;
 }
