@@ -68,7 +68,7 @@ or
     | or XOR or
         { $$ = $1 + " X " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURX " + $3); }
     | or NOR or
-        { $$ = $1 + " NOR " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURR " + $3); }
+        { $$ = $1 + " R " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURR " + $3); }
     | and
         { $$ = $1;}
     ;
@@ -77,7 +77,7 @@ and
     : and AND and
         { $$ = $1 + " & " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR& " + $3); }
     | and NAND and
-        { $$ = $1 + " NAND " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURD " + $3); }
+        { $$ = $1 + " D " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURD " + $3); }
     | not
         { $$ = $1;}
     ;

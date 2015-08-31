@@ -105,13 +105,13 @@ case 8:
  this.$ = $$[$0-2] + " X " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURX " + $$[$0]); 
 break;
 case 9:
- this.$ = $$[$0-2] + " NOR " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURR " + $$[$0]); 
+ this.$ = $$[$0-2] + " R " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURR " + $$[$0]); 
 break;
 case 11:
  this.$ = $$[$0-2] + " & " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CUR& " + $$[$0]); 
 break;
 case 12:
- this.$ = $$[$0-2] + " NAND " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURD " + $$[$0]); 
+ this.$ = $$[$0-2] + " D " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURD " + $$[$0]); 
 break;
 case 14:
  this.$ = "!" + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push("CUR!" + $$[$0]); 
