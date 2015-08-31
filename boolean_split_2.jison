@@ -12,8 +12,8 @@ var exp_final;
 "="                     return 'EQ'
 "->"                    return 'RIMP'
 "<-"                    return 'LIMP'
-(NAND)                  return 'NAND'
-(NOR)                   return 'NOR'
+"-"                  return 'NAND'
+"+"                   return 'NOR'
 "|"                     return 'OR'
 (X)                     return 'XOR'
 "&"                     return 'AND'
@@ -22,7 +22,7 @@ var exp_final;
 ")"                     return 'RPAREN'
 (CUR)                   return 'CUR'
 <<EOF>>                 return 'EOF'
-[a-eg-su-zA-EG-SU-WYZ]  return 'VAR'
+[a-eg-mo-su-zA-EG-MO-SU-WYZ]  return 'VAR'
 .                       return 'INVALID'
 
 /lex

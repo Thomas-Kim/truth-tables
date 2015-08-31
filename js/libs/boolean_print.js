@@ -105,13 +105,13 @@ case 8:
  this.$ = $$[$0-2] + " X " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURX " + $$[$0]); 
 break;
 case 9:
- this.$ = $$[$0-2] + " NOR " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURNOR " + $$[$0]); 
+ this.$ = $$[$0-2] + " NOR " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CUR+ " + $$[$0]); 
 break;
 case 11:
  this.$ = $$[$0-2] + " & " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CUR& " + $$[$0]); 
 break;
 case 12:
- this.$ = $$[$0-2] + " NAND " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CURNAND " + $$[$0]); 
+ this.$ = $$[$0-2] + " NAND " + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push($$[$0-2] + " CUR- " + $$[$0]); 
 break;
 case 14:
  this.$ = "!" + $$[$0]; if(exp_list == null) exp_list = new Array(); exp_list.push("CUR!" + $$[$0]); 
@@ -638,7 +638,7 @@ case 15:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:[TF])/,/^(?:=)/,/^(?:->)/,/^(?:<-)/,/^(?:(NAND))/,/^(?:(NOR))/,/^(?:\|)/,/^(?:(X))/,/^(?:&)/,/^(?:!)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:[a-eg-su-zA-EG-SU-WYZ])/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:[TF])/,/^(?:=)/,/^(?:->)/,/^(?:<-)/,/^(?:-)/,/^(?:\+)/,/^(?:\|)/,/^(?:(X))/,/^(?:&)/,/^(?:!)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:[a-eg-mo-su-zA-EG-MO-SU-WYZ])/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"inclusive":true}}
 });
 return lexer;
