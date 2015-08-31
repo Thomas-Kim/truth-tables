@@ -116,8 +116,8 @@ App.Table = Ember.Object.extend ({
             expression = expression.replace(/\s?<-\s?/g, " &larr; ");
             expression = expression.replace(/\s?!\s?/g, " &not; ");
             expression = expression.replace(/\s?=\s?/g, " &equiv; ");
-            expression = expression.replace(/\s?NAND\s?/g, " NAND ");
-            expression = expression.replace(/\s?NOR\s?/g, " NOR ");
+            expression = expression.replace(/\s?D\s?/g, " NAND ");
+            expression = expression.replace(/\s?R\s?/g, " NOR ");
             expression = expression.replace(/\s?X\s?/g, " XOR ");
             output.pushObject(expression);
         }
@@ -128,7 +128,7 @@ App.Table = Ember.Object.extend ({
         if(this.get("expression").match(/[a-zA-WYZ]{2,}/)){
             return ''
         }
-        variable_list = _.uniq(this.get("expression").split(/[^a-eg-su-zA-EG-SU-WYZ]+/)).sort()
+        variable_list = _.uniq(this.get("expression").split(/[^a-eg-su-z]+/)).sort()
         if(variable_list[0] === "")
             variable_list.splice(0, 1)
         return variable_list
@@ -147,7 +147,7 @@ App.TruthController = Ember.ObjectController.extend({
         if(this.get("model").expression.match(/[a-zA-WYZ|&]{2,}/)){
             return ''
         }
-        variable_list = _.uniq(this.get("model").expression.split(/[^a-eg-su-zA-EG-SU-WYZ]+/)).sort()
+        variable_list = _.uniq(this.get("model").expression.split(/[^a-eg-su-z]+/)).sort()
         if(variable_list[0] === "")
             variable_list.splice(0, 1)
         this.set('model.variables', variable_list)

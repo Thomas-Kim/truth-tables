@@ -12,8 +12,8 @@ var exp_final;
 "="                     return 'EQ'
 "->"                    return 'RIMP'
 "<-"                    return 'LIMP'
-"-"                  return 'NAND'
-"+"                   return 'NOR'
+"D"                  return 'NAND'
+"R"                   return 'NOR'
 "|"                     return 'OR'
 (X)                     return 'XOR'
 "&"                     return 'AND'
@@ -21,7 +21,7 @@ var exp_final;
 "("                     return 'LPAREN'
 ")"                     return 'RPAREN'
 <<EOF>>                 return 'EOF'
-[a-eg-mo-su-zA-EG-MO-SU-WYZ]  return 'VAR'
+[a-eg-mo-su-z]  return 'VAR'
 .                       return 'INVALID'
 
 /lex
@@ -68,7 +68,7 @@ or
     | or XOR or
         { $$ = $1 + " X " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURX " + $3); }
     | or NOR or
-        { $$ = $1 + " NOR " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR+ " + $3); }
+        { $$ = $1 + " NOR " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURR " + $3); }
     | and
         { $$ = $1;}
     ;
@@ -77,7 +77,7 @@ and
     : and AND and
         { $$ = $1 + " & " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR& " + $3); }
     | and NAND and
-        { $$ = $1 + " NAND " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CUR- " + $3); }
+        { $$ = $1 + " NAND " + $3; if(exp_list == null) exp_list = new Array(); exp_list.push($1 + " CURD " + $3); }
     | not
         { $$ = $1;}
     ;
