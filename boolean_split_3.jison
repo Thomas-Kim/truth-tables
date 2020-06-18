@@ -10,8 +10,8 @@ var exp_final;
 \s+                   /* skip whitespace */
 [TF]                    return 'BOOL'
 "="                     return 'EQ'
-"->"                    return 'RIMP'
-"<-"                    return 'LIMP'
+"-]"                    return 'RIMP'
+"[-"                    return 'LIMP'
 (D)                  return 'NAND'
 (R)                   return 'NOR'
 "|"                     return 'OR'
@@ -77,9 +77,9 @@ eq
 
 imp
     : imp RIMP imp
-        { $$ = $1 + " -> " + $3; }
+        { $$ = $1 + " -] " + $3; }
     | imp LIMP imp
-        { $$ = $1 + " <- " + $3; }
+        { $$ = $1 + " [- " + $3; }
     | or
         { $$ = $1; }
     ;

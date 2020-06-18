@@ -5,8 +5,8 @@
 \s+                   /* skip whitespace */
 [TF]                  return 'BOOL'
 "="                   return 'EQ'
-"->"                  return 'RIMP'
-"<-"                  return 'LIMP'
+"-]"                  return 'RIMP'
+"[-"                  return 'LIMP'
 "D"                return 'NAND'
 "R"                 return 'NOR'
 "|"                   return 'OR'

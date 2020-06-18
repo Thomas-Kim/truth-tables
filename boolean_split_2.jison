@@ -10,8 +10,8 @@ var exp_final;
 \s+                   /* skip whitespace */
 [TF]                    return 'BOOL'
 "="                     return 'EQ'
-"->"                    return 'RIMP'
-"<-"                    return 'LIMP'
+"-]"                    return 'RIMP'
+"[-"                    return 'LIMP'
 (D)                  return 'NAND'
 (R)                   return 'NOR'
 "|"                     return 'OR'
@@ -72,9 +72,9 @@ half
     : LPAREN half RPAREN EQ half %prec AND
         { $$ = "(" + $2 + ")" + " = "    + $5; }
     | LPAREN half RPAREN LIMP half %prec AND
-        { $$ = "(" + $2 + ")" + " <- "   + $5 }
+        { $$ = "(" + $2 + ")" + " [- "   + $5 }
     | LPAREN half RPAREN RIMP half %prec AND
-        { $$ = "(" + $2 + ")" + " -> "   + $5 }
+        { $$ = "(" + $2 + ")" + " -] "   + $5 }
     | LPAREN half RPAREN OR half %prec AND
         { $$ = "(" + $2 + ")" + " | "    + $5 }
     | LPAREN half RPAREN XOR half %prec AND
@@ -100,9 +100,9 @@ eq
 
 imp
     : imp RIMP imp
-        { $$ = $1 + " -> " + $3; }
+        { $$ = $1 + " -] " + $3; }
     | imp LIMP imp
-        { $$ = $1 + " <- " + $3; }
+        { $$ = $1 + " [- " + $3; }
     | or
         { $$ = $1; }
     ;

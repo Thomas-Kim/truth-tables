@@ -66,10 +66,11 @@ App.Table = Ember.Object.extend ({
         return this.get("answered") - this.get("mistakes")
     }.property('answered', 'mistakes'),
     formatted_expression: function(){
-      output = unescape(this.get("expression")).replace(/&/g, "&and;");
+      output = unescape(this.get("expression")).replace(/ /g, "");
+      output = output.replace(/&/g, "&and;");
       output = output.replace(/\s?\|\s?/g, " &or; ", 'g');
-      output = output.replace(/\s?->\s?/g, " &rarr; ");
-      output = output.replace(/\s?<-\s?/g, " &larr; ");
+      output = output.replace(/\s?-\]\s?/g, " &rarr; ");
+      output = output.replace(/\s?\[-\s?/g, " &larr; ");
       output = output.replace(/\s?!\s?/g, " &not; ");
       output = output.replace(/\s?=\s?/g, " &equiv; ");
       output = output.replace(/\s?D\s?/g, " NAND ");
@@ -112,8 +113,8 @@ App.Table = Ember.Object.extend ({
             expression = this.get("ast")[i].replace("CUR", "");
             expression = expression.replace(/&/g, "&and;");
             expression = expression.replace(/\s?\|\s?/g, " &or; ", 'g');
-            expression = expression.replace(/\s?->\s?/g, " &rarr; ");
-            expression = expression.replace(/\s?<-\s?/g, " &larr; ");
+            expression = expression.replace(/\s?-\]\s?/g, " &rarr; ");
+            expression = expression.replace(/\s?\[-\s?/g, " &larr; ");
             expression = expression.replace(/\s?!\s?/g, " &not; ");
             expression = expression.replace(/\s?=\s?/g, " &equiv; ");
             expression = expression.replace(/\s?D\s?/g, " NAND ");
