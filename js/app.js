@@ -66,7 +66,7 @@ App.Table = Ember.Object.extend ({
         return this.get("answered") - this.get("mistakes")
     }.property('answered', 'mistakes'),
     formatted_expression: function(){
-      output = this.get("expression").replace(/&/g, "&and;");
+      output = unescape(this.get("expression")).replace(/&/g, "&and;");
       output = output.replace(/\s?\|\s?/g, " &or; ", 'g');
       output = output.replace(/\s?->\s?/g, " &rarr; ");
       output = output.replace(/\s?<-\s?/g, " &larr; ");
